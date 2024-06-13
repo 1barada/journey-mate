@@ -5,6 +5,11 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "typecheck": {
+      "options": {
+        "args": ["-p {projectRoot}/tsconfig.app.json"]
+      }
+    },
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
