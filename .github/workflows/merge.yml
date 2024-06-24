@@ -1,0 +1,52 @@
+name: Validate, build and deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    name: Format, lint and typecheck
+    uses: ./.github/workflows/pull-request.yml
+
+  build_and_deploy:
+    name: Build project and push to S3
+    needs:
+      - validate
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DESTINATION_BUCKET: ${{ vars.AWS_DESTINATION_BUCKET }}
+      DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+      AWS_EC2_METADATA_DISABLED: true
+      AWS_DEFAULT_REGION: eu-central-1
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.19.0
+          cache: 'npm'
+      - run: npm ci
+      - uses: nrwl/nx-set-shas@v4
+      - name: Build apps
+        id: run-affected
+        run: |
+          npx cross-env NODE_ENV=production nx affected -t build
+          affected_projects=$(npx nx show projects --affected)
+          echo "::set-output name=affected_projects::$affected_projects"
+
+      - name: Push Web files to S3 and Cloud Front invalidation
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+        run: |
+          aws s3 sync dist/apps/web s3://${{ env.DESTINATION_BUCKET }}
+          aws cloudfront create-invalidation --distribution-id ${{ env.DISTRIBUTION_ID }} --paths "/*"
