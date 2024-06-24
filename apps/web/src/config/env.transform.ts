@@ -1,9 +1,9 @@
-import type { AppEnvVariables, ViteConfigEnvVariables } from './env.schema';
+import type { ViteConfigEnvVariables, WebAppEnvVariables } from './env.schema';
 
-interface NormalizedAppEnvVariables {
-  apiUrl: AppEnvVariables['APP_API_URL'];
+interface NormalizedWebbAppEnvVariables {
+  apiUrl: WebAppEnvVariables['APP_API_URL'];
 }
-export const normalizeAppEnv = (env: AppEnvVariables): NormalizedAppEnvVariables => ({
+export const normalizeWebAppEnv = (env: WebAppEnvVariables): NormalizedWebbAppEnvVariables => ({
   apiUrl: env.APP_API_URL,
 });
 

@@ -1,18 +1,19 @@
-import { appConfigEnvSchema } from './env.schema';
-import { normalizeAppEnv } from './env.transform';
+import { webAppConfigEnvSchema } from './env.schema';
+import { normalizeWebAppEnv } from './env.transform';
 
-const env = normalizeAppEnv(appConfigEnvSchema.parse(import.meta.env));
+const env = normalizeWebAppEnv(webAppConfigEnvSchema.parse(import.meta.env));
 
-const configData = {
+const configData = Object.freeze({
   ...env,
-};
+});
 
-type ConfigKey = keyof typeof configData;
-type Config = Record<ConfigKey, (typeof configData)[ConfigKey]>;
+type ConfigData = typeof configData;
+type WebConfigKey = keyof typeof configData;
+type WebConfig = Record<WebConfigKey, (typeof configData)[WebConfigKey]>;
 
 const config = {
-  get: (key: ConfigKey) => configData[key],
-  getProperties: (): Config => configData,
+  get: <Key extends WebConfigKey>(key: Key): ConfigData[Key] => configData[key],
+  getProperties: (): WebConfig => configData,
 };
 
 export { config };

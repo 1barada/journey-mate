@@ -22,10 +22,10 @@ export const viteConfigEnvSchema = z.object({
 /**
  * schema with env keys needed in vite.config.ts file
  */
-export const appConfigEnvSchema = z.object({
+export const webAppConfigEnvSchema = z.object({
   APP_API_URL,
 });
 
 // TYPES
-export type AppEnvVariables = z.infer<typeof appConfigEnvSchema>;
+export type WebAppEnvVariables = z.infer<typeof webAppConfigEnvSchema>;
 export type ViteConfigEnvVariables = z.infer<typeof viteConfigEnvSchema>;
