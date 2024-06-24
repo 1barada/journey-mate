@@ -1,11 +1,10 @@
 import { appConfigEnvSchema } from './env.schema';
 import { normalizeAppEnv } from './env.transform';
 
-const env = appConfigEnvSchema.parse(import.meta.env);
-const { apiUrl } = normalizeAppEnv(env);
+const env = normalizeAppEnv(appConfigEnvSchema.parse(import.meta.env));
 
 const configData = {
-  apiUrl: apiUrl,
+  ...env,
 };
 
 type ConfigKey = keyof typeof configData;
