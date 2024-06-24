@@ -1,7 +1,7 @@
-import { webAppConfigEnvSchema } from './env.schema';
-import { normalizeWebAppEnv } from './env.transform';
+import { webAppEnvConfigSchema } from './env.schema';
+import { normalizeWebAppEnvConfig } from './env.transform';
 
-const env = normalizeWebAppEnv(webAppConfigEnvSchema.parse(import.meta.env));
+const env = normalizeWebAppEnvConfig(webAppEnvConfigSchema.parse(import.meta.env));
 
 const configData = Object.freeze({
   ...env,

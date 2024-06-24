@@ -4,13 +4,20 @@ import react from '@vitejs/plugin-react';
 import path from 'node:path';
 import { defineConfig, loadEnv } from 'vite';
 
-import { viteConfigEnvSchema } from './src/config/env.schema';
-import { normalizeViteConfigEnv } from './src/config/env.transform';
+import { webAppEnvConfigSchema } from './src/config/env.schema';
+import { normalizeWebAppEnvConfig } from './src/config/env.transform';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const envDir = path.resolve(__dirname, 'environment');
-  const env = viteConfigEnvSchema.parse(loadEnv(mode, envDir, ''));
-  const { serverHost, serverPort, previewServerPort, previewServerHost } = normalizeViteConfigEnv(env);
+  const envValidation = webAppEnvConfigSchema.safeParse(loadEnv(mode, envDir, ''));
+
+  if (!envValidation.success) {
+    console.error('Please, setup all necessary env variables\n', envValidation.error);
+    process.exit(1);
+  }
+
+  const env = envValidation.data;
+  const { serverHost, serverPort, previewServerPort, previewServerHost } = normalizeWebAppEnvConfig(env);
 
   return {
     root: __dirname,

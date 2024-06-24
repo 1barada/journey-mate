@@ -1,31 +1,34 @@
 import { z } from 'zod';
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 /**
  * prefix APP_ is must. Can be configured in vite.config.ts file
  * see more https://vitejs.dev/guide/env-and-mode#env-files
  * */
-const APP_SERVER_PORT = z.coerce.number().readonly().default(4200);
-const APP_SERVER_HOST = z.string().min(1).readonly().default('localhost');
-const APP_PREVIEW_SERVER_PORT = z.coerce.number().readonly().default(4300);
-const APP_PREVIEW_SERVER_HOST = z.string().min(1).readonly().default('localhost');
+const APP_SERVER_PORT = z.coerce.number().readonly();
+const APP_SERVER_HOST = z.string().min(1).readonly();
+const APP_PREVIEW_SERVER_PORT = z.coerce.number().readonly();
+const APP_PREVIEW_SERVER_HOST = z.string().min(1).readonly();
 const APP_API_URL = z.string().url().readonly();
+
+if (isDevelopment) {
+  APP_SERVER_PORT.default(4200);
+  APP_PREVIEW_SERVER_PORT.default(4300);
+  APP_SERVER_HOST.default('localhost');
+  APP_PREVIEW_SERVER_HOST.default('localhost');
+}
 
 /**
  * schema with env keys needed in vite.config.ts file
  */
-export const viteConfigEnvSchema = z.object({
+export const webAppEnvConfigSchema = z.object({
   APP_SERVER_PORT,
   APP_SERVER_HOST,
   APP_PREVIEW_SERVER_PORT,
   APP_PREVIEW_SERVER_HOST,
-});
-/**
- * schema with env keys needed in vite.config.ts file
- */
-export const webAppConfigEnvSchema = z.object({
   APP_API_URL,
 });
 
 // TYPES
-export type WebAppEnvVariables = z.infer<typeof webAppConfigEnvSchema>;
-export type ViteConfigEnvVariables = z.infer<typeof viteConfigEnvSchema>;
+export type WebAppEnvConfigSchema = z.infer<typeof webAppEnvConfigSchema>;

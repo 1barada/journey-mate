@@ -8,8 +8,6 @@ import { server } from './server';
 const host = config.get('host');
 const port = config.get('port');
 
-config.get('aa');
-
 await server.register(fastifyTRPCPlugin, {
   prefix: '/trpc',
   trpcOptions: { router: appRouter, createContext },

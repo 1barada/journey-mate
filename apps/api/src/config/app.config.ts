@@ -15,11 +15,18 @@ const config = {
   getProperties: (): ServerConfig => configData as ServerConfig,
 };
 
-const response = await fetch(config.get('configUrl'));
-const data = (await response.json()) as ServerAppConfig;
+const loadAsyncConfig = async () => {
+  try {
+    const response = await fetch(config.get('configUrl'));
+    const data = (await response.json()) as ServerAppConfig;
+    const newConfig = serverAppConfigSchema.parse(data);
+    Object.assign(configData, newConfig);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
 
-const newConfig = serverAppConfigSchema.parse(data);
-
-Object.assign(configData, newConfig);
+await loadAsyncConfig();
 
 export { config };

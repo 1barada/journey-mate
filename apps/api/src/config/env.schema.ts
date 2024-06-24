@@ -16,7 +16,7 @@ export const serverAppEnvSchema = z.object({
  * server app config schema
  */
 export const serverAppConfigSchema = z.object({
-  aa: z.string().min(1),
+  body: z.string().min(1), // !temp
 });
 
 // TYPES
