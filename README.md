@@ -46,3 +46,35 @@ Run `npm run nx graph` to show the graph of the workspace.
 It will show tasks that you can run with Nx.
 
 - [Learn more about Exploring the Project Graph](https://nx.dev/core-features/explore-graph)
+
+## Running with Docker
+
+To run the application with a Dockerized database, follow these steps:
+
+1. **Build the Docker Containers**: First, build your application and database containers using Docker Compose. This will read your [`docker-compose.yml`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fandreykuluev%2FDocuments%2Feliftech-school-project-2024.nosync%2Fdocker-compose.yml%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D '/Users/andreykuluev/Documents/eliftech-school-project-2024.nosync/docker-compose.yml') file and build the necessary images.
+
+```bash
+docker-compose build
+```
+
+2. **Start the Containers**: Once the build process is complete, you can start the containers. This command also starts the database container configured in your `docker-compose.yml`.
+
+```bash
+docker-compose up -d
+```
+
+The `-d` flag runs the containers in detached mode, allowing them to run in the background.
+
+3. **Verify the Containers are Running**: You can check if the containers are up and running by listing all active containers.
+
+```bash
+docker ps
+```
+
+4. **Accessing the Application**: With the containers running, you can now access your application as you normally would, through the specified ports in your `docker-compose.yml`.
+
+5. **Stopping the Containers**: When you're done, you can stop the Docker containers by running:
+
+```bash
+docker-compose down
+```
