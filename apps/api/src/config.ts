@@ -1,14 +1,6 @@
 import convict from 'convict';
 import formatValidator from 'convict-format-with-validator';
-import dotenv from 'dotenv';
-import path from 'node:path';
-import url from 'node:url';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const envFile = path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`);
-
-dotenv.config({ path: envFile });
 convict.addFormat(formatValidator.url);
 
 const config = convict({
