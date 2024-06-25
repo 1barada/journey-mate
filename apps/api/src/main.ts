@@ -1,8 +1,8 @@
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 
-import { config } from './config/app.config';
 import { createContext } from './trpc/context';
 import { appRouter } from './trpc/router';
+import { config } from './config';
 import { server } from './server';
 
 const host = config.get('host');

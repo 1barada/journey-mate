@@ -19,6 +19,8 @@
   "dependencies": {
     "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
+    "convict": "^6.2.4",
+    "convict-format-with-validator": "^6.2.0",
     "fastify": "~4.13.0",
     "fastify-plugin": "~4.5.0",
     "pino": "^9.2.0",
@@ -45,6 +47,7 @@
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "15.0.6",
     "@types/convict": "^6.1.6",
+    "@types/convict-format-with-validator": "^6.0.5",
     "@types/jest": "^29.4.0",
     "@types/node": "~18.16.9",
     "@types/react": "18.3.1",
