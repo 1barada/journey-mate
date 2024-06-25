@@ -22,4 +22,4 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - uses: nrwl/nx-set-shas@v4
-      - run: npx nx affected -t format:check lint typecheck --parallel=3
+      - run: npx nx affected --base=master -t format:check lint typecheck --parallel=3

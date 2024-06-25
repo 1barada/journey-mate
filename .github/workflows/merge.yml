@@ -41,7 +41,7 @@ jobs:
       - name: Build apps
         id: run-affected
         run: |
-          npx cross-env NODE_ENV=production nx affected -t build
+          npx cross-env NODE_ENV=production nx affected --base=master -t build
           affected_projects=$(npx nx show projects --affected)
           echo "::set-output name=affected_projects::$affected_projects"
 
