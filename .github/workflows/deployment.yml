@@ -23,10 +23,14 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      DESTINATION_BUCKET: ${{ vars.AWS_DESTINATION_BUCKET }}
-      DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
-      AWS_EC2_METADATA_DISABLED: true
+      AWS_DESTINATION_BUCKET: ${{ vars.AWS_DESTINATION_BUCKET }}
+      AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
       AWS_DEFAULT_REGION: eu-central-1
+      AWS_REGION: eu-north-1
+      AWS_EC2_METADATA_DISABLED: true
+      AWS_ECR_REGISTRY: ${{vars.AWS_ECR_REGISTRY}}
+      AWS_ECR_REPOSITORY: ${{vars.AWS_ECR_REGISTRY}}
+      AWS_IMAGE_TAG: latest
 
     steps:
       - uses: actions/checkout@v4
@@ -49,5 +53,33 @@ jobs:
       - name: Push Web files to S3 and Cloud Front invalidation
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
         run: |
-          aws s3 sync dist/apps/web s3://${{ env.DESTINATION_BUCKET }}
-          aws cloudfront create-invalidation --distribution-id ${{ env.DISTRIBUTION_ID }} --paths "/*"
+          aws s3 sync dist/apps/web s3://${{ env.AWS_DESTINATION_BUCKET }}
+          aws cloudfront create-invalidation --distribution-id ${{ env.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+      - name: Set up Docker Buildx
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push Docker image to Amazon ECR
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        run: |
+          docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
+          docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
+
+      - name: SSH into EC2 and update Docker container
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.AWS_EC2_HOST }}
+          username: ${{ vars.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          script: |
+            docker pull ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} 
+            docker stop journey || true
+            docker rm journey || true
+            docker run -d --name journey -p 80:80 ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
