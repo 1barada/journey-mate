@@ -1,26 +1,14 @@
 import { createTheme } from '@mui/material/styles';
 
-interface TypeText {
-  primary: string;
-  secondary: string;
-  placeholder?: string;
-}
-
-const text: Partial<TypeText> = {
-  primary: '#000000',
-  secondary: '#666666',
-  placeholder: '#A6A6A6',
-};
-
 export const theme = createTheme({
   palette: {
     primary: {
       main: '#BDD9F9',
-      light: '#A5C4F0', // dark shade for hover
+      hoverColor: '#A5C4F0',
     },
     secondary: {
-      main: '#F1EEEE',
-      light: '#D1D1D1', // dark shade for hover
+      main: '#E0DEDE',
+      hoverColor: '#D1D1D1',
     },
     info: { main: '#FDFBD8' },
     error: { main: '#f44336' },
@@ -28,7 +16,11 @@ export const theme = createTheme({
       default: '#FFFFFF',
       paper: '#EBF2F9',
     },
-    text: text as TypeText,
+    text: {
+      primary: '#000000',
+      secondary: '#666666',
+      placeholder: '#B7B7B7',
+    },
   },
   typography: {
     fontFamily: '"Roboto", sans-serif',
@@ -94,7 +86,7 @@ export const theme = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          color: '#666666', // override color for labels
+          color: '#666666',
         },
       },
     },
@@ -102,7 +94,7 @@ export const theme = createTheme({
       styleOverrides: {
         input: {
           '&::placeholder': {
-            color: '#A6A6A6', // override color for placeholders
+            color: '#A6A6A6',
           },
         },
       },
@@ -114,10 +106,10 @@ export const theme = createTheme({
             backgroundColor: 'rgba(0, 0, 0, 0.04)',
           },
           '&.MuiButton-containedPrimary:hover': {
-            backgroundColor: '#A5C4F0', // dark shade for hover primary button
+            backgroundColor: '#A5C4F0',
           },
           '&.MuiButton-containedSecondary:hover': {
-            backgroundColor: '#D1D1D1', // dark shade for hover primary button
+            backgroundColor: '#D1D1D1',
           },
         },
       },
