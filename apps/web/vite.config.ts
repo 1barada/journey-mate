@@ -1,30 +1,48 @@
 /// <reference types='vitest' />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import path from 'node:path';
+import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/web',
+import { webAppEnvConfigSchema } from './src/config/env.schema';
+import { normalizeWebAppEnvConfig } from './src/config/env.transform';
 
-  server: {
-    port: 4200,
-    host: 'localhost',
-  },
+export default defineConfig(async ({ mode }) => {
+  const envDir = path.resolve(__dirname, 'environment');
+  const envValidation = webAppEnvConfigSchema.safeParse(loadEnv(mode, envDir, ''));
 
-  preview: {
-    port: 4300,
-    host: 'localhost',
-  },
+  if (!envValidation.success) {
+    console.error('Please, setup all necessary env variables\n', envValidation.error);
+    process.exit(1);
+  }
 
-  plugins: [react(), nxViteTsPaths()],
+  const env = envValidation.data;
+  const { serverHost, serverPort, previewServerPort, previewServerHost } = normalizeWebAppEnvConfig(env);
 
-  build: {
-    outDir: '../../dist/apps/web',
-    emptyOutDir: true,
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
+  return {
+    root: __dirname,
+    cacheDir: '../../node_modules/.vite/apps/web',
+
+    server: {
+      port: serverPort,
+      host: serverHost,
     },
-  },
+
+    preview: {
+      port: previewServerPort,
+      host: previewServerHost,
+    },
+
+    plugins: [react(), nxViteTsPaths()],
+    envDir: './environment',
+    envPrefix: 'APP',
+    build: {
+      outDir: '../../dist/apps/web',
+      emptyOutDir: true,
+      reportCompressedSize: true,
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+    },
+  };
 });

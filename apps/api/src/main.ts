@@ -3,10 +3,11 @@ import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 
 import { createContext } from './trpc/context';
 import { appRouter } from './trpc/router';
+import { config } from './config';
 import { server } from './server';
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 5000;
+const host = config.get('host');
+const port = config.get('port');
 
 await server.register(cors, {
   origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : ['*'],

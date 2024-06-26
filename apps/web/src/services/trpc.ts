@@ -1,7 +1,8 @@
 import type { AppRouter } from '@project/api/trpc';
 import { createTRPCProxyClient, httpLink } from '@trpc/client';
 
+import { config } from '../config/app.config';
+
 export const trpc = createTRPCProxyClient<AppRouter>({
-  // TODO: take api url from config (config gets it from .env)
-  links: [httpLink({ url: 'http://localhost:5000/trpc' })],
+  links: [httpLink({ url: config.get('apiUrl') })],
 });
