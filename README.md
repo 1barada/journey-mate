@@ -51,7 +51,7 @@ It will show tasks that you can run with Nx.
 
 To run the application with a Dockerized database, follow these steps:
 
-1. **Build the Docker Containers**: First, build your application and database containers using Docker Compose. This will read your [`docker-compose.yml`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fandreykuluev%2FDocuments%2Feliftech-school-project-2024.nosync%2Fdocker-compose.yml%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%5D '/Users/andreykuluev/Documents/eliftech-school-project-2024.nosync/docker-compose.yml') file and build the necessary images.
+1. **Build the Docker Containers**:
 
 ```bash
 docker-compose build
