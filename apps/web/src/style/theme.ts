@@ -1,5 +1,17 @@
 import { createTheme } from '@mui/material/styles';
 
+interface TypeText {
+  primary: string;
+  secondary: string;
+  placeholder?: string;
+}
+
+let text: Partial<TypeText> = {
+  primary: '#000000',
+  secondary: '#666666',
+  placeholder: '#A6A6A6',
+};
+
 export const theme = createTheme({
   palette: {
     primary: {
@@ -16,11 +28,7 @@ export const theme = createTheme({
       default: '#FFFFFF',
       paper: '#EBF2F9',
     },
-    text: {
-      primary: '#000000',
-      secondary: '#666666', // for labels
-      disabled: '#B7B7B7', // for placeholders
-    },
+    text: text as TypeText,
   },
   typography: {
     fontFamily: '"Roboto", sans-serif',
@@ -94,7 +102,7 @@ export const theme = createTheme({
       styleOverrides: {
         input: {
           '&::placeholder': {
-            color: '#B7B7B7', // override color for placeholders
+            color: '#A6A6A6', // override color for placeholders
           },
         },
       },
