@@ -17,6 +17,7 @@ if (isDevelopment) {
   APP_PREVIEW_SERVER_PORT.default(4300);
   APP_SERVER_HOST.default('localhost');
   APP_PREVIEW_SERVER_HOST.default('localhost');
+  APP_API_URL.default('http://localhost:5000/trcp');
 }
 
 /**
