@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@mui/material';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import './index.scss';
+
 import { persistor, store } from './store/store';
 import { theme } from './style/theme';
 import { App } from './App';
-
-import './index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
