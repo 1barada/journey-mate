@@ -6,7 +6,7 @@ interface TypeText {
   placeholder?: string;
 }
 
-let text: Partial<TypeText> = {
+const text: Partial<TypeText> = {
   primary: '#000000',
   secondary: '#666666',
   placeholder: '#A6A6A6',
