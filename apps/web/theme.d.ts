@@ -18,4 +18,12 @@ declare module '@mui/material/styles' {
   interface PaletteOptions {
     text?: Partial<TypeText>;
   }
+
+  interface BreakpointOverrides {
+    xs: false;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+  }
 }

@@ -43,42 +43,28 @@ export const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+      sm: 320,
+      md: 768,
+      lg: 1024,
+      xl: 1240,
     },
   },
   components: {
     MuiContainer: {
       styleOverrides: {
         root: {
-          minWidth: '320px',
-          maxWidth: '375px',
+          maxWidth: '1240px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          '@media (min-width: 600px)': {
+          paddingLeft: '16px',
+          paddingRight: '16px',
+          '@media (min-width: 1024px)': {
+            paddingLeft: '24px',
+            paddingRight: '24px',
+          },
+          '@media (min-width: 1240px)': {
             paddingLeft: '32px',
             paddingRight: '32px',
-            maxWidth: '600px',
-          },
-          '@media (min-width: 960px)': {
-            paddingLeft: '32px',
-            paddingRight: '32px',
-            maxWidth: '960px',
-          },
-          '@media (min-width: 1280px)': {
-            paddingLeft: '100px',
-            paddingRight: '100px',
-            maxWidth: '1280px',
-          },
-          '@media (min-width: 1920px)': {
-            paddingLeft: '100px',
-            paddingRight: '100px',
-            maxWidth: '1920px',
           },
         },
       },
