@@ -51,32 +51,26 @@ It will show tasks that you can run with Nx.
 
 To run the application with a Dockerized database, follow these steps:
 
-1. **Build the Docker Containers**:
+1. **Start the Containers**: Once the build process is complete, you can start the containers. This command also starts the database container configured in your `docker-compose.yml`.
 
 ```bash
-docker-compose build
-```
-
-2. **Start the Containers**: Once the build process is complete, you can start the containers. This command also starts the database container configured in your `docker-compose.yml`.
-
-```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 The `-d` flag runs the containers in detached mode, allowing them to run in the background.
 
-3. **Verify the Containers are Running**: You can check if the containers are up and running by listing all active containers.
+2. **Verify the Containers are Running**: You can check if the containers are up and running by listing all active containers.
 
 ```bash
 docker ps
 ```
 
-4. **Accessing the Application**: With the containers running, you can now access your application as you normally would, through the specified ports in your `docker-compose.yml`.
+3. **Accessing the Application**: With the containers running, you can now access your application as you normally would, through the specified ports in your `docker-compose.yml`.
 
-5. **Stopping the Containers**: When you're done, you can stop the Docker containers by running:
+4. **Stopping the Containers**: When you're done, you can stop the Docker containers by running:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Create tables in database

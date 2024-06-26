@@ -10,7 +10,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["@project/api/trpc"],
+            "allow": ["@project/api/trpc", "@project/api/database"],
             "depConstraints": [
               {
                 "sourceTag": "*",
