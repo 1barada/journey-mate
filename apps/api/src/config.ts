@@ -22,6 +22,6 @@ if (configPath) {
   config.loadFile(configPath);
 }
 
-// config.validate({ allowed: 'strict' }); uncommit after config.json shape is getting from ECR
+// config.validate({ allowed: 'strict' });  uncommit after config.json shape is getting from ECR
 
 export { config };
