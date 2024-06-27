@@ -100,5 +100,11 @@ export const theme = createTheme({
         },
       },
     },
+    MuiList: {
+      styleOverrides: { root: { padding: 0, width: 'auto' } },
+    },
+    MuiListItem: {
+      styleOverrides: { root: { padding: 0, display: 'block', maxWidth: '100%', width: 'auto' } },
+    },
   },
 });
