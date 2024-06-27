@@ -12,5 +12,5 @@ ssh -i "$AWS_EC2_SSH_KEY" "$AWS_EC2_USER@$AWS_EC2_HOST" << EOF
   docker pull $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:$AWS_IMAGE_TAG
   docker stop journey || true
   docker rm journey || true
-  docker run -d --name journey -p 80:80 $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:$AWS_IMAGE_TAG
+  docker run -d --name journey -p 5000:5000 $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:$AWS_IMAGE_TAG
 EOF

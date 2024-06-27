@@ -1,12 +1,8 @@
 import convict from 'convict';
-import formatValidator from 'convict-format-with-validator';
-
-convict.addFormat(formatValidator.url);
 
 const config = convict({
   configUrl: {
-    format: 'url',
-    default: 'https://jsonplaceholder.typicode.com/posts/1',
+    default: '',
     env: 'SERVER_CONFIG_FILE_PATH',
   },
   port: {
@@ -16,26 +12,16 @@ const config = convict({
   },
   host: {
     default: 'localhost',
-    env: 'HOST',
+    env: 'AWS_EC2_HOST',
   },
 });
 
-config.validate({ allowed: 'strict' });
+const configPath = config.get('configUrl');
 
-const loadAsyncConfig = async () => {
-  try {
-    const response = await fetch(config.get('configUrl'));
-    const newConfig = await response.json();
+if (configPath) {
+  config.loadFile(configPath);
+}
 
-    config.load(newConfig);
-    // ! TODO add uncomment below once external config schema is defined
-    // config.validate({ allowed: 'strict' });
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-};
-
-await loadAsyncConfig();
+// config.validate({ allowed: 'strict' }); uncommit after config.json shape is getting from ECR
 
 export { config };
