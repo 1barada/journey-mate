@@ -1,0 +1,7 @@
+@use '../../../style/variables.scss' as vars;
+
+.milestone-select-button {
+  .check-icon {
+    color: #{vars.$success-secondary};
+  }
+}
