@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DirectionsBike, DownhillSkiing, HelpOutline, Landscape, People } from '@mui/icons-material';
 import { Avatar, Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { format } from 'date-fns';
@@ -10,6 +11,7 @@ interface JourneyCardProps {
   date: Date;
   personCount: number;
   journeyType: string;
+  hashId: string;
 }
 
 const getJourneyIcon = (journeyType: string) => {
@@ -34,7 +36,10 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
   date,
   personCount,
   journeyType,
+  hashId,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Card
       sx={{ width: 400, height: 400, elevation: 0, border: '1px solid rgba(0, 0, 0, 0.12)', backgroundColor: 'white' }}
@@ -68,7 +73,9 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
               {personCount}
             </Typography>
           </Box>
-          <Button variant="contained">Show</Button>
+          <Button variant="contained" onClick={() => navigate(`/event/${hashId}`)}>
+            Show
+          </Button>
         </Box>
       </CardContent>
     </Card>

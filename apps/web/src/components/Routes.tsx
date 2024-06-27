@@ -29,7 +29,7 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
       },
 
       {
-        path: routes.PROFILE,
+        path: '/profile',
         element: <PrivateRoute isAuthenticated={isAuthenticated} />,
         children: [
           {
