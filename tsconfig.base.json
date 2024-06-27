@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/api/database": ["apps/api/src/database.ts"],
       "@project/api/trpc": ["apps/api/src/trpc/router.ts"]
     }
   },
