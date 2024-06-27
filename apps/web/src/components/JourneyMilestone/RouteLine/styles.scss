@@ -1,0 +1,12 @@
+@use '../../../style//variables.scss' as vars;
+
+.line {
+  width: 2px;
+  height: 64px;
+
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #{vars.$primary-hover-color};
+
+  transition: all #{vars.$transition-fast};
+}
