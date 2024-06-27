@@ -1,0 +1,63 @@
+@use '../../style/variables.scss' as vars;
+
+.journey-milestone-toggle {
+  --milestone-hover-color: #{vars.$primary-hover-color};
+  --transition: #{vars.$transition-fast};
+
+  width: 100%;
+
+  .line {
+    height: 0px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: calc(var(--badge-size) / 2 + var(--trigger-padding-x));
+  }
+
+  .Mui-selected {
+    .badge {
+      box-shadow: inset 0px 0px 0px 4px var(--milestone-hover-color, #000000);
+    }
+  }
+
+  .Mui-selected + .line {
+    height: 64px;
+  }
+
+  .milestone-select-button + .line {
+    background-color: var(--milestone-hover-color);
+  }
+
+  .milestone-select-button {
+    background-color: #{vars.$white};
+    border: none;
+    border-radius: 8px;
+    padding: var(--trigger-padding-x) var(--trigger-padding-y);
+    transition: background-color var(--transition);
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+    .check-icon {
+      display: none;
+      margin-left: auto;
+    }
+
+    &.Mui-selected {
+      background-color: transparent;
+
+      .check-icon {
+        display: block;
+      }
+    }
+
+    &:not(.Mui-selected):hover {
+      background-color: var(--milestone-hover-color);
+
+      .datetime,
+      .milestone-name {
+        filter: brightness(50);
+        transition: all var(--transition);
+      }
+    }
+  }
+}
