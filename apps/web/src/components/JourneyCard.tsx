@@ -1,12 +1,13 @@
 import React from 'react';
 import { DirectionsBike, DownhillSkiing, HelpOutline, Landscape, People } from '@mui/icons-material';
 import { Avatar, Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { format } from 'date-fns';
 
 interface JourneyCardProps {
   description: string;
   imageUrl: string;
   header: string;
-  date: string;
+  date: Date;
   personCount: number;
   journeyType: string;
 }
@@ -23,6 +24,8 @@ const getJourneyIcon = (journeyType: string) => {
       return <HelpOutline />;
   }
 };
+
+const formatDate = (date: Date) => format(date, 'dd.MM.yy');
 
 export const JourneyCard: React.FC<JourneyCardProps> = ({
   description,
@@ -50,7 +53,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
             {getJourneyIcon(journeyType)}
           </Box>
           <Typography variant="subtitle1" color="text.secondary">
-            {date}
+            {formatDate(date)}
           </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">
