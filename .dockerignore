@@ -1,0 +1,33 @@
+node_modules
+dist
+tmp
+**/*.md
+**/*.env
+.git
+.gitignore
+.nx/cache
+.nx/workspace-data
+.editorconfig
+.vscode
+.husky
+.nvmrc
+.prettier*
+
+# Lint
+**/.eslintignore
+**/.eslint*.*
+
+# Jest
+**/jest.*.*
+**/jest.*
+
+# All apps except api
+apps/web
+
+# Docker
+**/Dockerfile
+**/docker-compose.yml
+**/docker-compose.yaml
+**/.dockerignore
+
+

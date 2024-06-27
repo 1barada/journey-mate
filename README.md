@@ -46,3 +46,40 @@ Run `npm run nx graph` to show the graph of the workspace.
 It will show tasks that you can run with Nx.
 
 - [Learn more about Exploring the Project Graph](https://nx.dev/core-features/explore-graph)
+
+## Running with Docker
+
+To run the application with a Dockerized database, follow these steps:
+
+1. **Start the Containers**: Once the build process is complete, you can start the containers. This command also starts the database container configured in your `docker-compose.yml`.
+
+```bash
+docker compose up -d
+```
+
+The `-d` flag runs the containers in detached mode, allowing them to run in the background.
+
+2. **Verify the Containers are Running**: You can check if the containers are up and running by listing all active containers.
+
+```bash
+docker ps
+```
+
+3. **Accessing the Application**: With the containers running, you can now access your application as you normally would, through the specified ports in your `docker-compose.yml`.
+
+4. **Stopping the Containers**: When you're done, you can stop the Docker containers by running:
+
+```bash
+docker compose down
+```
+
+## Create tables in database
+
+```bash
+npx prisma migrate dev --name init
+```
+
+This command does two things:
+
+- It creates a new SQL migration file for this migration
+- It runs the SQL migration file against the database
