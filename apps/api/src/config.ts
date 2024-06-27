@@ -6,7 +6,7 @@ convict.addFormat(formatValidator.url);
 const config = convict({
   configUrl: {
     format: 'url',
-    default: '',
+    default: 'https://jsonplaceholder.typicode.com/posts/1',
     env: 'SERVER_CONFIG_FILE_PATH',
   },
   port: {
