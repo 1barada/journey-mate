@@ -1,0 +1,14 @@
+@use '../../../style/variables.scss' as vars;
+
+.badge {
+  $size: 60px;
+
+  border-radius: 50%;
+  width: var(--badge-size, #{size});
+  height: var(--badge-size, #{size});
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #{vars.$background-milestone};
+}
