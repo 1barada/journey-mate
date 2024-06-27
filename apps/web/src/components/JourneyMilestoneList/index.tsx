@@ -26,7 +26,7 @@ export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milesto
                 <MilestoneBadge>{badgeContent}</MilestoneBadge>
 
                 <Stack component="span" paddingRight={1.5}>
-                  <MilestoneName>{milestone.location}</MilestoneName>
+                  <MilestoneName tooltipText={milestone.location}>{milestone.location}</MilestoneName>
                   <MilestoneDatetime date={milestone.date} />
                 </Stack>
               </Stack>
