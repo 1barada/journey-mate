@@ -1,10 +1,14 @@
 import { FC } from 'react';
+import ReactDOM from 'react-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
 import { useEscapeKeyClose } from '../../../hooks/useEscapeKeyClose';
 
 import s from './Modal.module.scss';
 import { ModalProps } from './Modal.types';
+
+const modalRoot = document.querySelector('#modalRoot')!;
 
 export const Modal: FC<ModalProps> = ({ children, toggleModal, title }) => {
   useEscapeKeyClose(toggleModal);
@@ -15,7 +19,7 @@ export const Modal: FC<ModalProps> = ({ children, toggleModal, title }) => {
     }
   };
 
-  return (
+  return ReactDOM.createPortal(
     <Box className={s.backdrop} onClick={handleClickOnBackdrop}>
       <Box className={s.modalContent}>
         {title && (
@@ -25,6 +29,7 @@ export const Modal: FC<ModalProps> = ({ children, toggleModal, title }) => {
         )}
         {children}
       </Box>
-    </Box>
+    </Box>,
+    modalRoot
   );
 };
