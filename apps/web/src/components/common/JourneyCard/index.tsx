@@ -10,7 +10,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 import styles from './JourneyCard.module.scss';
 import { JourneyCardProps } from './JourneyCard.types';
@@ -28,7 +30,9 @@ const getJourneyIcon = (journeyType: string) => {
   }
 };
 
-const formatDate = (date: string) => moment.utc(date).local().format('DD.MM.YY');
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const formatDate = (date: string) => dayjs.utc(date).local().format('DD.MM.YY');
 
 export const JourneyCard: React.FC<JourneyCardProps> = ({
   description,
