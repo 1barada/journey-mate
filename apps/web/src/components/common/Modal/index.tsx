@@ -8,8 +8,7 @@ import s from './Modal.module.scss';
 import { ModalProps } from './Modal.types';
 
 const modalRoot = document.querySelector('#modalRoot')!;
-
-export const MyModal: FC<ModalProps> = ({ children, toggleModal, title }) => {
+export const Modal: FC<ModalProps> = ({ children, toggleModal, title }) => {
   useEscapeKeyClose(toggleModal);
 
   const handleClickOnBackdrop = (e: React.MouseEvent<HTMLDivElement>): void => {

@@ -14,18 +14,29 @@
 
 .modalContent {
   position: relative;
-  padding: 40px;
-  width: 564px;
-  height: 514px;
+  margin: 20px;
+  padding: 32px;
+  max-width: 564px;
+  max-height: 514px;
+  overflow: auto;
+  font-size: 16px;
   background-color: $background-default;
   border-radius: $border-radius;
+
+  @media (min-width: $md) {
+    padding: 40px;
+  }
 }
 
 .title {
   color: #000;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   margin-bottom: 20px;
+
+  @media (min-width: $md) {
+    font-size: 32px;
+  }
 }
 
 .closeButton {
