@@ -5,7 +5,7 @@ import './styles.scss';
 
 export const MilestoneBadge: React.FC<TypographyProps> = ({ children, ...props }) => {
   return (
-    <Typography component="span" className="badge" fontWeight="fontWeightBold" fontSize="34px" {...props}>
+    <Typography component="span" className="badge" {...props}>
       {children}
     </Typography>
   );

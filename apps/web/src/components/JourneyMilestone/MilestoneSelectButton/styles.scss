@@ -3,7 +3,7 @@
 .milestone-select-button {
   .check-icon {
     opacity: 0;
-    color: #{vars.$success-secondary};
+    color: vars.$success-secondary;
     font-size: 32px;
   }
 
