@@ -26,6 +26,7 @@ export const theme = createTheme({
       // TODO: discuss with team about Login/Register hover color
       accentTransparentHover: '#11111159',
       hover: '#666666',
+      header: '#333333',
       text: {
         primary: '#666666',
         primaryTransparent: '#66666659',
@@ -44,11 +45,20 @@ export const theme = createTheme({
       fontFamily: '"Poppins", sans-serif',
       fontWeightRegular: 400,
       fontSize: '40px',
+      lineHeight: '1.5',
     },
     modalText: {
       fontFamily: '"Poppins", sans-serif',
       fontWeightRegular: 400,
       fontSize: '16px',
+      lineHeight: 1.5,
+    },
+    modalBtn: {
+      textTransform: 'none',
+      fontFamily: '"Poppins", sans-serif',
+      fontWeightRegular: 400,
+      fontsize: '20px',
+      lineHeight: 1.5,
     },
   },
   shape: {

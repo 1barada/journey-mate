@@ -16,6 +16,7 @@ declare module '@mui/material/styles' {
     accent: string;
     accentTransparentHover: string;
     hover: string;
+    header: string;
     text: ModalTypeText;
   }
 
@@ -41,10 +42,12 @@ declare module '@mui/material/styles' {
   interface TypographyVariants {
     modalHeader: React.CSSProperties | React.InsHTMLAttributes;
     modalText: React.CSSProperties | React.InsHTMLAttributes;
+    modalBtn: React.CSSProperties | React.InsHTMLAttributes;
   }
   interface TypographyVariantsOptions {
     modalHeader: React.CSSProperties | React.InsHTMLAttributes;
     modalText: React.CSSProperties | React.InsHTMLAttributes;
+    modalBtn: React.CSSProperties | React.InsHTMLAttributes;
   }
 }
 
@@ -52,5 +55,6 @@ declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     modalHeader: true;
     modalText: true;
+    modalBtn: true;
   }
 }
