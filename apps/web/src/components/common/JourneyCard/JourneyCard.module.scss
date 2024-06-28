@@ -32,3 +32,14 @@
   max-width: 100%;
   word-wrap: break-word;
 }
+
+.flexCenterBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+}

@@ -43,8 +43,8 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
     <Card className={styles.card}>
       <CardMedia className={styles.cardMedia} component="img" image={imageUrl} alt={header} />
       <CardContent>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box display="flex" alignItems="center">
+        <Box className={styles.flexCenterBetween}>
+          <Box className={styles.flexCenter}>
             <Typography variant="h6" component="div" className={styles.header}>
               {header}
             </Typography>
@@ -57,8 +57,8 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
         <Typography variant="body2" color="text.secondary" className={styles.description}>
           {description}
         </Typography>
-        <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-          <Box display="flex" alignItems="center">
+        <Box className={styles.flexCenterBetween} mt={2}>
+          <Box className={styles.flexCenter}>
             <Avatar>
               <People />
             </Avatar>
