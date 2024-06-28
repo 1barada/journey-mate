@@ -2,6 +2,8 @@ import { FC } from 'react';
 import ReactDOM from 'react-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useEscapeKeyClose } from '../../../hooks/useEscapeKeyClose';
 
@@ -22,6 +24,9 @@ export const Modal: FC<ModalProps> = ({ children, toggleModal, title }) => {
   return ReactDOM.createPortal(
     <Box className={s.backdrop} onClick={handleClickOnBackdrop}>
       <Box className={s.modalContent}>
+        <Button onClick={toggleModal} className={s.closeButton}>
+          <CloseIcon />
+        </Button>
         {title && (
           <Typography className={s.title} variant="h2">
             {title}
