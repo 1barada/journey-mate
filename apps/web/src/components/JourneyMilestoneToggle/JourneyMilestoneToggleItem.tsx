@@ -1,9 +1,9 @@
-import Stack from '@mui/material/Stack';
-
 import {
   MilestoneBadge,
   MilestoneBody,
+  MilestoneContentBody,
   MilestoneDatetime,
+  MilestoneDetailsBody,
   MilestoneName,
   MilestoneSelectButton,
   RouteLine,
@@ -21,14 +21,14 @@ export const JourneyMilestoneToggleItem: React.FC<JourneyMilestoneListItemProps>
   return (
     <MilestoneBody key={index}>
       <MilestoneSelectButton value={milestone.location}>
-        <Stack direction="row" component="span" alignItems="center" gap={1.5}>
+        <MilestoneContentBody>
           <MilestoneBadge>{badgeContent}</MilestoneBadge>
 
-          <Stack component="span" paddingRight={1.5}>
+          <MilestoneDetailsBody>
             <MilestoneName tooltipText={milestone.location}>{milestone.location}</MilestoneName>
             <MilestoneDatetime date={milestone.date} />
-          </Stack>
-        </Stack>
+          </MilestoneDetailsBody>
+        </MilestoneContentBody>
       </MilestoneSelectButton>
 
       {shouldDrawRouteLine && <RouteLine />}

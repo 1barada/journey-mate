@@ -1,9 +1,16 @@
 import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
 
 import './styles.scss';
 
-import { MilestoneBadge, MilestoneBody, MilestoneDatetime, MilestoneName, RouteLine } from '../JourneyMilestone/';
+import {
+  MilestoneBadge,
+  MilestoneBody,
+  MilestoneContentBody,
+  MilestoneDatetime,
+  MilestoneDetailsBody,
+  MilestoneName,
+  RouteLine,
+} from '../JourneyMilestone/';
 import type { JourneyMilestonesProps } from '../JourneyMilestone/types';
 
 export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milestones, renderItem }) => {
@@ -22,14 +29,14 @@ export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milesto
         return (
           <li key={index}>
             <MilestoneBody key={index}>
-              <Stack direction="row" component="span" alignItems="center" gap={1.5}>
+              <MilestoneContentBody component="span">
                 <MilestoneBadge>{badgeContent}</MilestoneBadge>
 
-                <Stack component="span" paddingRight={1.5}>
+                <MilestoneDetailsBody>
                   <MilestoneName tooltipText={milestone.location}>{milestone.location}</MilestoneName>
                   <MilestoneDatetime date={milestone.date} />
-                </Stack>
-              </Stack>
+                </MilestoneDetailsBody>
+              </MilestoneContentBody>
 
               {shouldDrawRouteLine && <RouteLine />}
             </MilestoneBody>
