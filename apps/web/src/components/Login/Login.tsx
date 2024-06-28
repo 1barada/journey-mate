@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   return (
-    // TODO: remove box width before PR
+    // TODO: remove box heigh before PR
     <Container>
       <Box component="form" height="442px" display="flex" flexDirection="column" justifyContent="space-between">
         <Box component="div" display="flex" flexDirection="column" alignItems="center" gap={2}>
@@ -48,6 +48,7 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
         </Box>
         <Box component="div" display="flex" flexDirection="column" width="100%" gap={5}>
           <Box component="div" display="flex" flexDirection="column" gap={4}>
+            {/* FIXME: create shared input labels class to remove SX props from input labels */}
             <InputLabel
               sx={{
                 display: 'flex',

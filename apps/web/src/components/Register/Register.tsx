@@ -23,7 +23,7 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
         </Typography>
         <Box component="div" display="flex" flexDirection="column" width="100%" gap={5}>
           <Box component="div" display="flex" flexDirection="column" gap={4}>
-            {/* FIXME: create shared input class to remove SX props from input labels */}
+            {/* FIXME: create shared input labels class to remove SX props from input labels */}
             <InputLabel
               sx={{
                 display: 'flex',
