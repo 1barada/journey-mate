@@ -38,12 +38,10 @@ export const Navigation = () => {
         ) : (
           <List sx={{ display: 'flex', gap: '8px' }}>
             <ListItem>
-              <Button variant="text" sx={{ color: 'black' }}>
-                Login
-              </Button>
+              <Button sx={{ color: 'text.primary' }}>Login</Button>
             </ListItem>
             <ListItem>
-              <Button variant="text" sx={{ color: 'black' }}>
+              <Button variant="text" sx={{ color: 'text.primary' }}>
                 Register
               </Button>
             </ListItem>
