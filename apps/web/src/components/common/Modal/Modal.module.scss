@@ -1,0 +1,29 @@
+@import '../../../style/variables.scss';
+
+.backdrop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalContent {
+  position: relative;
+  padding: 40px;
+  width: 564px;
+  height: 514px;
+  background-color: $background-default;
+  border-radius: $border-radius;
+}
+
+.title {
+  color: #000;
+  font-size: 32px !important;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
