@@ -1,0 +1,45 @@
+@import '../../../style/variables.scss';
+
+.card {
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: white;
+}
+
+.cardMedia {
+  height: 220px;
+}
+
+.header {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.personCount {
+  margin-left: 8px;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 56px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.flexCenterBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+}
