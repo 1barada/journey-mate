@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
@@ -12,7 +11,7 @@ export const Navigation = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   return (
-    <Box component="header" bgcolor="#bdd9f9">
+    <Box component="header" className={styles.headerWrapper}>
       <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <NavLink className={styles.logo} to="/">
           Journey Mate
