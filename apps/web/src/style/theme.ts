@@ -49,6 +49,7 @@ export const theme = createTheme({
       xl: 1240,
     },
   },
+  spacing: 4,
   components: {
     MuiContainer: {
       styleOverrides: {
