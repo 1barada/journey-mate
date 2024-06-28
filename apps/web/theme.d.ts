@@ -39,15 +39,18 @@ declare module '@mui/material/styles' {
   }
 
   interface TypographyVariants {
-    modal: React.CSSProperties | React.InsHTMLAttributes;
+    modalHeader: React.CSSProperties | React.InsHTMLAttributes;
+    modalText: React.CSSProperties | React.InsHTMLAttributes;
   }
   interface TypographyVariantsOptions {
-    modal?: React.CSSProperties | React.InsHTMLAttributes;
+    modalHeader: React.CSSProperties | React.InsHTMLAttributes;
+    modalText: React.CSSProperties | React.InsHTMLAttributes;
   }
 }
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    modal: true;
+    modalHeader: true;
+    modalText: true;
   }
 }

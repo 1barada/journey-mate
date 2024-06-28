@@ -40,10 +40,15 @@ export const theme = createTheme({
     fontWeightMedium: 500,
     fontWeightBold: 700,
     button: { textTransform: 'none' },
-    modal: {
+    modalHeader: {
       fontFamily: '"Poppins", sans-serif',
       fontWeightRegular: 400,
       fontSize: '40px',
+    },
+    modalText: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeightRegular: 400,
+      fontSize: '16px',
     },
   },
   shape: {
