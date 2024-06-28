@@ -132,6 +132,21 @@ export const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedPrimary:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedSecondary:hover': {
+            cursor: 'pointer',
+          },
+        },
+      },
+    },
     MuiList: {
       styleOverrides: { root: { padding: 0, width: 'auto' } },
     },
