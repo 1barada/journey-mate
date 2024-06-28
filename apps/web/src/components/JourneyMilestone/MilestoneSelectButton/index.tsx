@@ -14,7 +14,7 @@ export const MilestoneSelectButton: React.FC<ToggleButtonProps> = ({
   return (
     <ToggleButton className="milestone-select-button" value={value} disabled={disabled} {...restProps}>
       {children}
-      <CheckIcon className="check-icon" fontSize="large" color="success" />
+      <CheckIcon className="check-icon" />
     </ToggleButton>
   );
 };

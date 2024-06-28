@@ -37,17 +37,8 @@
     display: flex;
     justify-content: flex-start;
 
-    .check-icon {
-      display: none;
-      margin-left: auto;
-    }
-
     &.Mui-selected {
       background-color: transparent;
-
-      .check-icon {
-        display: block;
-      }
     }
 
     &:not(.Mui-selected):hover {

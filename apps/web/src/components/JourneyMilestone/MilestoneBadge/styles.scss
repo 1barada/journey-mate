@@ -11,4 +11,5 @@
   align-items: center;
   justify-content: center;
   background-color: #{vars.$background-milestone};
+  flex-shrink: 0;
 }
