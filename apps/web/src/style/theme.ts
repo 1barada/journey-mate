@@ -153,5 +153,20 @@ export const theme = createTheme({
     MuiListItem: {
       styleOverrides: { root: { padding: 0, display: 'block', maxWidth: '100%', width: 'auto' } },
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedPrimary:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedSecondary:hover': {
+            cursor: 'pointer',
+          },
+        },
+      },
+    },
   },
 });
