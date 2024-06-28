@@ -12,10 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 
-// TODO: move interface to shared types.ts file before PR
-interface LoginProps {
-  temp: string;
-}
+import type { LoginProps } from '../../types/types';
 
 const Login: React.FC<LoginProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState('disabled');

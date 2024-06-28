@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Box, Button, Container, InputLabel, TextField, Typography } from '@mui/material';
 
-// TODO: move interface to shared types.ts file
-interface RegisterProps {
-  temp: string;
-}
+import type { RegisterProps } from '../../types/types';
+
 const Register: React.FC<RegisterProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState('disabled');
   return (
