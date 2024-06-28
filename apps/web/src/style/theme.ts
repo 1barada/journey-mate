@@ -21,6 +21,17 @@ export const theme = createTheme({
       secondary: '#666666',
       placeholder: '#B7B7B7',
     },
+    modal: {
+      accent: '#111111',
+      // TODO: discuss with team about Login/Register hover color
+      accentTransparentHover: '#11111159',
+      hover: '#666666',
+      text: {
+        primary: '#666666',
+        primaryTransparent: '#66666659',
+        secondary: '#FFFFFF',
+      },
+    },
   },
   typography: {
     fontFamily: '"Roboto", sans-serif',
@@ -29,6 +40,11 @@ export const theme = createTheme({
     fontWeightMedium: 500,
     fontWeightBold: 700,
     button: { textTransform: 'none' },
+    modal: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeightRegular: 400,
+      fontSize: '40px',
+    },
   },
   shape: {
     borderRadius: 8,
