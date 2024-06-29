@@ -179,6 +179,12 @@ export const theme = createTheme({
               borderColor: 'inherit',
             },
           },
+          '& input[type="password"]::-ms-reveal, & input[type="password"]::-ms-clear': {
+            display: 'none',
+          },
+          '& input[type="password"]::-webkit-clear-button, & input[type="password"]::-webkit-reveal-button': {
+            display: 'none',
+          },
         },
       },
     },
