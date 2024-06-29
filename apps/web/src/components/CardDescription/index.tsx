@@ -16,7 +16,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({ description })
     if (contentRef.current === null) return;
 
     function isEllipsisActive(e: HTMLElement) {
-      return e.offsetHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
+      return e.offsetHeight < e.scrollHeight;
     }
 
     setIsEllipsis(isEllipsisActive(contentRef.current));
