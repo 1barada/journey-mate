@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Container, InputLabel, TextField, Typography } from '@mui/material';
+import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
 
 import styles from './styles.module.scss';
 import type { RegisterProps } from './types';
