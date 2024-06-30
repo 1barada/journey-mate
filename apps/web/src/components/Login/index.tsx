@@ -6,14 +6,14 @@ import { AuthFormInput } from '../common/AuthFormInput';
 import styles from './styles.module.scss';
 import type { LoginProps } from './types';
 
-const Login: React.FC<LoginProps> = ({ temp }) => {
+const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
   const [buttonState, setButtonState] = useState('disabled');
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   return (
     <Box className={styles.formContainer} component="form">
       <Box className={styles.formHeadersContainer} component="div">
-        {/* TODO: fix not responsive behavior */}
+        {/* TODO: fix noт-responsive behavior */}
         <Typography className={styles.formHeader} component="h3" width="480px">
           Log in
         </Typography>
@@ -24,9 +24,8 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
             component="button"
             type="button"
             underline="always"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('Temporary event');
+            onClick={() => {
+              switchToRegisterForm('sign up');
             }}
           >
             Sign up for free
