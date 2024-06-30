@@ -5,6 +5,8 @@ import { Box, Button, IconButton, InputAdornment, Link, Typography } from '@mui/
 import type { LoginProps } from '../../types/types';
 import { AuthFormInput } from '../common/AuthFormInput';
 
+import type { LoginProps } from './types';
+
 const Login: React.FC<LoginProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState('disabled');
   const [passwordVisibility, setPasswordVisibility] = useState(false);

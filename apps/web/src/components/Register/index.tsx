@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Button, Container, InputLabel, TextField, Typography } from '@mui/material';
 
-import type { RegisterProps } from '../../types/types';
+import type { RegisterProps } from './types';
 
 const Register: React.FC<RegisterProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState('disabled');
