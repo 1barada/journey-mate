@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, IconButton, InputAdornment, Link, Typography } from '@mui/material';
+import { Box, Button, Link, Typography } from '@mui/material';
 
-import type { LoginProps } from '../../types/types';
 import { AuthFormInput } from '../common/AuthFormInput';
 
+import styles from './styles.module.scss';
 import type { LoginProps } from './types';
 
 const Login: React.FC<LoginProps> = ({ temp }) => {
@@ -12,54 +11,39 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   return (
-    <Box
-      component="form"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      maxWidth="480px"
-      overflow="hidden"
-    >
-      <Box component="div" display="flex" flexDirection="column" alignItems="center" gap={2}>
+    <Box className={styles.formContainer} component="form">
+      <Box className={styles.contentContainer} component="div">
         {/* TODO: fix not responsive behavior */}
-        <Typography
-          variant="modalHeader"
-          component="h3"
-          color="modal.header"
-          width="480px"
-          minWidth="200px"
-          textAlign="center"
-        >
+        <Typography className={styles.modalHeader} component="h3" width="480px">
           Log in
         </Typography>
-        <Typography variant="modalText" component="p" color="modal.text.primary">
-          New to Design Space?
+        <Typography className={styles.modalText} component="p">
+          New to Design Space?{' '}
           <Link
+            className={styles.linkText}
             component="button"
             type="button"
-            color="modal.accent"
             underline="always"
             onClick={(e) => {
               e.preventDefault();
               console.log('Temporary event');
             }}
-            variant="modalText"
           >
             Sign up for free
           </Link>
         </Typography>
       </Box>
-      <Box component="div" display="flex" flexDirection="column" width="100%" gap={5}>
-        <Box component="div" display="flex" flexDirection="column" gap={4}>
+      <Box className={styles.formContainerFlexColumnGap20} component="div">
+        <Box className={styles.formContainerFlexColumnGap16} component="div">
           {/* FIXME: create shared input labels class to remove SX props from input labels */}
           <AuthFormInput
             label="Email address"
-            labelSx={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
-            inputProps={{ fullWidth: true, variant: 'outlined' }}
+            labelProps={{ className: styles.formInputLabel }}
+            inputProps={{ fullWidth: true, variant: 'outlined', type: 'email' }}
           />
           <AuthFormInput
             label="Password"
-            labelSx={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative' }}
+            labelProps={{ className: styles.formInputLabel }}
             inputProps={{
               fullWidth: true,
               variant: 'outlined',
@@ -69,30 +53,28 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
             passwordVisibility={passwordVisibility}
           />
         </Box>
-        <Box component="div" display="flex" flexDirection="column" gap={4}>
-          <Link
-            underline="always"
-            color="modal.accent"
-            width="fit-content"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('Temporary event');
-            }}
-          >
-            <Typography variant="modalText">Forget password?</Typography>
-          </Link>
+        <Box className={styles.formContainerFlexColumnGap16} component="div">
+          <Typography className={styles.modalText}>
+            <Link
+              className={styles.linkText}
+              underline="always"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log('Temporary event');
+              }}
+            >
+              Forget password?
+            </Link>
+          </Typography>
           <Button
+            className={styles.formSubmitBtn}
             variant="contained"
             fullWidth
-            color="secondary"
             disabled={buttonState === 'disabled' ? true : false}
             // TODO: discuss with team about shadow styles
             disableElevation
-            sx={{ py: 3, borderRadius: '30px' }}
           >
-            <Typography variant="modalBtn" color="background.default">
-              Log in
-            </Typography>
+            <Typography className={styles.formSubmitBtnText}>Log in</Typography>
           </Button>
         </Box>
       </Box>
