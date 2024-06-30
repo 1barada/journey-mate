@@ -1,22 +1,5 @@
 @import '../../style/variables.scss';
 
-.modalHeader {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 40px;
-  line-height: 1.5;
-  color: $modal-header;
-  text-align: center;
-}
-
-.modalText {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
-  color: $modal-text-primary;
-}
-
 .formContainer {
   display: flex;
   flex-direction: column;
@@ -25,7 +8,24 @@
   gap: 34px;
 }
 
-.contentContainer {
+.formHeader {
+  font-family: $modal-font-family;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.5;
+  color: $modal-header;
+  text-align: center;
+}
+
+.formText {
+  font-family: $modal-font-family;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $modal-text-primary;
+}
+
+.formHeadersContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +37,8 @@
   gap: 0.5rem;
 }
 
-.linkText {
+.formLinkText {
+  font-family: $modal-font-family;
   color: $modal-accent;
   text-decoration-color: $modal-accent;
   width: -moz-fit-content;
@@ -68,7 +69,11 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  position: 'relative';
+
+  font-family: $modal-font-family;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 16px;
 }
 
 .formSubmitBtn {
@@ -81,7 +86,7 @@
 .formSubmitBtnText {
   color: #fff;
   text-transform: none;
-  font-family: '' Poppins ' sans-serif';
+  font-family: $modal-font-family;
   font-weight: 400;
   font-size: 20px;
   line-height: 1.5;

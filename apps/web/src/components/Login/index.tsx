@@ -12,15 +12,15 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
 
   return (
     <Box className={styles.formContainer} component="form">
-      <Box className={styles.contentContainer} component="div">
+      <Box className={styles.formHeadersContainer} component="div">
         {/* TODO: fix not responsive behavior */}
-        <Typography className={styles.modalHeader} component="h3" width="480px">
+        <Typography className={styles.formHeader} component="h3" width="480px">
           Log in
         </Typography>
-        <Typography className={styles.modalText} component="p">
+        <Typography className={styles.formText} component="p">
           New to Design Space?{' '}
           <Link
-            className={styles.linkText}
+            className={styles.formLinkText}
             component="button"
             type="button"
             underline="always"
@@ -35,7 +35,6 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
       </Box>
       <Box className={styles.formContainerFlexColumnGap20} component="div">
         <Box className={styles.formContainerFlexColumnGap16} component="div">
-          {/* FIXME: create shared input labels class to remove SX props from input labels */}
           <AuthFormInput
             label="Email address"
             labelProps={{ className: styles.formInputLabel }}
@@ -54,9 +53,9 @@ const Login: React.FC<LoginProps> = ({ temp }) => {
           />
         </Box>
         <Box className={styles.formContainerFlexColumnGap16} component="div">
-          <Typography className={styles.modalText}>
+          <Typography className={styles.formText}>
             <Link
-              className={styles.linkText}
+              className={styles.formLinkText}
               underline="always"
               onClick={(e) => {
                 e.preventDefault();

@@ -23,7 +23,7 @@ export const theme = createTheme({
     },
     modal: {
       accent: '#111111',
-      // TODO: discuss with team about Login/Register hover color
+
       accentTransparentHover: '#11111159',
       hover: '#666666',
       header: '#333333',
