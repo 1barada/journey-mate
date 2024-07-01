@@ -4,6 +4,33 @@
   background-color: $primary-main;
   padding-top: 10px;
   padding-bottom: 10px;
+
+  .headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .appBar {
+    position: relative;
+    display: block;
+    width: auto;
+    box-shadow: none;
+  }
+  .navList {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 28px;
+  }
+
+  .authListBtn {
+    display: flex;
+    gap: 8px;
+
+    button {
+      color: $text-primary;
+    }
+  }
 }
 
 .logo {
