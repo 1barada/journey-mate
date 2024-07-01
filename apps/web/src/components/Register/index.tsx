@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import type { RegisterProps } from './types';
 
 const Register: React.FC<RegisterProps> = ({ temp }) => {
-  const [buttonState, setButtonState] = useState('disabled');
+  const [buttonState, setButtonState] = useState(true);
   return (
     <Box component="form" className={styles.formContainer}>
       {/* TODO: fix noт-responsive behavior */}
@@ -14,7 +14,6 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
       </Typography>
       <Box className={styles.formContainerFlexColumnGap20} component="div">
         <Box component="div" className={styles.formContainerFlexColumnGap16}>
-          {/* FIXME: create shared input labels class to remove SX props from input labels */}
           <InputLabel className={styles.formInputLabel}>
             Email address
             <TextField fullWidth variant="outlined" type="email" />
@@ -33,8 +32,7 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
             variant="contained"
             fullWidth
             className={styles.formSubmitBtn}
-            disabled={buttonState === 'disabled' ? true : false}
-            // TODO: discuss with team about shadow styles
+            disabled={buttonState}
             disableElevation
           >
             <Typography className={styles.formSubmitBtnText}>Sign Up</Typography>

@@ -6,11 +6,11 @@ export interface AuthFormInputProps {
   inputProps?: React.ComponentPropsWithoutRef<typeof TextField>;
   labelSx?: SxProps;
   inputSx?: SxProps;
-  setPasswordVisibility?: React.Dispatch<React.SetStateAction<boolean>>;
-  passwordVisibility?: boolean;
+  type: 'password' | 'email' | 'text';
+  showPswBtn?: boolean;
 }
 
-export interface ShowHideBtnProps {
+export interface ShowHidePasswordBtnProps {
   setPasswordVisibility: React.Dispatch<React.SetStateAction<boolean>>;
   passwordVisibility: boolean;
 }

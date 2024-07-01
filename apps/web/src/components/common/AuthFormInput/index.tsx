@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { InputLabel, TextField } from '@mui/material';
 
-import { ShowHideBtn } from './ShowHideBtn';
+import { ShowHidePasswordBtn } from './ShowHidePasswordBtn';
 import { AuthFormInputProps } from './types';
 
 export const AuthFormInput: React.FC<AuthFormInputProps> = ({
@@ -9,9 +10,12 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
   labelSx,
   inputProps,
   inputSx,
-  setPasswordVisibility,
-  passwordVisibility,
+  type,
+  showPswBtn,
 }) => {
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const inputType = type === 'password' && passwordVisibility ? 'text' : type;
   return (
     <InputLabel sx={{ ...labelSx }} {...labelProps}>
       {label}
@@ -19,10 +23,15 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
         sx={{ ...inputSx }}
         InputProps={{
           endAdornment:
-            passwordVisibility !== undefined && setPasswordVisibility !== undefined ? (
-              <ShowHideBtn passwordVisibility={passwordVisibility} setPasswordVisibility={setPasswordVisibility} />
+            type === 'password' && showPswBtn ? (
+              <ShowHidePasswordBtn
+                passwordVisibility={passwordVisibility}
+                setPasswordVisibility={setPasswordVisibility}
+              />
             ) : null,
         }}
+        type={inputType}
+        onChange={() => console.log(passwordVisibility, type)}
         {...inputProps}
       />
     </InputLabel>

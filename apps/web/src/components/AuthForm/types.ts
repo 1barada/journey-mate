@@ -1,3 +1,5 @@
+import type { AuthFormTypes } from '../../types/types';
+
 export interface AuthFormProps {
-  form: 'sign in' | 'sign up';
+  form: AuthFormTypes;
 }

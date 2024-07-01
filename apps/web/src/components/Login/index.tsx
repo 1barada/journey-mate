@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Link, Typography } from '@mui/material';
 
 import { AuthFormInput } from '../common/AuthFormInput';
@@ -7,13 +7,12 @@ import styles from './styles.module.scss';
 import type { LoginProps } from './types';
 
 const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
-  const [buttonState, setButtonState] = useState('disabled');
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [buttonState, setButtonState] = useState(true);
 
   return (
     <Box className={styles.formContainer} component="form">
       <Box className={styles.formHeadersContainer} component="div">
-        {/* TODO: fix noт-responsive behavior */}
+        {/* TODO: fix non-responsive behavior */}
         <Typography className={styles.formHeader} component="h3" width="480px">
           Log in
         </Typography>
@@ -37,7 +36,8 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
           <AuthFormInput
             label="Email address"
             labelProps={{ className: styles.formInputLabel }}
-            inputProps={{ fullWidth: true, variant: 'outlined', type: 'email' }}
+            inputProps={{ fullWidth: true, variant: 'outlined' }}
+            type="email"
           />
           <AuthFormInput
             label="Password"
@@ -45,10 +45,9 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             inputProps={{
               fullWidth: true,
               variant: 'outlined',
-              type: passwordVisibility ? 'text' : 'password',
             }}
-            setPasswordVisibility={setPasswordVisibility}
-            passwordVisibility={passwordVisibility}
+            type="password"
+            showPswBtn={true}
           />
         </Box>
         <Box className={styles.formContainerFlexColumnGap16} component="div">
@@ -56,8 +55,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             <Link
               className={styles.formLinkText}
               underline="always"
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 console.log('Temporary event');
               }}
             >
@@ -68,8 +66,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             className={styles.formSubmitBtn}
             variant="contained"
             fullWidth
-            disabled={buttonState === 'disabled' ? true : false}
-            // TODO: discuss with team about shadow styles
+            disabled={buttonState}
             disableElevation
           >
             <Typography className={styles.formSubmitBtnText}>Log in</Typography>
