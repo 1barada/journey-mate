@@ -11,8 +11,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ form }) => {
 
   return (
     <>
-      {form === 'sign in' && formType !== 'sign up' && <Login switchToRegisterForm={setFormType} />}
-      {form === 'sign up' || (formType === 'sign up' && <Register temp={''} />)}
+      {formType === 'sign in' && <Login switchToRegisterForm={setFormType} />}
+      {formType === 'sign up' && <Register temp={''} />}
     </>
   );
 };
