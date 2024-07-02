@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
@@ -12,15 +11,15 @@ export const Navigation = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   return (
-    <Box component="header" bgcolor="#bdd9f9">
-      <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <Box component="header" className={styles.headerWrapper}>
+      <Container className={styles.headerContainer}>
         <NavLink className={styles.logo} to="/">
           Journey Mate
         </NavLink>
 
         {isAuthenticated ? (
-          <AppBar position="relative" component="nav" sx={{ boxShadow: 'none', display: 'block', width: 'auto' }}>
-            <List sx={{ display: 'flex', justifyContent: 'space-evenly', gap: '28px' }}>
+          <AppBar component="nav" className={styles.appBar}>
+            <List className={styles.navList}>
               {Object.values(routes).map((link) => {
                 return (
                   <ListItem key={link}>
@@ -37,16 +36,12 @@ export const Navigation = () => {
             </List>
           </AppBar>
         ) : (
-          <List sx={{ display: 'flex', gap: '8px' }}>
+          <List className={styles.authListBtn}>
             <ListItem>
-              <Button variant="text" sx={{ color: 'black' }}>
-                Login
-              </Button>
+              <Button>Login</Button>
             </ListItem>
             <ListItem>
-              <Button variant="text" sx={{ color: 'black' }}>
-                Register
-              </Button>
+              <Button variant="text">Register</Button>
             </ListItem>
           </List>
         )}
