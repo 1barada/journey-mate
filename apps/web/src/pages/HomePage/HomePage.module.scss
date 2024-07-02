@@ -1,0 +1,62 @@
+.container {
+  margin-bottom: 2rem;
+}
+
+.welcomeMessage {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 37.5px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.subMessage {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 17.58px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.createJourneyButton {
+  width: 251px;
+  height: 46px;
+  padding: 3px 12px;
+  margin: 8px 0;
+}
+
+.searchBar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 600px;
+}
+
+.searchInput {
+  margin-right: 10px;
+}
+
+.inputField {
+  padding: 11px 12px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+}
+
+.inputField:hover {
+  border-color: #000;
+}
+
+.inputField.Mui-focused {
+  border: 1px solid #bdd9f9;
+  outline: 1px solid #bdd9f9;
+}
+
+.gallery {
+  margin-top: 2rem;
+}

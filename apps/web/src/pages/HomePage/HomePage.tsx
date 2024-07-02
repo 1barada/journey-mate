@@ -17,7 +17,9 @@ import {
 
 import { trpc } from '../../services/trpc';
 
-export const HomePage = () => {
+import styles from './HomePage.module.scss';
+
+const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('');
 
@@ -33,49 +35,22 @@ export const HomePage = () => {
 
   return (
     <Container>
-      <Divider sx={{ marginBottom: 2 }} />
-      <Typography
-        variant="h1"
-        sx={{
-          fontSize: '32px',
-          fontWeight: 500,
-          lineHeight: '37.5px',
-          textAlign: 'center',
-          marginTop: '40px',
-        }}
-      >
+      <Divider className={styles.container} />
+      <Typography variant="h1" className={styles.welcomeMessage}>
         Welcome to the journey mate!
       </Typography>
-      <Typography
-        variant="h2"
-        sx={{
-          fontSize: '15px',
-          fontWeight: 500,
-          lineHeight: '17.58px',
-          textAlign: 'center',
-          marginBottom: '16px',
-        }}
-      >
+      <Typography variant="h2" className={styles.subMessage}>
         Here you can find people for your trip!
       </Typography>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            width: '251px',
-            height: '46px',
-            padding: '3px 12px',
-            marginY: '8px',
-          }}
-        >
+      <Box className={styles.searchBar}>
+        <Button variant="contained" color="primary" className={styles.createJourneyButton}>
           Create New Journey
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '600px' }}>
-        <Box sx={{ marginRight: '10px' }}>
+      <Box className={styles.searchContainer}>
+        <Box className={styles.searchInput}>
           <FormControl fullWidth>
             <Input
               placeholder="Шукай свою подорож"
@@ -85,19 +60,7 @@ export const HomePage = () => {
                 </InputAdornment>
               }
               disableUnderline
-              sx={{
-                paddingY: '11px',
-                paddingX: '12px',
-                border: '1px solid #bdbdbd',
-                borderRadius: '8px',
-                ':hover': {
-                  borderColor: '#000',
-                },
-                '&.Mui-focused': {
-                  border: '1px solid #bdd9f9',
-                  outline: '1px solid #bdd9f9',
-                },
-              }}
+              className={styles.inputField}
               value={searchQuery}
               onChange={handleSearchChange}
             />
@@ -116,7 +79,7 @@ export const HomePage = () => {
         </FormControl>
       </Box>
 
-      <Box mt={2}>
+      <Box className={styles.gallery}>
         <Typography variant="body1">Gallery will be displayed here.</Typography>
       </Box>
     </Container>
