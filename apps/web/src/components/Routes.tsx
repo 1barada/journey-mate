@@ -6,17 +6,11 @@ import { routes } from '../routes';
 import { Layout } from './Layout/Layout';
 import { PrivateRoute } from './PrivateRoute';
 
-const HomePage = lazy(() => import('../pages/HomePage/HomePage').then((module) => ({ default: module.HomePage })));
-const JourneysPage = lazy(() =>
-  import('../pages/JourneysPage/JourneysPage').then((module) => ({ default: module.JourneysPage }))
-);
-const Notifications = lazy(() =>
-  import('../pages/Notifications/Notifications').then((module) => ({ default: module.Notifications }))
-);
+const HomePage = lazy(() => import('../pages/HomePage/HomePage'));
+const JourneysPage = lazy(() => import('../pages/JourneysPage/JourneysPage'));
+const Notifications = lazy(() => import('../pages/Notifications/Notifications'));
 
-const ProfilePage = lazy(() =>
-  import('../pages/ProfilePage/ProfilePage').then((module) => ({ default: module.ProfilePage }))
-);
+const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 
 export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
   {

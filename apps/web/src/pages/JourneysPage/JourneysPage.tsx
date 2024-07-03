@@ -1,5 +1,7 @@
 import React from 'react';
 
-export const JourneysPage = () => {
+const JourneysPage = () => {
   return <div>JourneysPage</div>;
 };
+
+export default JourneysPage;
