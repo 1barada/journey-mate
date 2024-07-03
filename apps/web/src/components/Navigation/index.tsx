@@ -61,14 +61,23 @@ export const Navigation = () => {
             </List>
           </AppBar>
         ) : (
-          <List className={styles.authListBtn}>
-            <ListItem>
-              <Button>Login</Button>
-            </ListItem>
-            <ListItem>
-              <Button variant="text">Register</Button>
-            </ListItem>
-          </List>
+          <>
+            <List className={styles.authListBtn}>
+              <ListItem>
+                <Button onClick={setUpModalType}>Login</Button>
+              </ListItem>
+              <ListItem>
+                <Button variant="text" onClick={setUpModalType}>
+                  Register
+                </Button>
+              </ListItem>
+            </List>
+            {isOpen && modalType && (
+              <Modal toggleModal={toggle}>
+                <AuthForm form={modalType} />
+              </Modal>
+            )}
+          </>
         )}
       </Container>
     </Box>
