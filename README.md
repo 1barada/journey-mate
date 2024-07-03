@@ -73,13 +73,19 @@ docker ps
 docker compose down
 ```
 
-## Create tables in database
+## Generates a migration
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev --name <name>
 ```
 
 This command does two things:
 
 - It creates a new SQL migration file for this migration
 - It runs the SQL migration file against the database
+
+## Applies migrations
+
+```bash
+npx prisma migrate dev
+```
