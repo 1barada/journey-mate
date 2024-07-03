@@ -5,7 +5,11 @@ import { z } from 'zod';
 import { prisma } from '../../database';
 import { publicProcedure, router } from '../../trpc/trpc';
 
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY } = process.env || null;
+
+if (!SECRET_KEY) {
+  throw new Error('SECRET_KEY is not defined');
+}
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
