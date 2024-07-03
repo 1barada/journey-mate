@@ -7,10 +7,6 @@ import { publicProcedure, router } from '../../trpc/trpc';
 
 const { SECRET_KEY } = process.env;
 
-const generateToken = (user) => {
-  return jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY, { expiresIn: '20h' });
-};
-
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
     return [{ id: 1, name: 'user1' }];
@@ -34,7 +30,7 @@ export const userRouter = router({
         throw new Error('Invalid password');
       }
 
-      const token = generateToken(user);
+      const token = jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY, { expiresIn: '20h' });
       return { user, token };
     }),
 });
