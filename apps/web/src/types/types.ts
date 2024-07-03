@@ -6,5 +6,3 @@ export interface IAuthSlice {
   token: string;
   isAuthenticated: boolean;
 }
-
-export type AuthFormTypes = 'sign in' | 'sign up';

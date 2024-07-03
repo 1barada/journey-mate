@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Link, Typography } from '@mui/material';
 
+import { AuthFormTypes } from '../AuthForm/types';
 import { AuthFormInput } from '../common/AuthFormInput';
+import { TextInputTypes } from '../common/AuthFormInput/types';
 
 import styles from './styles.module.scss';
 import type { LoginProps } from './types';
@@ -24,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             type="button"
             underline="always"
             onClick={() => {
-              switchToRegisterForm('sign up');
+              switchToRegisterForm(AuthFormTypes.SignUp);
             }}
           >
             Sign up for free
@@ -37,7 +39,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             label="Email address"
             labelProps={{ className: styles.formInputLabel }}
             inputProps={{ fullWidth: true, variant: 'outlined' }}
-            type="email"
+            type={TextInputTypes.Email}
           />
           <AuthFormInput
             label="Password"
@@ -46,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
               fullWidth: true,
               variant: 'outlined',
             }}
-            type="password"
+            type={TextInputTypes.Password}
             showPswBtn={true}
           />
         </Box>

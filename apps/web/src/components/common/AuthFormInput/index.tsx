@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { InputLabel, TextField } from '@mui/material';
 
 import { ShowHidePasswordBtn } from './ShowHidePasswordBtn';
-import { AuthFormInputProps } from './types';
+import { AuthFormInputProps, TextInputTypes } from './types';
 
 export const AuthFormInput: React.FC<AuthFormInputProps> = ({
   label,
@@ -15,7 +15,8 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
 }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
-  const inputType = type === 'password' && passwordVisibility ? 'text' : type;
+  const inputType = type === TextInputTypes.Password && passwordVisibility ? 'text' : type;
+
   return (
     <InputLabel sx={{ ...labelSx }} {...labelProps}>
       {label}
@@ -23,7 +24,7 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
         sx={{ ...inputSx }}
         InputProps={{
           endAdornment:
-            type === 'password' && showPswBtn ? (
+            type === TextInputTypes.Password && showPswBtn ? (
               <ShowHidePasswordBtn
                 passwordVisibility={passwordVisibility}
                 setPasswordVisibility={setPasswordVisibility}

@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Box, Button, InputLabel, TextField, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+
+import { AuthFormInput } from '../common/AuthFormInput';
+import { TextInputTypes } from '../common/AuthFormInput/types';
 
 import styles from './styles.module.scss';
 import type { RegisterProps } from './types';
@@ -8,24 +11,36 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState(true);
   return (
     <Box component="form" className={styles.formContainer}>
-      {/* TODO: fix noт-responsive behavior */}
+      {/* TODO: fix non-responsive behavior */}
       <Typography className={styles.formHeader} component="h3" width="480px">
         Sign up
       </Typography>
       <Box className={styles.formContainerFlexColumnGap20} component="div">
         <Box component="div" className={styles.formContainerFlexColumnGap16}>
-          <InputLabel className={styles.formInputLabel}>
-            Email address
-            <TextField fullWidth variant="outlined" type="email" />
-          </InputLabel>
-          <InputLabel className={styles.formInputLabel}>
-            Password
-            <TextField fullWidth variant="outlined" type="password" />
-          </InputLabel>
-          <InputLabel className={styles.formInputLabel}>
-            Password conformation
-            <TextField fullWidth variant="outlined" type="password" />
-          </InputLabel>
+          <AuthFormInput
+            label="Email address"
+            labelProps={{ className: styles.formInputLabel }}
+            inputProps={{ fullWidth: true, variant: 'outlined' }}
+            type={TextInputTypes.Email}
+          />
+          <AuthFormInput
+            label="Password"
+            labelProps={{ className: styles.formInputLabel }}
+            inputProps={{
+              fullWidth: true,
+              variant: 'outlined',
+            }}
+            type={TextInputTypes.Password}
+          />
+          <AuthFormInput
+            label="Password conformation"
+            labelProps={{ className: styles.formInputLabel }}
+            inputProps={{
+              fullWidth: true,
+              variant: 'outlined',
+            }}
+            type={TextInputTypes.Password}
+          />
         </Box>
         <Box component="div" className={styles.formContainerFlexColumnGap16}>
           <Button
