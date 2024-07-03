@@ -14,12 +14,24 @@ datasource db {
 }
 
 model User {
-  id                    Int     @default(autoincrement())
-  name                  String
-  email                 String  @unique
-  password              String
-  token                 String
-  verificationToken     String
-  verify                Boolean
-  passwordRecoveryToken String
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar(255)
+  name          String?  @db.VarChar(255)
+  role          Role     @default(viewer)
+  description   String?
+  sex           Sex?
+  dateOfBirth  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
+
+enum Role {
+  admin
+  viewer
+}
+
+enum Sex {
+  male
+  female
+}
+
