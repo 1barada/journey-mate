@@ -5,4 +5,6 @@ export interface AuthFormProps {
 export enum AuthFormTypes {
   SignIn = 'sign in',
   SignUp = 'sign up',
+  Login = 'login',
+  Register = 'register',
 }

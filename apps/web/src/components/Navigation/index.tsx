@@ -1,14 +1,39 @@
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
 
+import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
 import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
+import { AuthForm } from '../AuthForm';
+import { AuthFormTypes } from '../AuthForm/types';
+import { Modal } from '../common/Modal';
 
 import styles from './Navigation.module.scss';
 
 export const Navigation = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const [isOpen, toggle] = useModal();
+  const [modalType, setModalType] = useState<AuthFormTypes>();
+
+  const setUpModalType = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const modalType = e.currentTarget.textContent?.toLocaleLowerCase();
+
+    if (modalType === AuthFormTypes.Login) {
+      setModalType(AuthFormTypes.SignIn);
+      console.log('type of btn:', modalType);
+      console.log('modalType', modalType);
+      toggle();
+    }
+
+    if (modalType === AuthFormTypes.Register) {
+      setModalType(AuthFormTypes.SignUp);
+      console.log('type of btn:', modalType);
+      console.log('modalType', modalType);
+      toggle();
+    }
+  };
 
   return (
     <Box component="header" className={styles.headerWrapper}>

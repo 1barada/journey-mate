@@ -8,7 +8,7 @@
   gap: 34px;
 }
 
-.formHeader {
+.formContainer .formHeader {
   font-family: $modal-font-family;
   font-weight: 400;
   font-size: 40px;
@@ -17,7 +17,7 @@
   text-align: center;
 }
 
-.formText {
+.formContainer .formText {
   font-family: $modal-font-family;
   font-weight: 400;
   font-size: 16px;
@@ -25,19 +25,19 @@
   color: $modal-text-primary;
 }
 
-.formHeadersContainer {
+.formContainer .formHeadersContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.linkContainer {
+.formContainer .linkContainer {
   display: flex;
   gap: 0.5rem;
 }
 
-.formLinkText {
+.formContainer .formLinkText {
   font-family: $modal-font-family;
   color: $modal-accent;
   text-decoration-color: $modal-accent;
@@ -52,20 +52,20 @@
   }
 }
 
-.formContainerFlexColumnGap20 {
+.formContainer .formContainerFlexColumnGap20 {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 20px;
 }
 
-.formContainerFlexColumnGap16 {
+.formContainer .formContainerFlexColumnGap16 {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.formInputLabel {
+.formContainer .formInputLabel {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -76,14 +76,14 @@
   font-size: 16px;
 }
 
-.formSubmitBtn {
+.formContainer .formSubmitBtn {
   background-color: $secondary-main;
   border-radius: 30px;
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.formSubmitBtnText {
+.formContainer .formSubmitBtnText {
   color: #fff;
   text-transform: none;
   font-family: $modal-font-family;
