@@ -5,7 +5,7 @@ import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
+import { selectIsAuthenticated } from '../../store/auth/authSlice';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
 import { Modal } from '../common/Modal';
@@ -22,15 +22,11 @@ export const Navigation = () => {
 
     if (modalType === AuthFormTypes.Login) {
       setModalType(AuthFormTypes.SignIn);
-      console.log('type of btn:', modalType);
-      console.log('modalType', modalType);
       toggle();
     }
 
     if (modalType === AuthFormTypes.Register) {
       setModalType(AuthFormTypes.SignUp);
-      console.log('type of btn:', modalType);
-      console.log('modalType', modalType);
       toggle();
     }
   };

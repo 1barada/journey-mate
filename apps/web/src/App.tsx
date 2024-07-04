@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { createRoutes } from './components/Routes';
-import { selectIsAuthenticated } from './store/Auth/AuthSlice';
+import { selectIsAuthenticated } from './store/auth/authSlice';
 
 export function App() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
