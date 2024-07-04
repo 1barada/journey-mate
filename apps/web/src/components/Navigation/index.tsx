@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
 
 import { routes } from '../../routes';
-import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
+import { selectIsAuthenticated } from '../../store/auth/authSlice';
 
 import styles from './Navigation.module.scss';
 
