@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
@@ -23,12 +24,18 @@ export const userRouter = router({
       const user = await prisma.user.findUnique({ where: { email: input.email } });
 
       if (!user) {
-        throw new Error('User not found');
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'User not found',
+        });
       }
 
       const isValid = await bcrypt.compare(input.password, user.password);
       if (!isValid) {
-        throw new Error('Invalid password');
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid password',
+        });
       }
 
       const token = jwt.sign({ userId: user.id, email: user.email }, secret, { expiresIn: '20h' });
