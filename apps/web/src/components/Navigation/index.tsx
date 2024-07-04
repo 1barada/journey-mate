@@ -5,12 +5,10 @@ import { AppBar, Box, Button, Container, List, ListItem } from '@mui/material';
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-
 import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
 import { Modal } from '../common/Modal';
-
 
 import styles from './Navigation.module.scss';
 
