@@ -52,6 +52,8 @@ jobs:
           echo "::set-output name=affected_projects::$affected_projects"
 
       - name: Deploy landing to AWS S3
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete
@@ -63,6 +65,8 @@ jobs:
           SOURCE_DIR: ./dist/apps/web
 
       - name: Invalidate landing AWS Cloudfront
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
