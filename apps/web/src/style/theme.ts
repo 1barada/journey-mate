@@ -21,6 +21,18 @@ export const theme = createTheme({
       secondary: '#666666',
       placeholder: '#B7B7B7',
     },
+    modal: {
+      accent: '#111111',
+
+      accentTransparentHover: '#11111159',
+      hover: '#666666',
+      header: '#333333',
+      text: {
+        primary: '#666666',
+        primaryTransparent: '#66666659',
+        secondary: '#FFFFFF',
+      },
+    },
   },
   typography: {
     fontFamily: '"Roboto", sans-serif',
@@ -29,6 +41,25 @@ export const theme = createTheme({
     fontWeightMedium: 500,
     fontWeightBold: 700,
     button: { textTransform: 'none' },
+    modalHeader: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 400,
+      fontSize: '40px',
+      lineHeight: 1.5,
+    },
+    modalText: {
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 400,
+      fontSize: '16px',
+      lineHeight: 1.5,
+    },
+    modalBtn: {
+      textTransform: 'none',
+      fontFamily: '"Poppins", sans-serif',
+      fontWeight: 400,
+      fontSize: '20px',
+      lineHeight: 1.5,
+    },
   },
   shape: {
     borderRadius: 8,
@@ -49,6 +80,7 @@ export const theme = createTheme({
       xl: 1240,
     },
   },
+  spacing: 4,
   components: {
     MuiContainer: {
       styleOverrides: {
@@ -100,11 +132,61 @@ export const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedPrimary:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedSecondary:hover': {
+            cursor: 'pointer',
+          },
+        },
+      },
+    },
     MuiList: {
       styleOverrides: { root: { padding: 0, width: 'auto' } },
     },
     MuiListItem: {
       styleOverrides: { root: { padding: 0, display: 'block', maxWidth: '100%', width: 'auto' } },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedPrimary:hover': {
+            cursor: 'pointer',
+          },
+          '&.MuiLink-containedSecondary:hover': {
+            cursor: 'pointer',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& label.Mui-focused': {
+            color: 'inherit',
+          },
+          '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+              borderColor: 'inherit',
+            },
+          },
+          '& input[type="password"]::-ms-reveal, & input[type="password"]::-ms-clear': {
+            display: 'none',
+          },
+          '& input[type="password"]::-webkit-clear-button, & input[type="password"]::-webkit-reveal-button': {
+            display: 'none',
+          },
+        },
+      },
     },
   },
 });
