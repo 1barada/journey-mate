@@ -14,6 +14,10 @@ const config = convict({
     default: 'localhost',
     env: 'AWS_EC2_HOST',
   },
+  secret: {
+    default: '',
+    env: 'SECRET_KEY',
+  },
 });
 
 const configPath = config.get('configUrl');
