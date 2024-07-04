@@ -2,14 +2,13 @@
 
 .journey-milestone-toggle {
   --milestone-hover-color: #{vars.$primary-hover-color};
+  --milestone-active: #{vars.$primary-secondary};
+  --route-line-color: #{vars.$primary-hover-color};
   --transition: #{vars.$transition-fast};
 
   width: 100%;
 
   .line {
-    height: 0px;
-    margin-top: 0;
-    margin-bottom: 0;
     margin-left: calc(var(--badge-size) / 2 + var(--trigger-padding-x));
   }
 
@@ -19,12 +18,8 @@
     }
   }
 
-  .Mui-selected + .line {
-    height: 64px;
-  }
-
   .milestone-select-button + .line {
-    background-color: var(--milestone-hover-color);
+    background-color: var(--route-line-color);
   }
 
   .milestone-select-button {
@@ -38,7 +33,7 @@
     justify-content: flex-start;
 
     &.Mui-selected {
-      background-color: transparent;
+      background-color: var(--milestone-active);
     }
 
     &:not(.Mui-selected):hover {
