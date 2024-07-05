@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui/material';
@@ -19,6 +19,9 @@ export const Navigation = () => {
   const [isOpen, toggle] = useModal();
   const [modalType, setModalType] = useState<AuthFormTypes>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [path, setPath] = useState<string>('/');
+
+  const location = useLocation();
 
   const setUpModalType = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const modalType = e.currentTarget.textContent?.toLocaleLowerCase();
@@ -44,6 +47,13 @@ export const Navigation = () => {
       setIsMobileMenuOpen(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (path !== location.pathname) {
+      setIsMobileMenuOpen(false);
+      setPath(location.pathname);
+    }
+  }, [location, path]);
 
   const openMobile = isMobileMenuOpen && styles.open;
 
