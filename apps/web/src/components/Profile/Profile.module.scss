@@ -1,0 +1,51 @@
+@import '../../style/variables.scss';
+
+.section {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.profileWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+
+  .button {
+    color: $text-primary;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.172;
+    padding: 12px 8px;
+    gap: 10px;
+    border: 1px solid $text-primary;
+    border-radius: 16px;
+  }
+}
+
+.infoWrapper {
+  display: flex;
+  gap: 72px;
+}
+
+.title {
+  font-size: 40px;
+  line-height: 1.172;
+  color: $text-primary;
+
+  margin-bottom: 16px;
+}
+
+.text {
+  color: $text-secondary;
+  font-size: 20px;
+  line-height: 1.172;
+
+  span {
+    color: $text-primary;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}
