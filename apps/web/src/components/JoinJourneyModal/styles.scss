@@ -4,6 +4,18 @@
   &__content {
     flex-direction: column;
     row-gap: 24px;
+    overflow-y: auto;
+    flex-grow: 2;
+  }
+  &__footer {
+    padding-top: 16px;
+    flex-grow: 1;
+  }
+  &__checkbox {
+    .Mui-checked,
+    .MuiCheckbox-indeterminate {
+      color: vars.$success-main;
+    }
   }
   &__confirm-btn {
     margin-top: auto;
