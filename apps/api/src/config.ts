@@ -18,6 +18,10 @@ const config = convict({
     default: '',
     env: 'SECRET_KEY',
   },
+  frontendUrl: {
+    default: 'http://localhost:5050',
+    env: 'FRONTEND_URL',
+  },
 });
 
 const configPath = config.get('configUrl');
