@@ -3,6 +3,7 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import storage from 'redux-persist/lib/storage';
 
 import { authReducer } from './Auth/AuthSlice';
+import { journeyReducer } from './journey/slice';
 
 const persistConfig = {
   key: 'auth',
@@ -15,7 +16,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
-  reducer: { auth: persistedReducer },
+  reducer: { auth: persistedReducer, journey: journeyReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
