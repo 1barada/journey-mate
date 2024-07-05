@@ -14,7 +14,7 @@ export const joinJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
   creator.asyncThunk(
     async (_, { rejectWithValue }) => {
       try {
-        const res = await sleep(50000);
+        const res = await sleep(2000);
 
         return res;
       } catch (error) {
