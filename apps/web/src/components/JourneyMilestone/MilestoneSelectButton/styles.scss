@@ -1,0 +1,16 @@
+@use '../../../style/variables.scss' as vars;
+
+.milestone-select-button {
+  .check-icon {
+    opacity: 0;
+    color: vars.$primary-hover-color;
+    font-size: 32px;
+  }
+
+  &.Mui-selected {
+    .check-icon {
+      opacity: 1;
+      margin-left: auto;
+    }
+  }
+}
