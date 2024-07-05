@@ -7,14 +7,17 @@ $xl: 1240px;
 //colors
 $primary-main: #bdd9f9;
 $primary-hover-color: #a5c4f0;
+$primary-secondary: #a5c4f040;
 $secondary-main: #e0dede;
 $secondary-hover-color: #d1d1d1;
 $info-main: #fdfbd8;
 $error-main: #f44336;
 $success-main: #4caf50;
+$success-secondary: #0cda0c;
 $warning-main: #ffc107;
 $background-default: #ffffff;
 $background-paper: #ebf2f9;
+$background-milestone: #fef4d1;
 $text-primary: #000000;
 $text-secondary: #666666;
 $text-placeholder: #b7b7b7;
@@ -30,9 +33,13 @@ $modal-text-secondary: #ffffff;
 
 //modal font
 $modal-font-family: 'Poppins', sans-serif;
+$black: #000000;
+$white: #ffffff;
+$grey-200: #a09393;
 
 // Shape
 $border-radius: 8px;
 
 // Transition
 $transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
