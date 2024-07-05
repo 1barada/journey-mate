@@ -10,13 +10,14 @@ export const JourneyMilestoneToggle: React.FC<JourneyMilestoneToggleProps> = ({
   children,
   onSelect,
   value = emptyArray,
+  disabled = false,
 }) => {
   const handleChange = (_: React.MouseEvent<HTMLElement>, newMilestones: string[]) => {
     onSelect?.(newMilestones);
   };
 
   return (
-    <ToggleButtonGroup className="journey-milestone-toggle" value={value} onChange={handleChange}>
+    <ToggleButtonGroup className="journey-milestone-toggle" value={value} onChange={handleChange} disabled={disabled}>
       {children}
     </ToggleButtonGroup>
   );
