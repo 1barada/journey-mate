@@ -1,4 +1,6 @@
-import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit';
+import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
+
+import type { JourneySlice } from '../../types/types';
 
 import { joinJourneyAsyncThunk } from './asyncThunk';
 import { initialState } from './initialState';
@@ -7,6 +9,8 @@ const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
 });
 
+const selectRoot = (state: JourneySlice) => state;
+
 const journeySlice = createSlice({
   name: 'journey',
   initialState,
@@ -14,12 +18,12 @@ const journeySlice = createSlice({
     joinJourney: joinJourneyAsyncThunk(creator),
   }),
   selectors: {
-    selectJourney: (state) => state.journey,
-    selectRequestState: (state) => ({
+    selectJourney: createDraftSafeSelector(selectRoot, (state) => state.journey),
+    selectRequestState: createDraftSafeSelector(selectRoot, (state) => ({
       isLoading: state.loading,
       isError: Boolean(state.error),
       error: state.error,
-    }),
+    })),
   },
 });
 
