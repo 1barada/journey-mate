@@ -18,8 +18,19 @@ server.register(cors, {
   credentials: true,
 });
 
+export const tempSecret = 'tempSecretChangeItUsingConfigEnv';
+
 server.register(fastifyCookie, {
+  secret: tempSecret,
   hook: 'onRequest',
+  algorithm: 'sha256',
+  parseOptions: {
+    httpOnly: true,
+    secure: true,
+    path: '/',
+    sameSite: true,
+    maxAge: 60_4800,
+  },
 } as FastifyCookieOptions);
 
 server.register(fastifyTRPCPlugin, {
