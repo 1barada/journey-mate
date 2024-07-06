@@ -22,6 +22,10 @@ const config = convict({
     default: 'http://localhost:5050',
     env: 'FRONTEND_URL',
   },
+  cookieSecret: {
+    default: 'TempSecretTempSecretTempSecretTempSecret',
+    env: 'COOKIE_SECRET',
+  },
 });
 
 const configPath = config.get('configUrl');
