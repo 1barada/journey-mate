@@ -1,13 +1,20 @@
 import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit';
 
-import type { IAuthSlice } from '../../types/types';
+import type { IAuthSlice } from './types';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
 });
 
 export const initialState: IAuthSlice = {
-  user: { name: '', email: '' },
+  user: {
+    name: 'Oleksii Korotenko',
+    email: 'djshajhb@gmail.com',
+    sex: 'male',
+    description: 'asdhjhdbshjbdasjbdas',
+    age: 33,
+    avatar: null,
+  },
   loading: false,
   error: null,
   token: '',
@@ -45,6 +52,7 @@ const authSlice = createSlice({
   }),
   selectors: {
     selectIsAuthenticated: (state) => state.isAuthenticated,
+    selectUser: (state) => state.user,
   },
 });
 
@@ -52,4 +60,4 @@ export const authReducer = authSlice.reducer;
 
 export const { example } = authSlice.actions;
 
-export const { selectIsAuthenticated } = authSlice.selectors;
+export const { selectIsAuthenticated, selectUser } = authSlice.selectors;

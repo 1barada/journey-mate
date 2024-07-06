@@ -8,8 +8,12 @@
 .profileWrapper {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 24px;
+
+  margin-bottom: 24px;
 
   .button {
     color: $text-primary;
@@ -21,19 +25,41 @@
     border: 1px solid $text-primary;
     border-radius: 16px;
   }
+
+  .avatar {
+    width: 283px;
+    height: 283px;
+
+    border-radius: 12px;
+  }
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
 
 .infoWrapper {
   display: flex;
-  gap: 72px;
+  gap: 36px;
+  flex-direction: column;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    gap: 72px;
+  }
 }
 
 .title {
-  font-size: 40px;
+  font-size: 28px;
   line-height: 1.172;
   color: $text-primary;
 
   margin-bottom: 16px;
+
+  @media screen and (min-width: $md) {
+    font-size: 40px;
+  }
 }
 
 .text {

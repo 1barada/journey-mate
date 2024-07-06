@@ -1,35 +1,34 @@
+import { useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 
-import defaultFemale from '../../../public/img/defaultFemale.webp';
-import defaultMale from '../../../public/img/defaultMale.webp';
+import defaultImg from '../../../public/img/defaultImg.webp';
+import { selectUser } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
 
 import styles from './Profile.module.scss';
 
 export const Profile = () => {
+  const { age, avatar, description, email, name, sex } = useSelector(selectUser);
+
   return (
     <Box component="section" className={styles.section}>
       <Container>
         <Box component="div" className={styles.profileWrapper}>
           <Box component="div" className={styles.infoWrapper}>
-            <Avatar src={defaultFemale} sx={{ width: 283, height: 283, overflow: 'visible', mb: 24 }} />
+            <Avatar src={avatar ? avatar : defaultImg} className={styles.avatar} />
             <Box component="div">
               <Typography component="h1" variant="h1" className={styles.title}>
-                Andrii Kuluiev
+                {name}
               </Typography>
               <Typography component="p" className={styles.text}>
-                Sex: <span>Male</span>
+                Sex: <span>{sex}</span>
               </Typography>
               <Typography component="p" className={styles.text}>
-                Age: <span>27</span>
+                Age: <span>{age}</span>
               </Typography>
               <Typography component="p" className={styles.text}>
-                Email: <span>aaaaaaaa@gmail.com</span>
+                Email: <span>{email}</span>
               </Typography>
             </Box>
           </Box>
@@ -39,7 +38,7 @@ export const Profile = () => {
           </Button>
         </Box>
 
-        <CardDescription description="dsadsa" />
+        <CardDescription description={description} />
       </Container>
     </Box>
   );
