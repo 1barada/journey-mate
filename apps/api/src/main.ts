@@ -18,10 +18,8 @@ server.register(cors, {
   credentials: true,
 });
 
-export const tempSecret = 'tempSecretChangeItUsingConfigEnv';
-
 server.register(fastifyCookie, {
-  secret: tempSecret,
+  secret: config.get('cookieSecret'),
   hook: 'onRequest',
   algorithm: 'sha256',
   parseOptions: {
