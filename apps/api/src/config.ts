@@ -23,7 +23,7 @@ const config = convict({
     env: 'FRONTEND_URL',
   },
   cookieSecret: {
-    default: 'TempSecretTempSecretTempSecretTempSecret',
+    default: '',
     env: 'COOKIE_SECRET',
   },
 });
