@@ -12,8 +12,13 @@
 
 .title {
   font-weight: normal;
-  font-size: 40px;
+  font-size: 30px;
   color: $text-primary;
+  line-height: 1.17;
+
+  @media screen and (min-width: $md) {
+    font-size: 36px;
+  }
 }
 
 .contentWrapper {
@@ -22,8 +27,12 @@
 }
 
 .content {
-  font-size: 24px;
+  font-size: 18px;
   color: $text-secondary;
+
+  @media screen and (min-width: $md) {
+    font-size: 20px;
+  }
 }
 
 .contentEllipsis {

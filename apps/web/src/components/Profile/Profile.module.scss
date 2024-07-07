@@ -1,0 +1,77 @@
+@import '../../style/variables.scss';
+
+.section {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+
+.profileWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 24px;
+
+  margin-bottom: 24px;
+
+  .button {
+    color: $text-primary;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.172;
+    padding: 12px 8px;
+    gap: 10px;
+    border: 1px solid $text-primary;
+    border-radius: 16px;
+  }
+
+  .avatar {
+    width: 283px;
+    height: 283px;
+
+    border-radius: 12px;
+  }
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.infoWrapper {
+  display: flex;
+  gap: 36px;
+  flex-direction: column;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    gap: 72px;
+  }
+}
+
+.title {
+  font-size: 28px;
+  line-height: 1.172;
+  color: $text-primary;
+
+  margin-bottom: 16px;
+
+  @media screen and (min-width: $md) {
+    font-size: 40px;
+  }
+}
+
+.text {
+  color: $text-secondary;
+  font-size: 20px;
+  line-height: 1.172;
+
+  span {
+    color: $text-primary;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}
