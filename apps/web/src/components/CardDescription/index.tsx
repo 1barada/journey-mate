@@ -28,7 +28,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({ description })
 
   return (
     <Box className={styles.container}>
-      <Typography variant="h4" component="div" className={styles.title}>
+      <Typography variant="h4" component="h2" className={styles.title}>
         Description
       </Typography>
       <Box className={styles.contentWrapper}>

@@ -10,8 +10,8 @@ export const initialState: IAuthSlice = {
   user: {
     name: 'Oleksii Korotenko',
     email: 'djshajhb@gmail.com',
-    sex: 'male',
-    description: 'asdhjhdbshjbdasjbdas',
+    sex: 'Male',
+    description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
     age: 33,
     avatar: null,
   },
