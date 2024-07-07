@@ -1,4 +1,4 @@
-import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
+import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
 
 import type { IAuthSlice } from './types';
 
