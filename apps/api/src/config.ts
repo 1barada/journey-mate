@@ -26,6 +26,10 @@ const config = convict({
     default: '',
     env: 'COOKIE_SECRET',
   },
+  tokenSecret: {
+    default: '',
+    env: 'TOKEN_SECRET',
+  },
 });
 
 const configPath = config.get('configUrl');
