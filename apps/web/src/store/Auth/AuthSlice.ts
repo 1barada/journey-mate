@@ -1,4 +1,4 @@
-import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit';
+import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
 
 import type { IAuthSlice } from './types';
 
@@ -51,8 +51,15 @@ const authSlice = createSlice({
     ),
   }),
   selectors: {
-    selectIsAuthenticated: (state) => state.isAuthenticated,
-    selectUser: (state) => state.user,
+    selectIsAuthenticated: createDraftSafeSelector(
+      (state) => state.isAuthenticated,
+      (isAuthenticated) => Boolean(isAuthenticated)
+    ),
+
+    selectUser: createDraftSafeSelector(
+      (state) => state.user,
+      (user) => ({ ...user })
+    ),
   },
 });
 
