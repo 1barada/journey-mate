@@ -35,7 +35,7 @@ export const Navigation = () => {
   };
 
   const onClickHandler = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export const Navigation = () => {
         >
           <MenuIcon />
         </IconButton>
-        <div className={`${styles.navWrapper} ${openMobile}`}>
+        <Box component="div" className={`${styles.navWrapper} ${openMobile}`}>
           <IconButton
             onClick={onClickHandler}
             size="large"
@@ -118,7 +118,7 @@ export const Navigation = () => {
               )}
             </>
           )}
-        </div>
+        </Box>
       </Container>
     </Box>
   );
