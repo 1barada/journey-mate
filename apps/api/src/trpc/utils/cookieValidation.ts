@@ -1,4 +1,4 @@
 import type { cookieValidationParams } from './types';
 
-export const cookValidation = ({ cookieObj, cookiesValidationSchema }: cookieValidationParams) =>
+export const cookiesValidation = ({ cookieObj, cookiesValidationSchema }: cookieValidationParams) =>
   cookiesValidationSchema.safeParse(cookieObj);

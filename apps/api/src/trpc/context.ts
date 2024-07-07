@@ -6,12 +6,12 @@ import '@fastify/cookie';
 import { prisma } from '../database';
 
 import { cookieSchema } from './schemas/cookieSchema';
-import { cookValidation } from './utils/cookieValidation';
+import { cookiesValidation } from './utils/cookieValidation';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log;
 
-  const validation = cookValidation({ cookieObj: req.cookies, cookiesValidationSchema: cookieSchema });
+  const validation = cookiesValidation({ cookieObj: req.cookies, cookiesValidationSchema: cookieSchema });
 
   const validatedCookies = validation.success ? validation.data : null;
 

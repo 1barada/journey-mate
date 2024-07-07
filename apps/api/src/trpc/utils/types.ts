@@ -1,6 +1,6 @@
-import { cookieSchema } from '../schemas/cookieSchema';
+import { z } from 'zod';
 
 export interface cookieValidationParams {
   cookieObj: { [cookieName: string]: string | undefined };
-  cookiesValidationSchema: typeof cookieSchema;
+  cookiesValidationSchema: z.Schema;
 }
