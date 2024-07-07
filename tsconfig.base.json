@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@project/api/database": ["apps/api/src/database.ts"],
+      "@project/api/*": ["apps/api/src/*"],
       "@project/api/trpc": ["apps/api/src/trpc/router.ts"]
     }
   },

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "moduleResolution": "Bundler",
+    "strict": true,
     "noEmit": true,
     "types": ["node"],
     "allowImportingTsExtensions": true
