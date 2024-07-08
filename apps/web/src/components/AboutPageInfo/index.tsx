@@ -7,7 +7,9 @@ import type { AboutPageInfoProps } from './types';
 
 export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
   const location = useLocation();
-  console.log(location);
+
+  const goback = location?.state?.from ?? '/';
+
   return (
     <Box component="section" className={styles.section}>
       <Container>
@@ -15,7 +17,7 @@ export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
           <Typography component="h1" className={styles.title}>
             {info}
           </Typography>
-          <NavLink to="/" className={styles.link}>
+          <NavLink to={goback} className={styles.link}>
             Back
           </NavLink>
         </Box>
