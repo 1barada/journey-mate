@@ -6,9 +6,9 @@ import { t } from '../../trpc/init';
 import { actionsValidator } from './utils/actionsValidator';
 import { entitiesValidator } from './utils/entitiesValidator';
 import { roleValidator } from './utils/roleValidator';
-import { authorValidationProps } from './types';
+import { authorizationValidatorProps } from './types';
 
-export const authorValidation = ({ requiredEntity, requiredAction }: authorValidationProps) =>
+export const authorizationValidator = ({ requiredEntity, requiredAction }: authorizationValidatorProps) =>
   t.middleware(async ({ ctx, next }) => {
     const { userRole } = ctx.userTokenData;
     if (!userRole) {

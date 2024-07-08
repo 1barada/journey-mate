@@ -1,8 +1,8 @@
 import { initTRPC } from '@trpc/server';
 import { ZodError } from 'zod';
 
-import { authValidator } from '../middleware/isAuthenticated/authValidator';
-import { authorValidation } from '../middleware/isAuthorized/authorValidation';
+import { authValidator } from '../middleware/authValidator/authValidator';
+import { authorizationValidator } from '../middleware/isAuthorized/authorizationValidator';
 import { permissionAction, permissionEntity } from '../permissions/permissions';
 
 import { Context } from './context';
@@ -26,4 +26,4 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 export const authProcedure = t.procedure.use(authValidator);
 export const roleProcedure = (requiredAction: permissionAction, requiredEntity: permissionEntity) =>
-  authProcedure.use(authorValidation({ requiredEntity, requiredAction }));
+  authProcedure.use(authorizationValidator({ requiredEntity, requiredAction }));
