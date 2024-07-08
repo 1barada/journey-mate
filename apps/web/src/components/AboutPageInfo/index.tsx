@@ -1,11 +1,13 @@
 import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 
 import styles from './AboutPageInfo.module.scss';
 import type { AboutPageInfoProps } from './types';
 
 export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
+  const location = useLocation();
+  console.log(location);
   return (
     <Box component="section" className={styles.section}>
       <Container>
