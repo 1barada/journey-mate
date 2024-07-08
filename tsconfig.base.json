@@ -17,7 +17,8 @@
     "paths": {
       "@project/api/*": ["apps/api/src/*"],
       "@project/api/database": ["apps/api/src/database.ts"],
-      "@project/api/trpc": ["apps/api/src/trpc/router.ts"]
+      "@project/api/trpc": ["apps/api/src/trpc/router.ts"],
+      "@project/api/permissions": ["apps/api/src/permissions/permissions.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
