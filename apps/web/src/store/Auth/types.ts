@@ -3,9 +3,9 @@
 export interface User {
   name: string;
   email: string;
-  sex: 'Femail' | 'Male' | '-';
+  sex: 'Femail' | 'Male' | null;
   description: string;
-  age: number;
+  age: number | null;
   avatar: string | null;
 }
 

@@ -3,12 +3,16 @@ import CreateIcon from '@mui/icons-material/Create';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
+import { useModal } from '../../hooks/useModal';
 import { selectUser } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
+import { Modal } from '../common/Modal';
 
 import styles from './Profile.module.scss';
 
 export const Profile = () => {
+  const [isOpen, toggle] = useModal();
+
   const { age, avatar, description, email, name, sex } = useSelector(selectUser);
 
   return (
@@ -21,12 +25,16 @@ export const Profile = () => {
               <Typography component="h1" variant="h1" className={styles.title}>
                 {name}
               </Typography>
-              <Typography component="p" className={styles.text}>
-                Sex: <span>{sex}</span>
-              </Typography>
-              <Typography component="p" className={styles.text}>
-                Age: <span>{age}</span>
-              </Typography>
+              {sex && (
+                <Typography component="p" className={styles.text}>
+                  Sex: <span>{sex}</span>
+                </Typography>
+              )}
+              {age && (
+                <Typography component="p" className={styles.text}>
+                  Age: <span>{age}</span>
+                </Typography>
+              )}
               <Typography component="p" className={styles.text}>
                 Email: <span>{email}</span>
               </Typography>
@@ -39,6 +47,12 @@ export const Profile = () => {
         </Box>
 
         <CardDescription description={description} />
+
+        {isOpen && (
+          <Modal toggleModal={toggle}>
+            <div></div>
+          </Modal>
+        )}
       </Container>
     </Box>
   );
