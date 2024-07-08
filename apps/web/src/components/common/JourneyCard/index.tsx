@@ -9,13 +9,14 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import styles from './JourneyCard.module.scss';
-import { JourneyCardProps } from './JourneyCard.types';
+import { JourneyCardProps, Status } from './JourneyCard.types';
 
 const getJourneyIcon = (journeyType: string) => {
   switch (journeyType) {
@@ -27,6 +28,17 @@ const getJourneyIcon = (journeyType: string) => {
       return <DownhillSkiing />;
     default:
       return <HelpOutline />;
+  }
+};
+
+const getStatusColor = (status: Status) => {
+  switch (status) {
+    case Status.NotStarted:
+      return 'primary';
+    case Status.InProgress:
+      return 'warning';
+    default:
+      return 'error';
   }
 };
 
@@ -42,6 +54,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
   personCount,
   journeyType,
   onClickHandler,
+  status,
 }) => {
   return (
     <Card className={styles.card}>
@@ -69,6 +82,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
             <Typography variant="body2" color="text.secondary" className={styles.personCount}>
               {personCount}
             </Typography>
+            <Chip className={styles.chip} size="small" label={status} color={getStatusColor(status)} />
           </Box>
           <Button variant="contained" onClick={onClickHandler}>
             Show

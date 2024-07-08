@@ -6,4 +6,10 @@ export interface JourneyCardProps {
   personCount: number;
   journeyType: string;
   onClickHandler: () => void;
+  status: Status;
+}
+
+export enum Status {
+  NotStarted = 'Not Started',
+  InProgress = 'In Progress',
 }
