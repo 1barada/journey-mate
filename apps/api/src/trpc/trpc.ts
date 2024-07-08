@@ -1,8 +1,8 @@
 import { initTRPC } from '@trpc/server';
 import { ZodError } from 'zod';
 
+import { authorizationValidator } from '../middleware/authorizationValidator/authorizationValidator';
 import { authValidator } from '../middleware/authValidator/authValidator';
-import { authorizationValidator } from '../middleware/isAuthorized/authorizationValidator';
 import { permissionAction, permissionEntity } from '../permissions/permissions';
 
 import { Context } from './context';
