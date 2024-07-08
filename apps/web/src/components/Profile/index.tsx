@@ -7,6 +7,7 @@ import { useModal } from '../../hooks/useModal';
 import { selectUser } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
 import { Modal } from '../common/Modal';
+import { EditForm } from '../Forms/EditForm';
 
 import styles from './Profile.module.scss';
 
@@ -40,7 +41,7 @@ export const Profile = () => {
               </Typography>
             </Box>
           </Box>
-          <Button className={styles.button}>
+          <Button className={styles.button} onClick={() => toggle()}>
             <CreateIcon />
             Edit profile
           </Button>
@@ -50,7 +51,7 @@ export const Profile = () => {
 
         {isOpen && (
           <Modal toggleModal={toggle}>
-            <div></div>
+            <EditForm />
           </Modal>
         )}
       </Container>

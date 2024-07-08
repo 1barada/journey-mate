@@ -1,5 +1,3 @@
-// FIXME: change IAuthSlice to AuthSlice
-
 export interface User {
   name: string;
   email: string;
