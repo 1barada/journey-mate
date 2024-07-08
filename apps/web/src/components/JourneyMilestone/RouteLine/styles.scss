@@ -1,4 +1,4 @@
-@use '../../../style//variables.scss' as vars;
+@import '../../../style//variables.scss';
 
 .line {
   width: 2px;
@@ -6,7 +6,7 @@
 
   margin-right: auto;
   margin-left: auto;
-  background-color: vars.$primary-hover-color;
+  background-color: $primary-hover-color;
 
-  transition: all vars.$transition-fast;
+  transition: all $transition-fast;
 }

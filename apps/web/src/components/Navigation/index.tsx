@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui/material';
@@ -19,6 +19,8 @@ export const Navigation = () => {
   const [isOpen, toggle] = useModal();
   const [modalType, setModalType] = useState<AuthFormTypes>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const location = useLocation();
 
   const setUpModalType = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const modalType = e.currentTarget.textContent?.toLocaleLowerCase();
@@ -100,6 +102,7 @@ export const Navigation = () => {
                         aria-label={`link to ${link}`}
                         className={({ isActive }) => (isActive ? styles.active : styles.link)}
                         onClick={handleCloseMenuCose}
+                        state={{ from: location }}
                       >
                         {link.slice(1).replace(/-/g, ' ')}
                       </NavLink>

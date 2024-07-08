@@ -1,9 +1,9 @@
-@use '../../../style/variables.scss' as vars;
+@import '../../../style/variables.scss';
 
 .milestone-select-button {
   .check-icon {
     opacity: 0;
-    color: vars.$primary-hover-color;
+    color: $primary-hover-color;
     font-size: 32px;
   }
 
