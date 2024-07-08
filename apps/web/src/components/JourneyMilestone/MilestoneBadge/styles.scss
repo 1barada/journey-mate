@@ -1,4 +1,4 @@
-@use '../../../style/variables.scss' as vars;
+@import '../../../style/variables.scss';
 
 .badge {
   $size: 60px;
@@ -12,6 +12,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #{vars.$background-milestone};
+  background-color: $background-milestone;
   flex-shrink: 0;
 }

@@ -1,4 +1,4 @@
-@use '../../style/variables.scss' as vars;
+@import '../../style/variables.scss';
 
 .join-journey-modal {
   &__content {
@@ -21,13 +21,13 @@
     margin-top: auto;
     gap: 8px;
 
-    background-color: vars.$secondary-main;
-    color: vars.$white;
+    background-color: $secondary-main;
+    color: $white;
     font-weight: 700;
 
     &:hover {
-      color: vars.$text-secondary;
-      background-color: vars.$secondary-hover-color;
+      color: $text-secondary;
+      background-color: $secondary-hover-color;
     }
 
     & .progress {
