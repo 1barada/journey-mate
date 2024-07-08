@@ -1,6 +1,6 @@
-import { permissionActions, permissionEntities } from '../../permissions/permissions';
+import { permissionAction, permissionEntity } from '../../permissions/permissions';
 
-export interface isAuthorizedProps {
-  requiredEntity: permissionEntities;
-  requiredAction: permissionActions;
+export interface authorValidationProps {
+  requiredEntity: permissionEntity;
+  requiredAction: permissionAction;
 }
