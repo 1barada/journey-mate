@@ -1,4 +1,4 @@
-import { fastifyCookie } from '@fastify/cookie';
+import { fastifyCookie, FastifyCookieOptions } from '@fastify/cookie';
 import cors from '@fastify/cors';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 
