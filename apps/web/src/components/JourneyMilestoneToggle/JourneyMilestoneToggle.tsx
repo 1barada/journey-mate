@@ -1,26 +1,23 @@
-import { useState } from 'react';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import './styles.scss';
 
 import type { JourneyMilestoneToggleProps } from './types';
 
-const emptyArray = [] satisfies JourneyMilestoneToggleProps['initialValue'];
+const emptyArray = [] satisfies JourneyMilestoneToggleProps['value'];
 
 export const JourneyMilestoneToggle: React.FC<JourneyMilestoneToggleProps> = ({
   children,
   onSelect,
-  initialValue = emptyArray,
+  value = emptyArray,
+  disabled = false,
 }) => {
-  const [milestones, setMilestones] = useState(initialValue);
-
   const handleChange = (_: React.MouseEvent<HTMLElement>, newMilestones: string[]) => {
-    setMilestones(newMilestones);
     onSelect?.(newMilestones);
   };
 
   return (
-    <ToggleButtonGroup className="journey-milestone-toggle" value={milestones} onChange={handleChange}>
+    <ToggleButtonGroup className="journey-milestone-toggle" value={value} onChange={handleChange} disabled={disabled}>
       {children}
     </ToggleButtonGroup>
   );

@@ -1,19 +1,39 @@
-@use '../../style/variables.scss' as vars;
+@import '../../style/variables.scss';
 
 .join-journey-modal {
   &__content {
     flex-direction: column;
     row-gap: 24px;
+    overflow-y: auto;
+    flex-grow: 2;
+  }
+  &__footer {
+    padding-top: 16px;
+    flex-grow: 1;
+  }
+  &__checkbox {
+    .Mui-checked,
+    .MuiCheckbox-indeterminate {
+      color: vars.$success-main;
+    }
   }
   &__confirm-btn {
     margin-top: auto;
-    background-color: vars.$secondary-main;
-    color: vars.$white;
+    gap: 8px;
+
+    background-color: $secondary-main;
+    color: $white;
     font-weight: 700;
 
     &:hover {
-      color: vars.$text-secondary;
-      background-color: vars.$secondary-hover-color;
+      color: $text-secondary;
+      background-color: $secondary-hover-color;
+    }
+
+    & .progress {
+      width: 24px !important;
+      height: 24px !important;
+      color: red !important;
     }
   }
 }

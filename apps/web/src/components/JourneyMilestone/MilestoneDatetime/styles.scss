@@ -1,5 +1,5 @@
-@use '../../../style/variables.scss' as vars;
+@import '../../../style/variables.scss';
 
 .datetime {
-  color: vars.$grey-200;
+  color: $grey-200;
 }

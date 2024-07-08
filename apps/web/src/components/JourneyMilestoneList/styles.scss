@@ -1,4 +1,4 @@
-@use '../../style/variables.scss' as vars;
+@import '../../style/variables.scss';
 
 .journey-milestone-list {
   width: 100%;
@@ -7,6 +7,6 @@
     margin-left: calc(var(--badge-size) / 2);
     margin-bottom: 8px;
     margin-top: 8px;
-    background-color: vars.$black;
+    background-color: $black;
   }
 }
