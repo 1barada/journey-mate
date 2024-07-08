@@ -1,4 +1,4 @@
-import { AboutPageInfo } from '../../components/AboutPageInfo';
+import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import { Profile } from '../../components/Profile';
 
 const ProfilePage = () => {
