@@ -11,24 +11,90 @@
     justify-content: space-between;
   }
 
+  @media screen and (min-width: $md) {
+    .openBtn {
+      display: none;
+    }
+  }
+}
+
+.navWrapper {
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 50%;
+  height: 100%;
+
+  border-bottom-left-radius: $border-radius;
+  border-bottom: 1px solid $border-primary;
+  border-left: 1px solid $border-primary;
+
+  background-color: $primary-main;
+
+  transform: scaleY(0) translateX(100%);
+  transition: $transition;
+
+  &.open {
+    transform: scaleY(1) translateX(0);
+  }
+
+  .closeBtn {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    z-index: 5;
+  }
+
   .appBar {
     position: relative;
     display: block;
     width: auto;
     box-shadow: none;
   }
+
   .navList {
     display: flex;
-    justify-content: space-evenly;
     gap: 28px;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .authListBtn {
     display: flex;
+    flex-direction: column;
     gap: 8px;
 
     button {
       color: $text-primary;
+    }
+  }
+
+  @media screen and (min-width: $md) {
+    position: relative;
+    transform: scaleY(1) translateX(0);
+    border-bottom-left-radius: 0;
+    border-bottom: none;
+    border-left: none;
+    justify-content: flex-end;
+
+    .closeBtn {
+      display: none;
+    }
+
+    .navList {
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+
+    .authListBtn {
+      flex-direction: row;
     }
   }
 }
@@ -45,6 +111,7 @@
 }
 
 .link {
+  display: block;
   font-size: 16px;
   line-height: 1.17;
   text-transform: capitalize;
@@ -60,4 +127,5 @@
 .active {
   composes: link;
   color: $text-secondary;
+  transform: scale(1.2);
 }
