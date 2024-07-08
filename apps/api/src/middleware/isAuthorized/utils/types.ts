@@ -1,27 +1,27 @@
 import { TRPCError } from '@trpc/server';
 
 import {
-  permissionActions,
-  permissionEntities,
+  permissionAction,
+  permissionEntity,
   permissionTable,
-  RolePermissionsType,
-  roles,
+  permissionTableType,
+  role,
 } from './../../../permissions/permissions';
 
-export interface isRoleExistsProps {
+export interface roleValidatorProps {
   permissions: typeof permissionTable;
   userRole: keyof typeof permissionTable;
   Error: typeof TRPCError;
 }
 
-export interface roleHasActionsProps {
-  role: (typeof permissionTable)[roles];
-  action: keyof RolePermissionsType;
+export interface actionsValidatorProps {
+  role: (typeof permissionTable)[role];
+  action: keyof permissionTableType;
   Error: typeof TRPCError;
 }
 
-export interface roleHasEntitiesProps {
-  action: (typeof permissionTable)[roles][permissionActions];
-  entity: permissionEntities;
+export interface entitiesValidatorProps {
+  action: (typeof permissionTable)[role][permissionAction];
+  entity: permissionEntity;
   Error: typeof TRPCError;
 }

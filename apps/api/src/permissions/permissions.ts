@@ -1,4 +1,4 @@
-export enum permissionActions {
+export enum permissionAction {
   Read = 'read',
   Create = 'create',
   Join = 'join',
@@ -7,43 +7,43 @@ export enum permissionActions {
   Suspend = 'suspend',
 }
 
-export enum permissionEntities {
+export enum permissionEntity {
   Event = 'event',
   User = 'user',
 }
 
-export enum roles {
-  Admin = 'admin',
-  Guest = 'guest',
-  Viewer = 'viewer',
-  SuspendedViewer = 'suspendedViewer',
+export enum role {
+  Admin = 'Admin',
+  Guest = 'Guest',
+  Viewer = 'Viewer',
+  SuspendedViewer = 'SuspendedViewer',
 }
 
-export type RolePermissionsType = {
-  [key in permissionActions]?: permissionEntities[];
+export type permissionTableType = {
+  [key in permissionAction]?: permissionEntity[];
 };
 
-export const permissionTable: Record<roles, RolePermissionsType> = {
-  admin: {
-    [permissionActions.Read]: [permissionEntities.User, permissionEntities.Event],
-    [permissionActions.Create]: [permissionEntities.Event],
-    [permissionActions.Join]: [permissionEntities.Event],
-    [permissionActions.Update]: [permissionEntities.User, permissionEntities.Event],
-    [permissionActions.Delete]: [permissionEntities.User, permissionEntities.Event],
-    [permissionActions.Suspend]: [permissionEntities.User, permissionEntities.Event],
+export const permissionTable: Record<role, permissionTableType> = {
+  Admin: {
+    [permissionAction.Read]: [permissionEntity.User, permissionEntity.Event],
+    [permissionAction.Create]: [permissionEntity.Event],
+    [permissionAction.Join]: [permissionEntity.Event],
+    [permissionAction.Update]: [permissionEntity.User, permissionEntity.Event],
+    [permissionAction.Delete]: [permissionEntity.User, permissionEntity.Event],
+    [permissionAction.Suspend]: [permissionEntity.User, permissionEntity.Event],
   },
-  viewer: {
-    [permissionActions.Read]: [permissionEntities.Event, permissionEntities.User],
-    [permissionActions.Create]: [permissionEntities.Event],
-    [permissionActions.Join]: [permissionEntities.Event],
-    [permissionActions.Update]: [permissionEntities.Event, permissionEntities.User],
-    [permissionActions.Delete]: [permissionEntities.Event, permissionEntities.User],
+  Viewer: {
+    [permissionAction.Read]: [permissionEntity.Event, permissionEntity.User],
+    [permissionAction.Create]: [permissionEntity.Event],
+    [permissionAction.Join]: [permissionEntity.Event],
+    [permissionAction.Update]: [permissionEntity.Event, permissionEntity.User],
+    [permissionAction.Delete]: [permissionEntity.Event, permissionEntity.User],
   },
-  guest: {
-    [permissionActions.Read]: [permissionEntities.User, permissionEntities.Event],
-    [permissionActions.Create]: [permissionEntities.User],
+  Guest: {
+    [permissionAction.Read]: [permissionEntity.User, permissionEntity.Event],
+    [permissionAction.Create]: [permissionEntity.User],
   },
-  suspendedViewer: {
-    [permissionActions.Read]: [permissionEntities.User, permissionEntities.Event],
+  SuspendedViewer: {
+    [permissionAction.Read]: [permissionEntity.User, permissionEntity.Event],
   },
 };
