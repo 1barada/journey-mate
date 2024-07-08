@@ -1,6 +1,6 @@
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
-import type { JourneySlice } from '../../types/types';
+import type { JourneySlice } from './types';
 
 // !TODO replace with trpc later
 const sleep = (ms: number) =>

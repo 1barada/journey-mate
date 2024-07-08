@@ -1,9 +1,8 @@
 import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
 
-import type { JourneySlice } from '../../types/types';
-
 import { joinJourneyAsyncThunk } from './asyncThunk';
 import { initialState } from './initialState';
+import type { JourneySlice } from './types';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },

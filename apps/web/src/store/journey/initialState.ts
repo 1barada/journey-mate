@@ -1,4 +1,4 @@
-import { JourneySlice } from '../../types/types';
+import { JourneySlice } from './types';
 
 export const initialState: JourneySlice = {
   loading: false,
