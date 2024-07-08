@@ -39,11 +39,20 @@ export const Navigation = () => {
   };
 
   useEffect(() => {
-    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
-      if (!e.matches) return;
-      setIsMobileMenuOpen(false);
-    });
-  }, []);
+    const mediaQueryList = window.matchMedia('(min-width: 768px)');
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    mediaQueryList.addEventListener('change', handleMediaQueryChange);
+
+    return () => {
+      mediaQueryList.removeEventListener('change', handleMediaQueryChange);
+    };
+  }, [setIsMobileMenuOpen]);
 
   const handleCloseMenuCose = () => {
     if (window.innerWidth <= 767) {
