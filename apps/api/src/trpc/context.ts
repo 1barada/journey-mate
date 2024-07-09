@@ -4,10 +4,11 @@ import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import '@fastify/cookie';
 
 import { prisma } from '../database';
-import { role } from '../permissions/permissions';
+import { Role } from '../modules/auth/domain/enums/permissions.enums';
 
 import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
+import { UserTokenDataTypes } from './types';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log;
@@ -15,7 +16,11 @@ export function createContext({ req, res }: CreateFastifyContextOptions) {
   const validation = cookiesValidation({ cookieObj: req.cookies, cookiesValidationSchema: cookieSchema });
 
   const validatedCookies = validation.success ? validation.data : null;
-  const userTokenData: { userId: string | null; userRole: role | null } = { userId: null, userRole: null };
+  const userTokenData: UserTokenDataTypes = {
+    userId: null,
+    userRole: Role.Guest,
+    userEmail: null,
+  };
 
   return { req, res, log, db: prisma, validatedCookies, userTokenData };
 }
