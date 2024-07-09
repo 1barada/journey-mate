@@ -1,0 +1,12 @@
+@import '../../style/variables.scss';
+
+.journey-milestone-list {
+  width: 100%;
+
+  .line {
+    margin-left: calc(var(--badge-size) / 2);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    background-color: $black;
+  }
+}

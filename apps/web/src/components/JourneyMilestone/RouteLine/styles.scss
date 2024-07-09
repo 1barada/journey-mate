@@ -1,0 +1,12 @@
+@import '../../../style//variables.scss';
+
+.line {
+  width: 2px;
+  height: 64px;
+
+  margin-right: auto;
+  margin-left: auto;
+  background-color: $primary-hover-color;
+
+  transition: all $transition-fast;
+}

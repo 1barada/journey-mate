@@ -1,0 +1,56 @@
+@import '../../style/variables.scss';
+
+.container {
+  width: 100%;
+  background-color: $info-main;
+  padding: 74px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-radius: 32px;
+}
+
+.title {
+  font-weight: normal;
+  font-size: 30px;
+  color: $text-primary;
+  line-height: 1.17;
+
+  @media screen and (min-width: $md) {
+    font-size: 36px;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  font-size: 18px;
+  color: $text-secondary;
+
+  @media screen and (min-width: $md) {
+    font-size: 20px;
+  }
+}
+
+.contentEllipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.contentShowMoreWrapper {
+  display: flex;
+  justify-content: end;
+}
+
+.contentShowMore {
+  font-size: 24px;
+  display: inline-block;
+  vertical-align: top;
+  margin-top: -1px;
+  color: $text-primary;
+}

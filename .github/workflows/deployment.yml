@@ -26,11 +26,12 @@ jobs:
       AWS_DESTINATION_BUCKET: ${{ vars.AWS_DESTINATION_BUCKET }}
       AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
       AWS_DEFAULT_REGION: eu-central-1
-      AWS_REGION: eu-north-1
+      AWS_REGION: eu-central-1
       AWS_EC2_METADATA_DISABLED: true
       AWS_ECR_REGISTRY: ${{vars.AWS_ECR_REGISTRY}}
       AWS_ECR_REPOSITORY: ${{vars.AWS_ECR_REGISTRY}}
       AWS_IMAGE_TAG: latest
+      AWS_JOURNEY: journey
 
     steps:
       - uses: actions/checkout@v4
@@ -52,6 +53,8 @@ jobs:
           echo "::set-output name=affected_projects::$affected_projects"
 
       - name: Deploy landing to AWS S3
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete
@@ -63,6 +66,8 @@ jobs:
           SOURCE_DIR: ./dist/apps/web
 
       - name: Invalidate landing AWS Cloudfront
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -83,9 +88,9 @@ jobs:
       - name: Build, tag, and push Docker image to Amazon ECR
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         run: |
-          docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
-          docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
+          docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}/${{env.AWS_JOURNEY}}:${{env.AWS_IMAGE_TAG}} .
+          docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}/${{env.AWS_JOURNEY}}:${{env.AWS_IMAGE_TAG}}
 
       - name: SSH into EC2 and update Docker container
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
-        run: ./deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} ${{ secrets.AWS_EC2_SSH_KEY }} ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}} ${{env.AWS_IMAGE_TAG}}
+        run: ./deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} ${{ secrets.AWS_EC2_SSH_KEY }} ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}}/${{env.AWS_JOURNEY}} ${{env.AWS_IMAGE_TAG}}

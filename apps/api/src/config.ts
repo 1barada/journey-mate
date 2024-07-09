@@ -14,6 +14,18 @@ const config = convict({
     default: 'localhost',
     env: 'AWS_EC2_HOST',
   },
+  secret: {
+    default: '',
+    env: 'SECRET_KEY',
+  },
+  frontendUrl: {
+    default: 'http://localhost:5050',
+    env: 'FRONTEND_URL',
+  },
+  cookieSecret: {
+    default: '',
+    env: 'COOKIE_SECRET',
+  },
 });
 
 const configPath = config.get('configUrl');

@@ -1,5 +1,8 @@
+import { fastifyCookie, FastifyCookieOptions } from '@fastify/cookie';
 import cors from '@fastify/cors';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
+
+import 'dotenv/config';
 
 import { createContext } from './trpc/context';
 import { appRouter } from './trpc/router';
@@ -8,12 +11,27 @@ import { server } from './server';
 
 const host = config.get('host');
 const port = config.get('port');
+const origin = config.get('frontendUrl');
 
-await server.register(cors, {
-  origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : ['*'],
+server.register(cors, {
+  origin: [origin],
+  credentials: true,
 });
 
-await server.register(fastifyTRPCPlugin, {
+server.register(fastifyCookie, {
+  secret: config.get('cookieSecret'),
+  hook: 'onRequest',
+  algorithm: 'sha256',
+  parseOptions: {
+    httpOnly: true,
+    secure: true,
+    path: '/',
+    sameSite: true,
+    maxAge: 60_4800,
+  },
+} as FastifyCookieOptions);
+
+server.register(fastifyTRPCPlugin, {
   prefix: '/trpc',
   trpcOptions: { router: appRouter, createContext },
 });

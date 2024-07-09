@@ -1,0 +1,93 @@
+@import '../../style/variables.scss';
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  overflow: hidden;
+  gap: 34px;
+}
+
+.formContainer .formHeader {
+  font-family: $modal-font-family;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.5;
+  color: $modal-header;
+  text-align: center;
+}
+
+.formContainer .formText {
+  font-family: $modal-font-family;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $modal-text-primary;
+}
+
+.formContainer .formHeadersContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.formContainer .linkContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.formContainer .formLinkText {
+  font-family: $modal-font-family;
+  color: $modal-accent;
+  text-decoration-color: $modal-accent;
+  width: -moz-fit-content;
+  width: fit-content;
+
+  transition: $transition;
+
+  &:is(:hover, :focus) {
+    color: $modal-accent-hover;
+    text-decoration-color: $modal-accent-hover;
+  }
+}
+
+.formContainer .formContainerFlexColumnGap20 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
+.formContainer .formContainerFlexColumnGap16 {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formContainer .formInputLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  font-family: $modal-font-family;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.formContainer .formSubmitBtn {
+  background-color: $secondary-main;
+  border-radius: 30px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.formContainer .formSubmitBtnText {
+  color: #fff;
+  text-transform: none;
+  font-family: $modal-font-family;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+}
