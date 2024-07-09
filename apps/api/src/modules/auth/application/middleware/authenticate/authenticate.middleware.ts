@@ -2,12 +2,13 @@ import { t } from '@project/api/trpc/trpc';
 
 import { AuthenticateService } from '../../../service/authentication/authentication.service';
 import { InvalidTokenError } from '../errors/invalid-token.error';
+import { TokenNotProvidedError } from '../errors/token-not-provided.error';
 
 export const authenticateMiddleware = t.middleware(async ({ ctx, next }) => {
   const authenticationService = new AuthenticateService();
   const accessToken = ctx.req.cookies['access-token'];
   if (!accessToken) {
-    return next();
+    throw new TokenNotProvidedError();
   }
 
   const tokenPayload = authenticationService.verifyToken(accessToken);
