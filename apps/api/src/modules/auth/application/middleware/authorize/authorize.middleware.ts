@@ -1,15 +1,14 @@
 import { t } from '@project/api/trpc/trpc';
 
 import { permissionTable } from '../../../domain/repository/permissions.repository';
-import { createPermissionsService } from '../../../service/permissions/permissions.factory';
+import { PermissionsService } from '../../../service/permissions/permissions.service';
 import { InvalidPermissionError } from '../errors/invalid-permission.error';
 
-import { authorizationValidatorProps } from './types';
-// type myType = Parameters<typeof t.middleware>;
+import { authorizationMiddlewareProps } from './types';
 
-export const authZMiddleware = ({ requiredEntity, requiredAction }: authorizationValidatorProps) =>
+export const authorizeMiddleware = ({ requiredEntity, requiredAction }: authorizationMiddlewareProps) =>
   t.middleware(async ({ ctx, next }) => {
-    const permissionsService = createPermissionsService();
+    const permissionsService = new PermissionsService();
     const { userRole } = ctx.userTokenData;
 
     const existedRole = permissionsService.roleValidation({ userRole, permissions: permissionTable });

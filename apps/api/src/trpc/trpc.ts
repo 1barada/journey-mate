@@ -1,9 +1,9 @@
 import { initTRPC } from '@trpc/server';
 import { ZodError } from 'zod';
 
-import { authNMiddleware } from '../modules/auth/application/middleware/authN/authN.middleware';
-import { authZMiddleware } from '../modules/auth/application/middleware/authZ/authZ.middleware';
-import { authorizationValidatorProps } from '../modules/auth/application/middleware/authZ/types';
+import { authenticateMiddleware } from '../modules/auth/application/middleware/authenticate/authenticate.middleware';
+import { authorizeMiddleware } from '../modules/auth/application/middleware/authorize/authorize.middleware';
+import { authorizationMiddlewareProps } from '../modules/auth/application/middleware/authorize/types';
 
 import { Context } from './context';
 
@@ -24,6 +24,6 @@ export const t = initTRPC.context<Context>().create({
 export const router = t.router;
 
 export const publicProcedure = t.procedure;
-export const authProcedure = t.procedure.use(authNMiddleware);
-export const roleProcedure = ({ requiredAction, requiredEntity }: authorizationValidatorProps) =>
-  authProcedure.use(authZMiddleware({ requiredEntity, requiredAction }));
+export const authProcedure = t.procedure.use(authenticateMiddleware);
+export const roleProcedure = ({ requiredAction, requiredEntity }: authorizationMiddlewareProps) =>
+  authProcedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
