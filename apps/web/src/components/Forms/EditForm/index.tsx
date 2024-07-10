@@ -1,23 +1,32 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Box,
   Button,
   FormControl,
   FormControlLabel,
   FormLabel,
+  Input,
   Radio,
   RadioGroup,
   TextField,
   Typography,
 } from '@mui/material';
 
-export const EditForm = () => {
+import { editProfile } from '../../../store/Auth/AuthSlice';
+
+import styles from './EditForm.module.scss';
+import type { EditFormProps } from './types';
+
+export const EditForm: FC<EditFormProps> = ({ age, mail, fullname, gender }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [name, setName] = useState<string>('');
-  const [age, setAge] = useState<number | null>(null);
-  const [email, setEmail] = useState('');
-  const [description, setDescription] = useState('');
-  const [sex, setSex] = useState<string | null>('');
+  const [name, setName] = useState<string>(fullname);
+  const [years, setAge] = useState<number | null>(age);
+  const [email, setEmail] = useState(mail);
+
+  const [sex, setSex] = useState<string | null>(gender);
+
+  const dispatch = useDispatch();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -38,9 +47,6 @@ export const EditForm = () => {
       case 'email':
         setEmail(value);
         break;
-      case 'description':
-        setDescription(value);
-        break;
 
       case 'sex':
         setSex(value);
@@ -53,30 +59,55 @@ export const EditForm = () => {
   const handleSumbit = (event: FormEvent) => {
     event.preventDefault();
 
-    console.log({ file, name, age, email, description, sex });
+    dispatch(editProfile({ name, age: years, email, sex }));
+    console.log({ file });
   };
 
   return (
     <Box component="form" onSubmit={handleSumbit}>
-      <Typography component="h2">Edit Profile</Typography>
-      <TextField onChange={handleInputChange} id="outlined-multiline-flexible" name="name" label="Full name" />
-      <TextField onChange={handleInputChange} id="outlined-multiline-flexible" name="age" label="Age" />
-      <TextField onChange={handleInputChange} id="outlined-multiline-flexible" name="email" label="Email" />
-      <TextField onChange={handleInputChange} id="outlined-multiline-flexible" name="description" label="Description" />
-      {/* <TextField id="outlined-multiline-flexible" label="Change photo" type="file" /> */}
-      <div>
-        <input
-          accept="image/*,application/pdf"
-          id="file-input"
-          type="file"
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
-        <label htmlFor="file-input">
-          <Button variant="contained" color="primary" component="span">
-            Choose Photo
-          </Button>
-        </label>
+      <Typography component="h2" variant="h5" gutterBottom>
+        Edit Profile
+      </Typography>
+      <TextField
+        onChange={handleInputChange}
+        id="outlined-name"
+        name="name"
+        label="Full name"
+        value={name}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        onChange={handleInputChange}
+        id="outlined-age"
+        name="age"
+        label="Age"
+        value={years ?? ''}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <TextField
+        onChange={handleInputChange}
+        id="outlined-email"
+        name="email"
+        label="Email"
+        value={email}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+      />
+      <FormControl fullWidth margin="normal">
+        <Button variant="contained" component="label">
+          Choose Photo
+          <Input
+            type="file"
+            inputProps={{ accept: 'image/*,application/pdf' }}
+            onChange={handleFileChange}
+            className={styles.inputUnDisplayed}
+          />
+        </Button>
         {file && (
           <TextField
             label="Selected file"
@@ -89,16 +120,25 @@ export const EditForm = () => {
             }}
           />
         )}
-      </div>
-      <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">Sex</FormLabel>
-        <RadioGroup aria-labelledby="demo-radio-buttons-group-label" name="sex" onChange={handleInputChange}>
+      </FormControl>
+      <FormControl className={styles.radioWrapper}>
+        <FormLabel className={styles.radioLabel} component="legend">
+          Sex
+        </FormLabel>
+        <RadioGroup
+          className={styles.radioList}
+          aria-label="sex"
+          name="sex"
+          onChange={handleInputChange}
+          value={sex ?? ''}
+        >
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
         </RadioGroup>
       </FormControl>
-
-      <Button type="submit"> Submit</Button>
+      <Button type="submit" variant="contained" color="primary" className={styles.submitBtn}>
+        Submit
+      </Button>
     </Box>
   );
 };

@@ -1,0 +1,25 @@
+.inputUnDisplayed {
+  display: none;
+}
+
+.radioWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  gap: 24px;
+}
+
+.radioLabel {
+  text-align: center;
+}
+
+.radioList {
+  justify-content: center;
+  flex-direction: row;
+}
+
+.submitBtn {
+  width: 100%;
+}

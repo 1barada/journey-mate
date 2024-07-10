@@ -3,17 +3,6 @@
 .section {
   padding-top: 70px;
   padding-bottom: 70px;
-}
-
-.profileWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-
-  gap: 24px;
-
-  margin-bottom: 24px;
 
   .button {
     color: $text-primary;
@@ -24,7 +13,34 @@
     gap: 10px;
     border: 1px solid $text-primary;
     border-radius: 16px;
+
+    transition: $transition-fast;
+
+    &:is(:hover, :focus) {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
   }
+
+  .editBtn {
+    display: flex;
+    margin-left: auto;
+    margin-bottom: 16px;
+  }
+}
+
+.profileWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+
+  margin-bottom: 24px;
 
   .avatar {
     width: 283px;

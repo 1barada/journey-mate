@@ -1,7 +1,7 @@
 export interface User {
   name: string;
   email: string;
-  sex: 'Femail' | 'Male' | null;
+  sex: 'femail' | 'male' | null;
   description: string;
   age: number | null;
   avatar: string | null;

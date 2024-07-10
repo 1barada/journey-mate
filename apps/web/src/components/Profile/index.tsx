@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
@@ -13,7 +14,7 @@ import styles from './Profile.module.scss';
 
 export const Profile = () => {
   const [isOpen, toggle] = useModal();
-
+  const [isEdited, setIsEdited] = useState(false);
   const { age, avatar, description, email, name, sex } = useSelector(selectUser);
 
   return (
@@ -47,11 +48,14 @@ export const Profile = () => {
           </Button>
         </Box>
 
-        <CardDescription description={description} />
+        <Button className={`${styles.button} ${styles.editBtn}`} onClick={() => setIsEdited(true)}>
+          Edit Description
+        </Button>
+        <CardDescription description={description} isEdited={isEdited} setIsEdited={setIsEdited} title="About myself" />
 
         {isOpen && (
           <Modal toggleModal={toggle}>
-            <EditForm />
+            <EditForm age={age} mail={email} fullname={name} gender={sex} />
           </Modal>
         )}
       </Container>
