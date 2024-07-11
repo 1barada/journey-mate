@@ -15,8 +15,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { trpc } from '../../services/trpc';
-
 import styles from './HomePage.module.scss';
 
 const HomePage = () => {
@@ -30,8 +28,6 @@ const HomePage = () => {
   const handleFilterChange = (event: SelectChangeEvent<string>) => {
     setFilterType(event.target.value);
   };
-
-  trpc.user.getUsers.query().then((data) => console.log(data));
 
   return (
     <Container>

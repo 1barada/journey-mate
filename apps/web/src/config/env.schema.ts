@@ -8,7 +8,7 @@ const APP_SERVER_PORT = z.coerce.number().default(4200);
 const APP_SERVER_HOST = z.string().min(1).default('localhost');
 const APP_PREVIEW_SERVER_PORT = z.coerce.number().default(4300);
 const APP_PREVIEW_SERVER_HOST = z.string().min(1).default('localhost');
-const APP_API_URL = z.string().url().default('http://localhost:5000/trcp');
+const APP_API_URL = z.string().url().default('http://localhost:5000/trpc');
 
 /**
  * schema with env keys needed in vite.config.ts file
