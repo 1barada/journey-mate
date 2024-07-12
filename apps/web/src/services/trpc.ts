@@ -1,4 +1,4 @@
-import type { AppRouter } from '@project/api/trpc';
+import type { AppRouter } from '@project/api/trpc/router';
 import { createTRPCProxyClient, httpLink } from '@trpc/client';
 
 import { config } from '../config/app.config';
