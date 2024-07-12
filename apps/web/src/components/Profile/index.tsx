@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
+import clsx from 'clsx';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
@@ -16,6 +17,8 @@ export const Profile = () => {
   const [isOpen, toggle] = useModal();
   const [isEdited, setIsEdited] = useState(false);
   const { age, avatar, description, email, name, sex } = useSelector(selectUser);
+
+  const doubleStyle = clsx(styles.button, styles.editBtn);
 
   return (
     <Box component="section" className={styles.section}>
@@ -48,7 +51,7 @@ export const Profile = () => {
           </Button>
         </Box>
 
-        <Button className={`${styles.button} ${styles.editBtn}`} onClick={() => setIsEdited(true)}>
+        <Button className={doubleStyle} onClick={() => setIsEdited(true)}>
           Edit Description
         </Button>
         <CardDescription description={description} isEdited={isEdited} setIsEdited={setIsEdited} title="About myself" />
