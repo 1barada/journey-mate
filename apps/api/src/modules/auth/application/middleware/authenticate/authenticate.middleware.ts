@@ -1,13 +1,13 @@
 import { t } from '@project/api/trpc/tprcInit';
+
 import { AuthenticateService } from '../../../service/authentication/authentication.service';
 import { InvalidTokenError } from '../errors/invalid-token.error';
-import { TokenNotProvidedError } from '../errors/token-not-provided.error';
 
 export const authenticateMiddleware = t.middleware(async ({ ctx, next }) => {
   const authenticationService = new AuthenticateService();
   const accessToken = ctx.req.cookies['access-token'];
   if (!accessToken) {
-    throw new TokenNotProvidedError();
+    return next();
   }
 
   const tokenPayload = authenticationService.verifyToken(accessToken);
@@ -16,8 +16,9 @@ export const authenticateMiddleware = t.middleware(async ({ ctx, next }) => {
   }
 
   if (!tokenPayload.userId || !tokenPayload.userRole || !tokenPayload.userEmail) {
-    return next();
+    throw new InvalidTokenError('Invalid  token');
   }
+
   const { userId, userRole, userEmail } = tokenPayload;
   ctx.userTokenData = { userId, userRole, userEmail };
   return next();
