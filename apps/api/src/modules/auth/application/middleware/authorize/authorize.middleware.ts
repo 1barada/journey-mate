@@ -1,5 +1,4 @@
-import { t } from '@project/api/trpc/trpc';
-
+import { t } from '@project/api/trpc/tprcInit';
 import { permissionTable } from '../../../domain/repository/permissions.repository';
 import { createPermissionsService } from '../../../service/permissions/permissions.factory';
 import { InvalidPermissionError } from '../errors/invalid-permission.error';

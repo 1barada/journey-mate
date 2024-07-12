@@ -1,5 +1,4 @@
-import { t } from '@project/api/trpc/trpc';
-
+import { t } from '@project/api/trpc/tprcInit';
 import { AuthenticateService } from '../../../service/authentication/authentication.service';
 import { InvalidTokenError } from '../errors/invalid-token.error';
 import { TokenNotProvidedError } from '../errors/token-not-provided.error';
