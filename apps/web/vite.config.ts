@@ -32,8 +32,18 @@ export default defineConfig(async ({ mode }) => {
       port: previewServerPort,
       host: previewServerHost,
     },
-
-    plugins: [react(), nxViteTsPaths()],
+    optimizeDeps: {
+      include: ['@emotion/react', '@emotion/styled', '@mui/material/Tooltip'],
+    },
+    plugins: [
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      }),
+      nxViteTsPaths(),
+    ],
     envDir: './environment',
     envPrefix: 'APP',
     build: {
