@@ -26,7 +26,7 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 export const publicRoleProcedure = ({ requiredAction, requiredEntity }: authorizationMiddlewareProps) =>
-  publicProcedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
+  t.procedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
 
 export const authenticateProcedure = t.procedure.use(authenticateMiddleware);
 
