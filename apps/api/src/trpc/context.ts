@@ -7,6 +7,7 @@ import { prisma } from '../database';
 
 import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
+import { transporter } from '../transporter';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log;
@@ -15,7 +16,7 @@ export function createContext({ req, res }: CreateFastifyContextOptions) {
 
   const validatedCookies = validation.success ? validation.data : null;
 
-  return { req, res, log, db: prisma, validatedCookies };
+  return { req, res, log, db: prisma, validatedCookies, transporter };
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>;

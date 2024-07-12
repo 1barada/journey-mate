@@ -26,6 +26,17 @@ const config = convict({
     default: '',
     env: 'COOKIE_SECRET',
   },
+  emailUser: {
+    format: (value) => {
+      if (!/.+@gmail\.com/.test(value)) throw new Error('emailUser must be valid email');
+    },
+    default: '',
+    env: 'EMAIL_USER',
+  },
+  emailPassword: {
+    default: '',
+    env: 'EMAIL_PASSWORD',
+  },
 });
 
 const configPath = config.get('configUrl');
