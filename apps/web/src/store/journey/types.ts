@@ -5,4 +5,5 @@ interface BaseSlice {
 
 export interface JourneySlice extends BaseSlice {
   journey: unknown;
+  editUnsavedMilestone: null | any;
 }

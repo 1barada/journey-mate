@@ -35,3 +35,37 @@ export const joinJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
       },
     }
   );
+
+export const createNewJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
+  creator.asyncThunk(
+    async (
+      journey: { title: string; description: string; type: string; milestones: { location: string; date: Date }[] },
+      { rejectWithValue }
+    ) => {
+      try {
+        const res = await sleep(10000);
+
+        return {
+          ...journey,
+          id: performance.now(),
+        };
+
+        return res;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.error = null;
+        state.loading = true;
+      },
+      fulfilled: (state) => {
+        state.loading = false;
+      },
+      rejected: (state, { payload }) => {
+        state.loading = false;
+        state.error = payload as string;
+      },
+    }
+  );
