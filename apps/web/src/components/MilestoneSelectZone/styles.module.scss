@@ -1,0 +1,74 @@
+@import '../../style/variables.scss';
+
+.milestonesSelectZone {
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.23);
+  border-radius: 8px;
+  max-height: 400px;
+  min-height: 200px;
+  height: 100%;
+  position: relative;
+  padding-block: 24px;
+
+  &.empty:hover {
+    border-color: $border-primary;
+  }
+
+  &.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: unset;
+  }
+
+  .placeholder {
+    font-size: 24px;
+    color: $text-placeholder;
+  }
+
+  .scrollable {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 48px;
+    padding-inline: 16px;
+    padding-top: 2px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    li {
+      display: flex;
+      align-items: center;
+      border: 1px solid $primary-secondary;
+      border-radius: 6px;
+      padding: 4px;
+
+      &:hover {
+        cursor: default;
+        background-color: $primary-secondary;
+      }
+    }
+  }
+  .addButton {
+    padding: 8px;
+    min-width: 44px;
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+  }
+
+  .delimiter {
+    color: $grey-200;
+  }
+  .datetimeRange {
+    gap: 4px;
+  }
+
+  .control svg {
+    font-size: 1.25rem;
+  }
+}
