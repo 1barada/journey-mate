@@ -55,7 +55,7 @@ export const Profile = () => {
 
         {isOpen && (
           <Modal toggleModal={toggle}>
-            <EditForm age={age} mail={email} fullname={name} gender={sex} />
+            <EditForm age={age} email={email} name={name} sex={sex} />
           </Modal>
         )}
       </Container>

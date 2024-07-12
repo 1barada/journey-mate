@@ -1,6 +1,7 @@
 export interface EditFormProps {
-  fullname: string;
+  name: string;
   age: number | null;
-  mail: string;
-  gender: string | null;
+  email: string;
+  sex: string | null;
+  file?: File | null;
 }
