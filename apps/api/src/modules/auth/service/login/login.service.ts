@@ -5,8 +5,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { InvalidPasswordError } from '../../domain/errors/invalid-password.error';
-import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases/login.usecase';
 import { WrongAuthenticationFlowError } from '../../domain/errors/wrong-authentication-flow.error';
+import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases/login.usecase';
 
 export class LoginService implements LoginUsecase {
   private jwt = {
