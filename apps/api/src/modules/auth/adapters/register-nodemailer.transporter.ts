@@ -1,10 +1,11 @@
+import { config } from '@project/api/config';
+import { NodemailerTransporterType } from '@project/api/transporter';
+
 import {
   RegisterTransporterPort,
   SendEmailConfirmationParams,
   SendEmailConfirmationResult,
 } from '../domain/transporter/register.transporter';
-import { config } from '@project/api/config';
-import { NodemailerTransporterType } from '@project/api/transporter';
 
 export class RegisterNodemailerTransporter implements RegisterTransporterPort {
   constructor(private transporter: NodemailerTransporterType) {}

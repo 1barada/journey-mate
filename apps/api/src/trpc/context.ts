@@ -4,10 +4,10 @@ import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import '@fastify/cookie';
 
 import { prisma } from '../database';
+import { transporter } from '../transporter';
 
 import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
-import { transporter } from '../transporter';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log;

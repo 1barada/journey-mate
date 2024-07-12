@@ -1,8 +1,10 @@
+import { config } from '@project/api/config';
+import { UserAlreadyExistsError } from '@project/api/modules/user/domain/errors/user-already-exists.error';
+import { UserRepositoryPort } from '@project/api/modules/user/domain/repository/user.repository';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { config } from '@project/api/config';
-import { UserRepositoryPort } from '@project/api/modules/user/domain/repository/user.repository';
+import { RegisterTransporterPort } from '../../domain/transporter/register.transporter';
 import {
   ConfirmEmailRequest,
   ConfirmEmailResponse,
@@ -10,8 +12,6 @@ import {
   RegisterWithEmailRequest,
   RegisterWithEmailResponse,
 } from '../../domain/usecases/register.usecase';
-import { UserAlreadyExistsError } from '@project/api/modules/user/domain/errors/user-not-found.error';
-import { RegisterTransporterPort } from '../../domain/transporter/register.transporter';
 
 export class RegisterService implements RegisterUsecase {
   constructor(private userRepository: UserRepositoryPort, private registerTransporter: RegisterTransporterPort) {}
