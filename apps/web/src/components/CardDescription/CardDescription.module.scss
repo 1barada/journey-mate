@@ -11,23 +11,24 @@
 }
 
 .title {
-  font-weight: normal;
-  font-size: 30px;
+  font-weight: 600;
+  font-size: 20px;
   color: $text-primary;
   line-height: 1.17;
 
   @media screen and (min-width: $md) {
-    font-size: 36px;
+    font-size: 28px;
   }
 }
 
 .contentWrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .content {
-  font-size: 18px;
+  font-size: 16px;
   color: $text-secondary;
 
   @media screen and (min-width: $md) {
@@ -48,9 +49,69 @@
 }
 
 .contentShowMore {
-  font-size: 24px;
+  font-size: 14px;
   display: inline-block;
   vertical-align: top;
   margin-top: -1px;
   color: $text-primary;
+}
+
+.editArea {
+  textarea {
+    padding-right: 12px;
+  }
+}
+
+.limit {
+  position: absolute;
+  bottom: 48px;
+  right: 5px;
+  font-size: 12px;
+
+  color: $text-secondary;
+  span {
+    font-size: 12px;
+  }
+
+  .overLimit {
+    color: $error-main;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+
+  transition: $transition;
+
+  &:is(:hover, :focus) {
+    transform: scale(1.4);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.editBtn {
+  margin-left: auto;
+  margin-top: 12px;
+  font-weight: 600;
+  color: $text-primary;
+
+  border: 1px solid $border-primary;
+  border-radius: 12px;
+
+  transition: $transition;
+
+  &:is(:hover, :focus) {
+    transform: scale(1.2);
+  }
+
+  &:disabled {
+    color: $error-main;
+    border-color: $error-main;
+  }
 }

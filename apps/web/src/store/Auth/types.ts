@@ -1,11 +1,9 @@
-// FIXME: change IAuthSlice to AuthSlice
-
 export interface User {
   name: string;
   email: string;
-  sex: 'Femail' | 'Male' | '-';
+  sex: 'femail' | 'male' | null;
   description: string;
-  age: number;
+  age: number | null;
   avatar: string | null;
 }
 

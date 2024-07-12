@@ -1,18 +1,14 @@
-import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
+import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit';
 
 import type { IAuthSlice } from './types';
-
-const createSlice = buildCreateSlice({
-  creators: { asyncThunk: asyncThunkCreator },
-});
 
 export const initialState: IAuthSlice = {
   user: {
     name: 'Oleksii Korotenko',
     email: 'djshajhb@gmail.com',
-    sex: 'Male',
+    sex: null,
     description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
-    age: 33,
+    age: null,
     avatar: null,
   },
   loading: false,
@@ -24,32 +20,18 @@ export const initialState: IAuthSlice = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: (creator) => ({
-    example: creator.asyncThunk(
-      async (_, { rejectWithValue }) => {
-        try {
-          // const response = await axios.post('/endpoint');
-
-          return true;
-        } catch (error) {
-          return rejectWithValue((error as Error).message);
-        }
-      },
-      {
-        pending: (state) => {
-          state.error = null;
-          state.loading = true;
-        },
-        fulfilled: (state, action) => {
-          state.loading = false;
-        },
-        rejected: (state, { payload }) => {
-          state.loading = false;
-          state.error = payload as string;
-        },
-      }
-    ),
-  }),
+  reducers: {
+    editProfile: (state, action) => {
+      state.user.email = action.payload.email;
+      state.user.name = action.payload.name;
+      state.user.sex = action.payload.sex;
+      state.user.age = action.payload.age;
+      console.log(action.payload);
+    },
+    editDescription: (state, action) => {
+      state.user.description = action.payload;
+    },
+  },
   selectors: {
     selectIsAuthenticated: createDraftSafeSelector(
       (state) => state.isAuthenticated,
@@ -65,6 +47,6 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const { example } = authSlice.actions;
+export const { editProfile, editDescription } = authSlice.actions;
 
 export const { selectIsAuthenticated, selectUser } = authSlice.selectors;
