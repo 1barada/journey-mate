@@ -1,6 +1,7 @@
 import { authenticateMiddleware } from '../modules/auth/application/middleware/authenticate/authenticate.middleware';
 import { authorizeMiddleware } from '../modules/auth/application/middleware/authorize/authorize.middleware';
 import { authorizationMiddlewareProps } from '../modules/auth/application/middleware/authorize/types';
+
 import { t } from './tprcInit';
 
 export const router = t.router;
