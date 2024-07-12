@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 
 import { InvalidPasswordError } from '../../domain/errors/invalid-password.error';
 import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases/login.usecase';
+import { WrongAuthenticationFlowError } from '../../domain/errors/wrong-authentication-flow.error';
 
 export class LoginService implements LoginUsecase {
   private jwt = {
@@ -22,7 +23,15 @@ export class LoginService implements LoginUsecase {
       throw new UserNotFoundError(`User with email "${request.email}" does not exist`);
     }
 
-    const isValid = await bcrypt.compare(request.password, user.password);
+    if (user.authProvider !== 'password') {
+      throw new WrongAuthenticationFlowError(`Used wrong authentication flow. Allowed flow: ${user.authProvider}`);
+    }
+
+    if (user.passwordHash === null) {
+      throw new Error(`Password hash on 'password' auth provider is null`);
+    }
+
+    const isValid = await bcrypt.compare(request.password, user.passwordHash);
     if (!isValid) {
       throw new InvalidPasswordError();
     }
