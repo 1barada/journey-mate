@@ -11,7 +11,7 @@
           {
             "enforceBuildableLibDependency": true,
             "allowCircularSelfDependency": true,
-            "allow": ["@project/api/trpc", "@project/api/permissions"],
+            "allow": ["@project/api/trpc"],
             "depConstraints": [
               {
                 "sourceTag": "*",
