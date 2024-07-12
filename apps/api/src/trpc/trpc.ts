@@ -24,6 +24,11 @@ export const t = initTRPC.context<Context>().create({
 export const router = t.router;
 
 export const publicProcedure = t.procedure;
-export const authProcedure = t.procedure.use(authenticateMiddleware);
-export const roleProcedure = ({ requiredAction, requiredEntity }: authorizationMiddlewareProps) =>
-  authProcedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
+
+export const publicRoleProcedure = ({ requiredAction, requiredEntity }: authorizationMiddlewareProps) =>
+  publicProcedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
+
+export const authenticateProcedure = t.procedure.use(authenticateMiddleware);
+
+export const authorizedProcedure = ({ requiredAction, requiredEntity }: authorizationMiddlewareProps) =>
+  authenticateProcedure.use(authorizeMiddleware({ requiredEntity, requiredAction }));
