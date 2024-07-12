@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
 import { Avatar, Box, Button, Container, Typography } from '@mui/material';
@@ -8,10 +8,11 @@ import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
 import { selectUser } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
-import { Modal } from '../common/Modal';
-import { EditForm } from '../Forms/EditForm';
 
 import styles from './Profile.module.scss';
+
+const Modal = lazy(() => import('../common/Modal').then((module) => ({ default: module.Modal })));
+const EditForm = lazy(() => import('../Forms/EditForm').then((module) => ({ default: module.EditForm })));
 
 export const Profile = () => {
   const [isOpen, toggle] = useModal();
@@ -55,12 +56,13 @@ export const Profile = () => {
           Edit Description
         </Button>
         <CardDescription description={description} isEdited={isEdited} setIsEdited={setIsEdited} title="About myself" />
-
-        {isOpen && (
-          <Modal toggleModal={toggle}>
-            <EditForm age={age} email={email} name={name} sex={sex} />
-          </Modal>
-        )}
+        <Suspense fallback="null">
+          {isOpen && (
+            <Modal toggleModal={toggle}>
+              <EditForm age={age} email={email} name={name} sex={sex} />
+            </Modal>
+          )}
+        </Suspense>
       </Container>
     </Box>
   );

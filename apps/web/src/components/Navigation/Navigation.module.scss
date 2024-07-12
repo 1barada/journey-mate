@@ -55,6 +55,7 @@
     display: block;
     width: auto;
     box-shadow: none;
+    background-color: transparent;
   }
 
   .navList {
@@ -84,6 +85,7 @@
     border-left: none;
     justify-content: flex-end;
 
+    background-color: transparent;
     .closeBtn {
       display: none;
     }
