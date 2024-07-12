@@ -1,0 +1,44 @@
+@import '../../style/variables.scss';
+
+.newJourneyForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+
+  .group {
+    gap: 24px;
+  }
+
+  .actions {
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+
+  .disabled,
+  .disabled * {
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .spinner {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color: $primary-main, $alpha: 0.5);
+  }
+
+  @media screen and (min-width: $md) {
+    & {
+      grid-template-columns: minmax(150px, 1fr) 1fr;
+      gap: 48px;
+    }
+
+    .actions {
+      margin-top: auto;
+    }
+  }
+}
