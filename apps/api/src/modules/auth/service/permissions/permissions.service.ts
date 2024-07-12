@@ -1,5 +1,9 @@
 import { PermissionAction, PermissionEntity, Role } from '../../domain/enums/permissions.enums';
-import { permissionTable, permissionTableType } from '../../domain/repository/permissions.repository';
+import {
+  PermissionRepositoryPort,
+  permissionTable,
+  permissionTableType,
+} from '../../domain/repository/permissions.repository';
 
 interface roleValidatorProps {
   permissions: typeof permissionTable;
@@ -17,8 +21,11 @@ interface entitiesValidatorProps {
 }
 
 export class PermissionsService {
-  roleValidation({ permissions, userRole }: roleValidatorProps) {
-    const role = permissions[userRole];
+  constructor(private PermissionRepository: PermissionRepositoryPort) {}
+
+  roleValidation({ userRole }: roleValidatorProps) {
+    const permissionTable = this.PermissionRepository.getPermissionsTable();
+    const role = permissionTable[userRole];
     if (!role) {
       return null;
     }

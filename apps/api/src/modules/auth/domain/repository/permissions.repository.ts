@@ -30,7 +30,15 @@ export const permissionTable: Record<Role, permissionTableType> = {
 };
 
 export class PermissionRepository {
+  getPermissionsTable(): typeof permissionTable {
+    return permissionTable;
+  }
   getPermissionsByRole(role: Role): permissionTableType {
     return permissionTable[role] || permissionTable[Role.Guest];
   }
+}
+
+export interface PermissionRepositoryPort {
+  getPermissionsByRole(role: Role): permissionTableType;
+  getPermissionsTable(): typeof permissionTable;
 }

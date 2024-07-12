@@ -1,13 +1,14 @@
 import { PermissionAction, PermissionEntity, Role } from '../../domain/enums/permissions.enums';
 import { permissionTable } from '../../domain/repository/permissions.repository';
 
+import { createPermissionsService } from './permissions.factory';
 import { PermissionsService } from './permissions.service';
 
 describe('PermissionsService', () => {
   let permissionsService: PermissionsService;
 
   beforeEach(() => {
-    permissionsService = new PermissionsService();
+    permissionsService = createPermissionsService();
   });
 
   describe('roleValidation', () => {
