@@ -15,6 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 
+<<<<<<< HEAD
+=======
+import { trpcClient } from '../../services/trpc';
+
+>>>>>>> 1501625 (fix correct import statements for trpc services)
 import styles from './HomePage.module.scss';
 
 const HomePage = () => {
@@ -29,6 +34,11 @@ const HomePage = () => {
     setFilterType(event.target.value);
   };
 
+<<<<<<< HEAD
+=======
+  trpcClient.user.getUsers.query().then((data) => console.log(data));
+
+>>>>>>> 1501625 (fix correct import statements for trpc services)
   return (
     <Container>
       <Divider className={styles.container} />
