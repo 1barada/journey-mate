@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputLabel, TextField } from '@mui/material';
+import { InputLabel, TextField, Typography } from '@mui/material';
 
 import { ShowHidePasswordBtn } from './ShowHidePasswordBtn';
 import { AuthFormInputProps, TextInputTypes } from './types';
@@ -10,8 +10,11 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
   labelSx,
   inputProps,
   inputSx,
+  errorProps,
   type,
   showPswBtn,
+  inputRegister,
+  validationErrorMessage,
 }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -32,9 +35,10 @@ export const AuthFormInput: React.FC<AuthFormInputProps> = ({
             ) : null,
         }}
         type={inputType}
-        onChange={() => console.log(passwordVisibility, type)}
         {...inputProps}
+        {...inputRegister}
       />
+      {validationErrorMessage && <Typography {...errorProps}>{validationErrorMessage}</Typography>}
     </InputLabel>
   );
 };
