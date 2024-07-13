@@ -1,7 +1,7 @@
 import { config } from '@project/api/config';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-export class AuthenticateService {
+export class AuthenticationService {
   private secret = config.get('secret');
 
   verifyToken(token: string): JwtPayload {

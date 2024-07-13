@@ -1,10 +1,10 @@
 import { t } from '@project/api/trpc/tprcInit';
 
-import { AuthenticateService } from '../../../service/authentication/authentication.service';
+import { createAuthenticationService } from '../../../service/authentication/authentication.factory';
 import { InvalidTokenError } from '../errors/invalid-token.error';
 
 export const authenticateMiddleware = t.middleware(async ({ ctx, next }) => {
-  const authenticationService = new AuthenticateService();
+  const authenticationService = createAuthenticationService();
   const accessToken = ctx.req.cookies['access-token'];
   if (!accessToken) {
     return next();
