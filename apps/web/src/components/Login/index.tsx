@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Link, Typography } from '@mui/material';
+import { z } from 'zod';
 
 import { AuthFormTypes } from '../AuthForm/types';
 import { AuthFormInput } from '../common/AuthFormInput';
@@ -8,14 +10,31 @@ import { TextInputTypes } from '../common/AuthFormInput/types';
 import styles from './styles.module.scss';
 import type { LoginProps } from './types';
 
+const schema = z.object({
+  email: z.string().email({ message: 'Email is required' }).trim(),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 symbols long' })
+    .max(35, { message: 'Password must be less than 35 symbols' })
+    .trim()
+    .toLowerCase(),
+});
+
+export type FormInputsTypes = z.infer<typeof schema>;
+
 const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
-  const [buttonState, setButtonState] = useState(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormInputsTypes>({ resolver: zodResolver(schema) });
+
+  const onSubmit: SubmitHandler<FormInputsTypes> = (data) => console.log(data);
 
   return (
-    <Box className={styles.formContainer} component="form">
+    <Box className={styles.formContainer} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Box className={styles.formHeadersContainer} component="div">
-        {/* TODO: fix non-responsive behavior */}
-        <Typography className={styles.formHeader} component="h3" width="480px">
+        <Typography className={styles.formHeader} component="h3">
           Log in
         </Typography>
         <Typography className={styles.formText} component="p">
@@ -39,7 +58,10 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
             label="Email address"
             labelProps={{ className: styles.formInputLabel }}
             inputProps={{ fullWidth: true, variant: 'outlined' }}
+            errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Email}
+            inputRegister={register(TextInputTypes.Email)}
+            validationErrorMessage={errors.email?.message}
           />
           <AuthFormInput
             label="Password"
@@ -48,8 +70,11 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
               fullWidth: true,
               variant: 'outlined',
             }}
+            errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Password}
             showPswBtn={true}
+            inputRegister={register(TextInputTypes.Password)}
+            validationErrorMessage={errors.password?.message}
           />
         </Box>
         <Box className={styles.formContainerFlexColumnGap16} component="div">
@@ -64,13 +89,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm }) => {
               Forget password?
             </Link>
           </Typography>
-          <Button
-            className={styles.formSubmitBtn}
-            variant="contained"
-            fullWidth
-            disabled={buttonState}
-            disableElevation
-          >
+          <Button className={styles.formSubmitBtn} variant="contained" fullWidth disableElevation type="submit">
             <Typography className={styles.formSubmitBtnText}>Log in</Typography>
           </Button>
         </Box>
