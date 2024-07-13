@@ -11,8 +11,7 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
   const [buttonState, setButtonState] = useState(true);
   return (
     <Box component="form" className={styles.formContainer}>
-      {/* TODO: fix non-responsive behavior */}
-      <Typography className={styles.formHeader} component="h3" width="480px">
+      <Typography className={styles.formHeader} component="h3">
         Sign up
       </Typography>
       <Box className={styles.formContainerFlexColumnGap20} component="div">

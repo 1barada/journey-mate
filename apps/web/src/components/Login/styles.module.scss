@@ -15,6 +15,7 @@
   line-height: 1.5;
   color: $modal-header;
   text-align: center;
+  width: 480px;
 }
 
 .formContainer .formText {
@@ -74,6 +75,15 @@
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
+  overflow: visible;
+}
+
+.formContainer .formInputError {
+  position: absolute;
+  bottom: -15px;
+  left: 13px;
+  color: red;
+  font-size: 10px;
 }
 
 .formContainer .formSubmitBtn {
