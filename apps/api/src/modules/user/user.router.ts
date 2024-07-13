@@ -12,6 +12,9 @@ export const userRouter = router({
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
-      return await service.login(input);
+      const { user, token } = await service.login(input);
+
+      ctx.res.setCookie('access-token', token, { signed: true });
+      return user;
     }),
 });
