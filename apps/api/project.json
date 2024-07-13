@@ -10,7 +10,7 @@
         "args": ["-p {projectRoot}/tsconfig.app.json"]
       }
     },
-    "build:app": {
+    "build-app": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -51,7 +51,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["nx build:app api", "nx replace-aliases api"],
+        "commands": ["nx build-app api", "nx replace-aliases api"],
         "parallel": false
       }
     },
