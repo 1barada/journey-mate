@@ -40,14 +40,12 @@ export const userRouter = router({
         baseUrl,
       });
     }),
-  confirm: publicProcedure
-    .input(ConfirmEmailRequestSchema)
-    .output(ConfirmEmailResponseSchema)
-    .mutation(async ({ input, ctx }) => {
+    confirm: publicProcedure.output(ConfirmEmailResponseSchema).query(async ({ ctx }) => {
+      const query = ConfirmEmailRequestSchema.parse(ctx.req.query);
       const service = createRegisterService(ctx.db, ctx.transporter);
-
-      await service.confirm(input);
-
+  
+      await service.confirm(query);
+  
       return ctx.res.redirect(303, `${config.get('frontendUrl')}/auth/confirm`);
     }),
-});
+  });

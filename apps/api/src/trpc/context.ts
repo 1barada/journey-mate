@@ -5,7 +5,6 @@ import '@fastify/cookie';
 
 import { prisma } from '../database';
 import { transporter } from '../transporter';
-
 import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
 

@@ -15,7 +15,7 @@ model User {
   description  String?
   sex          Sex?
   dateOfBirth  DateTime?
-  passwordHash String?
+  passwordHash String?      @db.VarChar(72)
   authProvider AuthProvider
   active       Boolean      @default(false)
   createdAt    DateTime     @default(now())
