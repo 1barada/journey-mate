@@ -1,7 +1,9 @@
+import { sex } from '../../../store/Auth/types';
+
 export interface EditFormProps {
   name: string;
   age: number | null;
   email: string;
-  sex: string | null;
+  sex: sex | null;
   file?: File | null;
 }

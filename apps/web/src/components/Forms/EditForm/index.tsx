@@ -14,7 +14,8 @@ import {
   Typography,
 } from '@mui/material';
 
-// import { editProfile } from '../../../store/Auth/AuthSlice';
+import { editProfile } from '../../../store/Auth/AuthSlice';
+
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
 
@@ -34,7 +35,7 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
 
   const onSubmit = (data: EditFormProps) => {
     const { name, age, email, sex } = data;
-    // dispatch(editProfile({ name, age: Number(age), email, sex }));
+    dispatch(editProfile({ name, age: Number(age), email, sex }));
     console.log({ file: data.file });
   };
 
