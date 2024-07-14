@@ -1,4 +1,5 @@
 import convict from 'convict';
+
 import 'dotenv/config'; // remove after config.json shape is getting from ECR
 
 const config = convict({
