@@ -3,11 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Link, Typography } from '@mui/material';
 import { z } from 'zod';
 
-import { login, selectIsAuthLoading } from '../../store/Auth/AuthSlice';
-import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
-import { AuthFormTypes } from '../AuthForm/types';
-import { AuthFormInput } from '../common/AuthFormInput';
-import { TextInputTypes } from '../common/AuthFormInput/types';
+import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
+import { AuthFormTypes } from '../../AuthForm/types';
+import { AuthFormInput } from '../../common/AuthFormInput';
+import { TextInputTypes } from '../../common/AuthFormInput/types';
 
 import styles from './styles.module.scss';
 import type { LoginProps } from './types';

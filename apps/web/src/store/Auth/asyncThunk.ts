@@ -1,6 +1,6 @@
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
-import { FormInputsTypes } from '../../components/Login';
+import { FormInputsTypes } from '../../components/Forms/Login';
 import { trpcClient } from '../../services/trpc';
 
 import type { IAuthSlice } from './types';
