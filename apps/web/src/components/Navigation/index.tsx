@@ -125,7 +125,7 @@ export const Navigation = () => {
               </List>
               {isOpen && modalType && (
                 <Modal toggleModal={toggle}>
-                  <AuthForm form={modalType} />
+                  <AuthForm form={modalType} toggleModal={toggle} />
                 </Modal>
               )}
             </>

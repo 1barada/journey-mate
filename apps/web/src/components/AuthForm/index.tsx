@@ -6,12 +6,12 @@ import { Register } from '../Register';
 import type { AuthFormProps } from './types';
 import { AuthFormTypes } from './types';
 
-const AuthForm: React.FC<AuthFormProps> = ({ form }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ form, toggleModal }) => {
   const [formType, setFormType] = useState<AuthFormTypes>(form);
 
   return (
     <>
-      {formType === AuthFormTypes.SignIn && <Login switchToRegisterForm={setFormType} />}
+      {formType === AuthFormTypes.SignIn && <Login switchToRegisterForm={setFormType} toggleModal={toggleModal} />}
       {formType === AuthFormTypes.SignUp && <Register temp={''} />}
     </>
   );

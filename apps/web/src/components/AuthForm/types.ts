@@ -1,5 +1,6 @@
 export interface AuthFormProps {
   form: AuthFormTypes;
+  toggleModal: () => void;
 }
 
 export enum AuthFormTypes {
