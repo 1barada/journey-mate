@@ -9,8 +9,7 @@ export interface User {
 
 export interface IAuthSlice {
   user: User;
-  loading: boolean;
+  isLoading: boolean;
   error: null | string;
-  token: string;
   isAuthenticated: boolean;
 }
