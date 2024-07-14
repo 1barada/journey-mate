@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 
-import { editDescription } from '../../store/Auth/AuthSlice';
-
+// import { editDescription } from '../../store/Auth/AuthSlice';
 import styles from './CardDescription.module.scss';
 
 interface CardDescriptionProps {
@@ -38,7 +37,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({ description, i
   }
 
   const handleEditChangeClick = () => {
-    dispatch(editDescription(editedDescription));
+    // dispatch(editDescription(editedDescription));
     setIsEdited(false);
   };
 
