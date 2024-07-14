@@ -1,5 +1,5 @@
-import { Box, Container, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import { Box, Container, Typography } from '@mui/material';
 
 import styles from './AccountConfirmedPage.module.scss';
 
