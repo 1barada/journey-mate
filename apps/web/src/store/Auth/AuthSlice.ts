@@ -14,7 +14,7 @@ export const initialState: IAuthSlice = {
   loading: false,
   error: null,
   token: '',
-  isAuthenticated: true,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({

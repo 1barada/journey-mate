@@ -1,6 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
-import { FindUserByEmailParams, FindUserByEmailResult, UserRepositoryPort } from '../domain/repository/user.repository';
+import { UserWithPassword } from '../domain/entities/user.entity';
+import {
+  FindUserByEmailParams,
+  FindUserByEmailResult,
+  FindUserByIdParams,
+  FindUserByIdResult,
+  UserRepositoryPort,
+} from '../domain/repository/user.repository';
 
 export class UserPostgresRepository implements UserRepositoryPort {
   constructor(private prisma: PrismaClient) {}
@@ -15,6 +22,28 @@ export class UserPostgresRepository implements UserRepositoryPort {
       name: user.name,
       role: user.role,
       password: user.password,
+      description: user.description,
     };
+  }
+
+  async findUserById(params: FindUserByIdParams): Promise<FindUserByIdResult> {
+    const user = await this.prisma.user.findUnique({ where: { id: params.id } });
+    if (!user) return null;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      description: user.description,
+    };
+  }
+
+  async updateUser(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        description: user.description,
+      },
+    });
   }
 }
