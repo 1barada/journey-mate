@@ -1,6 +1,11 @@
 import convict from 'convict';
+import z from 'zod';
 
 import 'dotenv/config'; // remove after config.json shape is getting from ECR
+
+const FrontendUrlSchema = z.string().url();
+const EmailUserSchema = z.string().email().endsWith('gmail.com');
+const EmailPasswordSchema = z.string().length(16);
 
 const config = convict({
   configUrl: {
@@ -21,6 +26,7 @@ const config = convict({
     env: 'SECRET_KEY',
   },
   frontendUrl: {
+    format: (value) => FrontendUrlSchema.parse(value),
     default: 'http://localhost:5050',
     env: 'FRONTEND_URL',
   },
@@ -29,13 +35,12 @@ const config = convict({
     env: 'COOKIE_SECRET',
   },
   emailUser: {
-    format: (value) => {
-      if (!/.+@gmail\.com/.test(value)) throw new Error('emailUser must be valid email');
-    },
+    format: (value) => EmailUserSchema.parse(value),
     default: '',
     env: 'EMAIL_USER',
   },
   emailPassword: {
+    format: (value) => EmailPasswordSchema.parse(value),
     default: '',
     env: 'EMAIL_PASSWORD',
   },
