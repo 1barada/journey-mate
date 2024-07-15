@@ -20,6 +20,8 @@ model User {
   active       Boolean      @default(false)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+   journey     Journey[]
+  journeyUsers    JourneyUsersMilestone[]
 }
 
 enum Role {
@@ -36,3 +38,66 @@ enum AuthProvider {
   password
   socials
 }
+model Journey {
+  id            Int       @id @default(autoincrement())
+  title         String    @db.VarChar(255)
+  description   String    @db.VarChar(500)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  startDate     DateTime
+  endDate       DateTime?
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestones    Milestone[]
+  journeyUsers  JourneyUsersMilestone[]
+  category      JourneyToCategory[]
+}
+
+model JourneyCategory {
+  id      Int       @id @default(autoincrement())
+  title   String    @db.VarChar(255)
+  value   String    @unique @db.VarChar(255)
+  journey JourneyToCategory[]
+}
+
+model JourneyToCategory {
+  journeyId    Int
+  categoryId   Int
+  journey      Journey            @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  category     JourneyCategory    @relation(fields: [categoryId], references: [id])
+  @@id([journeyId, categoryId])
+}
+
+
+model Milestone {
+  id              Int           @id @default(autoincrement())
+  title           String        @db.VarChar(255)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  coords          String        // Assuming coordinates are stored as a string (e.g., "latitude;longitude")
+  journeyId       Int
+  journey         Journey       @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  journeyUsers    JourneyUsersMilestone[]
+}
+
+model JourneyUsersMilestone {
+  journeyId    Int
+  userId       Int
+  milestoneId  Int
+  journey      Journey     @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestone    Milestone   @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  @@id([journeyId, userId, milestoneId])
+}
+
+// JourneyUsersMilestone idea example
+// journey user milestone
+//   1       1     1   ---> user1 joins journey1 on milestone1 e.g London
+//   1       1     2   ---> user1 joins journey1 on milestone2 e.g Manchester
+//   1       1     3
+//   1       1     4
+//   1       1     5
+//   1       2     1
+//   1       2     2
+//   1       2     4
+//   1       2     5
