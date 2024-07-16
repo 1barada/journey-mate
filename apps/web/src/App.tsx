@@ -1,13 +1,24 @@
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { AbilityProvider } from './components/Ability';
 import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
+import { whoamiAsyncThunk } from './store/Auth/asyncThunks';
+import { selectUser } from './store/Auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from './types/reduxTypes';
 
 const routes = createRoutes();
 const router = createBrowserRouter(routes);
 
 export function App() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    dispatch(whoamiAsyncThunk());
+  }, [dispatch, user]);
+
   return (
     <AbilityProvider>
       <RouterProvider router={router} fallbackElement={<AppLoader />} future={{ v7_startTransition: true }} />

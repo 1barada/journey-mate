@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import { routes } from '../routes';
-import { shouldRevalidateWhoami, whoamiRouteLoader } from '../services/route-loaders/whoami.loader';
 
 import { Layout } from './Layout';
 import { PrivateRoute } from './PrivateRoute';
@@ -17,8 +16,6 @@ export const createRoutes = (): RouteObject[] => [
   {
     path: '/',
     element: <Layout />,
-    loader: whoamiRouteLoader,
-    shouldRevalidate: shouldRevalidateWhoami,
     children: [
       {
         path: '/',
