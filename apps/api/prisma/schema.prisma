@@ -20,8 +20,8 @@ model User {
   active       Boolean      @default(false)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-   journey     Journey[]
-  journeyUsers    JourneyUsersMilestone[]
+  journey      Journey[]
+  journeyUsers JourneyUsersMilestone[]
 }
 
 enum Role {
@@ -44,8 +44,6 @@ model Journey {
   description   String    @db.VarChar(500)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  startDate     DateTime
-  endDate       DateTime?
   userId        Int
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   milestones    Milestone[]
@@ -74,7 +72,10 @@ model Milestone {
   title           String        @db.VarChar(255)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  coords          String        // Assuming coordinates are stored as a string (e.g., "latitude;longitude")
+  startDate       DateTime
+  endDate         DateTime?
+  lat             Float
+  lng             Float
   journeyId       Int
   journey         Journey       @relation(fields: [journeyId], references: [id], onDelete: Cascade)
   journeyUsers    JourneyUsersMilestone[]
