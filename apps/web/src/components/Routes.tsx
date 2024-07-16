@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import { routes } from '../routes';
+import { shouldRevalidateWhoami, whoamiRouteLoader } from '../services/route-loaders/whoami.loader';
 
 import { Layout } from './Layout';
 import { PrivateRoute } from './PrivateRoute';
@@ -12,10 +13,12 @@ const Notifications = lazy(() => import('../pages/Notifications/Notifications'))
 const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 
-export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
+export const createRoutes = (): RouteObject[] => [
   {
     path: '/',
     element: <Layout />,
+    loader: whoamiRouteLoader,
+    shouldRevalidate: shouldRevalidateWhoami,
     children: [
       {
         path: '/',
