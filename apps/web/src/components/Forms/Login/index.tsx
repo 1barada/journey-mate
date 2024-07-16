@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Link, Typography } from '@mui/material';
-import { z } from 'zod';
 
 import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
@@ -9,19 +8,9 @@ import { AuthFormTypes } from '../../AuthForm/types';
 import { AuthFormInput } from '../../common/AuthFormInput';
 import { TextInputTypes } from '../../common/AuthFormInput/types';
 
+import { loginSchema } from './schemas';
 import styles from './styles.module.scss';
-import type { LoginProps } from './types';
-
-const schema = z.object({
-  email: z.string().email({ message: 'Email is required' }).trim(),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 symbols long' })
-    .max(35, { message: 'Password must be less than 35 symbols' })
-    .trim(),
-});
-
-export type FormInputsTypes = z.infer<typeof schema>;
+import type { FormInputsTypes, LoginProps } from './types';
 
 const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
   const dispatch = useAppDispatch();
@@ -29,21 +18,14 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormInputsTypes>({ resolver: zodResolver(schema) });
+    formState: { errors },
+  } = useForm<FormInputsTypes>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit: SubmitHandler<FormInputsTypes> = async (data) => {
     const response = await dispatch(login(data));
     if (response.meta.requestStatus === 'fulfilled') {
       toggleModal();
     }
-  };
-
-  const isBtnDisabled = (): boolean => {
-    if (isValid && !isLoading) {
-      return false;
-    }
-    return true;
   };
 
   return (
@@ -110,7 +92,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             fullWidth
             disableElevation
             type="submit"
-            disabled={isBtnDisabled()}
+            disabled={isLoading}
           >
             <Typography className={styles.formSubmitBtnText}>Log in</Typography>
           </Button>
