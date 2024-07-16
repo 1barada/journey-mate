@@ -1,5 +1,8 @@
 import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit';
 
+import { isWhoamiError } from '../../utils/type-guards';
+
+import { whoamiAsyncThunk } from './asyncThunks';
 import type { IAuthSlice } from './types';
 
 export const initialState: IAuthSlice = {
@@ -14,8 +17,12 @@ export const initialState: IAuthSlice = {
   loading: false,
   error: null,
   token: '',
-  isAuthenticated: true,
+  isAuthenticated: false,
+  permissions: [],
+  statusCode: null,
 };
+
+const rootSelector = (state: IAuthSlice) => state;
 
 const authSlice = createSlice({
   name: 'auth',
@@ -31,22 +38,43 @@ const authSlice = createSlice({
     editDescription: (state, action) => {
       state.user.description = action.payload;
     },
+    setIsAuthenticated: (state, { payload }) => {
+      state.isAuthenticated = payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(whoamiAsyncThunk.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      .addCase(whoamiAsyncThunk.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.user = payload.user;
+        state.permissions = payload.permissions;
+      })
+      .addCase(whoamiAsyncThunk.rejected, (state, { payload }) => {
+        if (isWhoamiError(payload)) {
+          state.error = payload.message;
+          state.statusCode = payload.statusCode;
+
+          if (payload.statusCode === 401) {
+            state.isAuthenticated = false;
+          }
+        }
+
+        state.loading = false;
+      });
   },
   selectors: {
-    selectIsAuthenticated: createDraftSafeSelector(
-      (state) => state.isAuthenticated,
-      (isAuthenticated) => Boolean(isAuthenticated)
-    ),
-
-    selectUser: createDraftSafeSelector(
-      (state) => state.user,
-      (user) => ({ ...user })
-    ),
+    selectIsAuthenticated: createDraftSafeSelector(rootSelector, (state) => Boolean(state.isAuthenticated)),
+    selectUser: createDraftSafeSelector(rootSelector, (state) => ({ ...state.user })),
+    selectUserPermissions: createDraftSafeSelector(rootSelector, (state) => state.permissions),
   },
 });
 
 export const authReducer = authSlice.reducer;
 
-export const { editProfile, editDescription } = authSlice.actions;
+export const { editProfile, editDescription, setIsAuthenticated } = authSlice.actions;
 
-export const { selectIsAuthenticated, selectUser } = authSlice.selectors;
+export const { selectIsAuthenticated, selectUser, selectUserPermissions } = authSlice.selectors;
