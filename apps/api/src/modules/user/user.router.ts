@@ -1,6 +1,6 @@
 import { config } from '@project/api/config';
 
-import { publicProcedure, router } from '../../trpc/trpc';
+import { authenticateProcedure, publicProcedure, router } from '../../trpc/trpc';
 import { LoginRequestSchema, LoginRouterResponseSchema } from '../auth/domain/usecases/login.usecase';
 import {
   ConfirmEmailRequestSchema,
@@ -8,8 +8,10 @@ import {
   RegisterWithEmailRequestSchema,
   RegisterWithEmailResponseSchema,
 } from '../auth/domain/usecases/register.usecase';
+import { WhoAmIResponseSchema } from '../auth/domain/usecases/whoami.usecase';
 import { createLoginService } from '../auth/service/login/login.factory';
 import { createRegisterService } from '../auth/service/register/register.factory';
+import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
 
 import {
   ChangeDescriptionInputSchema,
@@ -89,5 +91,13 @@ export const userRouter = router({
     await service.confirm(query);
 
     return ctx.res.redirect(303, `${config.get('frontendUrl')}/auth/confirm`);
+  }),
+  whoami: authenticateProcedure.output(WhoAmIResponseSchema).query(async ({ ctx }) => {
+    const service = createWhoamiService(ctx.db);
+
+    const email = ctx.userTokenData.userEmail;
+    const role = ctx.userTokenData.userRole;
+
+    return await service.whoami({ email, role });
   }),
 });
