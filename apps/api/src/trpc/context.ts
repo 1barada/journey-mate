@@ -5,6 +5,7 @@ import '@fastify/cookie';
 
 import { prisma } from '../database';
 import { Role } from '../modules/auth/domain/enums/permissions.enums';
+import { transporter } from '../transporter';
 
 import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
@@ -22,7 +23,7 @@ export function createContext({ req, res }: CreateFastifyContextOptions) {
     userEmail: null,
   };
 
-  return { req, res, log, db: prisma, validatedCookies, userTokenData };
+  return { req, res, log, db: prisma, validatedCookies, userTokenData, transporter };
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>;
