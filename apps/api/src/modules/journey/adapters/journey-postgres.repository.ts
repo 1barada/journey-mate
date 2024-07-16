@@ -6,6 +6,12 @@ import type {
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
 
+import {
+  databaseMilestonesToMilestones,
+  journeyToCategoryToDatabaseModel,
+  milestonesToDatabaseModel,
+} from './journey-postgres-repository.transform';
+
 export class JourneyPostgresRepository implements JourneyRepositoryPort {
   constructor(private db: PrismaClient) {}
 
@@ -22,31 +28,30 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       },
     });
 
+    const journeyId = journey.id;
+
     const [milestones] = await Promise.all([
       this.db.milestone.createManyAndReturn({
-        data: candidateMilestones.map((milestone) => ({
-          ...milestone,
-          journeyId: journey.id,
-        })),
+        data: milestonesToDatabaseModel({ milestones: candidateMilestones, journeyId }),
         select: {
           id: true,
           title: true,
-          coords: true,
+          lat: true,
+          lng: true,
+          startDate: true,
+          endDate: true,
         },
       }),
       this.db.journeyToCategory.createMany({
-        data: categories.map((category) => ({
-          journeyId: journey.id,
-          categoryId: category.id,
-        })),
+        data: journeyToCategoryToDatabaseModel({ categories, journeyId }),
       }),
     ]);
 
     const result = {
       ...journey,
-      milestones,
+      milestones: databaseMilestonesToMilestones({ milestones }),
       category: categories,
-    };
+    } satisfies CreateJourneyResult;
 
     return result;
   }

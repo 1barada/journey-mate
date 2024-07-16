@@ -6,8 +6,6 @@ import { CreateMilestoneSchema } from './milestone.entity';
 export const CreateJourneySchema = z.object({
   title: z.string().min(1).max(255),
   description: z.string().min(1).max(500),
-  startDate: z.preprocess((value) => (typeof value === 'number' ? new Date(value) : value), z.date()),
-  endDate: z.preprocess((value) => (typeof value === 'number' ? new Date(value) : value), z.date()).nullable(),
   milestones: z.array(CreateMilestoneSchema).min(1),
   category: z.array(CreateJourneyCategorySchema).min(1),
 });
