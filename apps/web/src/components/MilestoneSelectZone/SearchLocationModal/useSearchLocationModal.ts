@@ -1,21 +1,27 @@
 import { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
 import { journeyActions, journeySelectors } from '../../../store/journey/slice';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { useMilestoneSelectZone } from '../provider';
 
 import type { SearchLocationModalProps } from './types';
 
 const DATE_PICKERS_LIMIT = 2;
 
-const LocationSchema = z.object({
-  location: z.string().min(3),
-  dates: z.array(z.custom<Dayjs>((val) => val instanceof dayjs, 'Invalid date')),
+const DayjsDateSchema = z.custom<Dayjs>((val) => val instanceof dayjs, 'Invalid date');
+export const MilestoneSchema = z.object({
+  id: z.number().default(performance.now()),
+  title: z.string().min(1),
+  dates: z.array(DayjsDateSchema).min(1),
+  coords: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
 });
 
 const dateFiledLabels = new Map<number, string>([
@@ -23,19 +29,24 @@ const dateFiledLabels = new Map<number, string>([
   [1, 'End date'],
 ]);
 
-export type LocationFormValues = z.infer<typeof LocationSchema>;
-export type LocationFieldName = keyof z.infer<typeof LocationSchema>;
+type MilestoneDates = z.infer<typeof MilestoneSchema>['dates'];
+export type MilestoneFormValues = z.infer<typeof MilestoneSchema>;
+export type MilestoneFieldName = keyof z.infer<typeof MilestoneSchema>;
 
 export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps) => {
   const minDate = dayjs().add(24, 'hours');
-  const editedItem = useSelector(journeySelectors.selectEditUnsavedMilestone);
-  const dispatch = useDispatch();
+  const editedItem = useAppSelector(journeySelectors.selectEditUnsavedMilestone);
+  const dispatch = useAppDispatch();
 
-  const form = useForm<LocationFormValues>({
-    resolver: zodResolver(LocationSchema),
+  const form = useForm<MilestoneFormValues>({
+    resolver: zodResolver(MilestoneSchema),
     defaultValues: {
-      location: '',
+      title: '',
       dates: [minDate],
+      coords: {
+        lat: 50.45466,
+        lng: 30.5238,
+      },
     },
   });
 
@@ -45,9 +56,9 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
   });
 
   const { onChange, onEdit } = useMilestoneSelectZone();
-  const { setFocus, register } = form;
+  const { register, setValue } = form;
 
-  const onSelect = (values: LocationFormValues) => {
+  const onSelect = (values: MilestoneFormValues) => {
     if (editedItem) {
       onEdit?.(values);
     } else {
@@ -58,15 +69,14 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
   };
 
   useEffect(() => {
-    setFocus('location');
-  }, [setFocus]);
-
-  useEffect(() => {
     if (editedItem) {
-      form.setValue('location', editedItem.location);
-      form.setValue('dates', [dayjs(editedItem.dates)]);
+      const dates = editedItem.dates.map((date) => (typeof date === 'number' ? dayjs(date) : date)) as MilestoneDates;
+
+      setValue('coords', editedItem.coords);
+      setValue('title', editedItem.title);
+      setValue('dates', dates);
     }
-  }, [form, editedItem]);
+  }, [setValue, editedItem]);
 
   const hasReachedDatePickersLimit = dates.fields.length >= DATE_PICKERS_LIMIT;
 
@@ -83,8 +93,8 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
     toggleModal();
   };
 
-  const getErrorMessage = (name: LocationFieldName) => form.formState.errors[name]?.message ?? '';
-  const hasErrorInField = (name: LocationFieldName) => Boolean(form.formState.errors[name]);
+  const getErrorMessage = (name: MilestoneFieldName) => form.formState.errors[name]?.message ?? '';
+  const hasErrorInField = (name: MilestoneFieldName) => Boolean(form.formState.errors[name]);
 
   return {
     getDatePickerLabel: dateFiledLabels.get.bind(dateFiledLabels),

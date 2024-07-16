@@ -11,6 +11,7 @@ import {
   MilestoneName,
   RouteLine,
 } from '../JourneyMilestone/';
+import { MilestoneDatesTuple } from '../JourneyMilestone/MilestoneDatesTuple';
 import type { JourneyMilestonesProps } from '../JourneyMilestone/types';
 
 export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milestones, renderItem }) => {
@@ -26,6 +27,9 @@ export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milesto
           return renderItem({ milestone, index, itemsCount });
         }
 
+        const { title, dates } = milestone;
+        const [startDate, endDate] = dates;
+
         return (
           <li key={index}>
             <MilestoneBody key={index}>
@@ -33,8 +37,12 @@ export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milesto
                 <MilestoneBadge>{badgeContent}</MilestoneBadge>
 
                 <MilestoneDetailsBody>
-                  <MilestoneName tooltipText={milestone.location}>{milestone.location}</MilestoneName>
-                  <MilestoneDatetime date={milestone.date} />
+                  <MilestoneName tooltipText={title}>{title}</MilestoneName>
+
+                  <MilestoneDatesTuple itemsCount={dates.length}>
+                    <MilestoneDatetime date={startDate} />
+                    <MilestoneDatetime date={endDate} />
+                  </MilestoneDatesTuple>
                 </MilestoneDetailsBody>
               </MilestoneContentBody>
 

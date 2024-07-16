@@ -1,32 +1,24 @@
 import { Controller } from 'react-hook-form';
-import SearchIcon from '@mui/icons-material/Search';
+import { FormControl, FormHelperText } from '@mui/material';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+import { MapWrapper } from '../../common/MapWrapper';
 import { Modal } from '../../common/Modal';
+import { SearchLocationInput } from '../../SearchLocationInput';
+import { SearchLocationMap } from '../../SearchLocationMap';
 
 import styles from './styles.module.scss';
 import type { SearchLocationModalProps } from './types';
 import { useSearchLocationModal } from './useSearchLocationModal';
 
-const inputProps = {
-  startAdornment: (
-    <InputAdornment position="start">
-      <SearchIcon />
-    </InputAdornment>
-  ),
-};
-
 export const SearchLocationModal: React.FC<SearchLocationModalProps> = (props) => {
   const {
     onSubmit,
-    register,
     onCloseModal,
     getErrorMessage,
     hasErrorInField,
@@ -41,66 +33,101 @@ export const SearchLocationModal: React.FC<SearchLocationModalProps> = (props) =
     <Modal toggleModal={onCloseModal} title="Add new destination">
       <Stack direction="column" component="form" className={styles.modal} onSubmit={onSubmit}>
         <Stack direction="column" className={styles.inputsWrapper}>
-          <TextField
-            {...register('location')}
-            placeholder="Search location..."
-            InputProps={inputProps}
-            error={hasErrorInField('location')}
-            helperText={getErrorMessage('location')}
-            FormHelperTextProps={{ className: 'error-message' }}
-          />
+          <FormControl error={hasErrorInField('title')} className={styles.searchInput}>
+            <Controller
+              control={form.control}
+              name="title"
+              render={({ field }) => {
+                return (
+                  <SearchLocationInput
+                    onPlaceSelected={(coords, title) => {
+                      field.onChange(title);
+                      form.setValue('coords', coords);
+                    }}
+                  />
+                );
+              }}
+            />
+            <FormHelperText>{getErrorMessage('coords')}</FormHelperText>
+          </FormControl>
 
-          <Stack className={styles.datePickers}>
-            <Stack className={styles.datePickersWrapper}>
-              {dates.fields.map((field, index) => (
-                <Controller
-                  key={field.id}
-                  control={form.control}
-                  name={`dates.${index}`}
-                  render={({ field }) => (
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label={getDatePickerLabel(index)}
-                        value={field.value}
-                        minDate={minDate}
-                        format={'DD.MM.YYYY'}
-                        onChange={field.onChange}
-                        slotProps={{
-                          popper: {
-                            placement: 'top-start',
-                          },
-                        }}
-                      />
-                    </LocalizationProvider>
-                  )}
-                />
-              ))}
+          <MapWrapper>
+            <Stack direction="column" sx={{ alignItems: 'center', pt: '12px', pb: '12px' }}>
+              <Controller
+                control={form.control}
+                name="coords"
+                render={({ field }) => (
+                  <SearchLocationMap
+                    width="80%"
+                    height="300px"
+                    onPlaceSelected={(coords) => {
+                      field.onChange(coords);
+                      form.setValue('title', 'London'); // temp
+                    }}
+                    {...(field.value.lat &&
+                      field.value.lng && {
+                        coordinate: {
+                          lat: field.value.lat,
+                          lng: field.value.lng,
+                        },
+                      })}
+                  />
+                )}
+              />
             </Stack>
+          </MapWrapper>
+        </Stack>
 
-            {!hasReachedDatePickersLimit && (
-              <Button
-                variant="contained"
-                className={styles.addFieldButton}
-                onClick={() => {
-                  dates.append(minDate);
-                }}
-              >
-                <Typography>Specify end date</Typography>
-              </Button>
-            )}
-
-            {hasReachedDatePickersLimit && (
-              <Button
-                variant="contained"
-                className={styles.addFieldButton}
-                onClick={() => {
-                  dates.remove(dates.fields.length - 1);
-                }}
-              >
-                <Typography>Remove end date</Typography>
-              </Button>
-            )}
+        <Stack className={styles.datePickers}>
+          <Stack className={styles.datePickersWrapper}>
+            {dates.fields.map((field, index) => (
+              <Controller
+                key={field.id}
+                control={form.control}
+                name={`dates.${index}`}
+                render={({ field }) => (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label={getDatePickerLabel(index)}
+                      value={field.value}
+                      minDate={minDate}
+                      format={'DD.MM.YYYY'}
+                      onChange={field.onChange}
+                      slotProps={{
+                        popper: {
+                          placement: 'top-start',
+                        },
+                      }}
+                    />
+                  </LocalizationProvider>
+                )}
+              />
+            ))}
           </Stack>
+
+          {!hasReachedDatePickersLimit && (
+            <Button
+              variant="contained"
+              className={styles.addFieldButton}
+              onClick={() => {
+                dates.append(minDate);
+              }}
+            >
+              <Typography>Specify end date</Typography>
+            </Button>
+          )}
+
+          {hasReachedDatePickersLimit && (
+            <Button
+              variant="contained"
+              className={styles.addFieldButton}
+              onClick={() => {
+                dates.remove(dates.fields.length - 1);
+              }}
+            >
+              <Typography>Remove end date</Typography>
+            </Button>
+          )}
         </Stack>
 
         <Button type="submit" className={styles.submitButton} variant="contained" fullWidth>

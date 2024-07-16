@@ -1,9 +1,8 @@
+import type { Milestone } from '../../store/journey/types';
+
 export type RouteMilestone = string;
 
-export interface MilestoneItem {
-  location: string;
-  date: Date | string | number;
-}
+export type MilestoneItem = Milestone;
 
 export interface JourneyMilestoneListItemProps {
   milestone: MilestoneItem;

@@ -17,6 +17,7 @@ import { inputAlly } from './utils';
 export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => {
   const { getErrorMessage, hasErrorInField, onCancel, onFormSubmit, form, isFormDisabled, needShowSpinner } =
     useNewJourneyForm();
+
   const { register } = form;
 
   return (
@@ -38,9 +39,9 @@ export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => 
           select
           fullWidth
           label="Select journey type"
-          inputProps={register('type')}
-          error={hasErrorInField('type')}
-          helperText={getErrorMessage('type')}
+          inputProps={register('category')}
+          error={hasErrorInField('category')}
+          helperText={getErrorMessage('category')}
           {...inputAlly('type')}
           FormHelperTextProps={{ className: 'error-message' }}
         >
@@ -57,11 +58,13 @@ export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => 
               <MilestoneSelectZone
                 placeholder="Add your destinations"
                 value={field.value}
-                onEdit={(edited) => {
-                  field.onChange(field.value.map((m) => (m.location === edited.location ? edited : m)));
+                onEdit={(editedMilestone) => {
+                  field.onChange(
+                    field.value.map((milestone) => (milestone.id === editedMilestone.id ? editedMilestone : milestone))
+                  );
                 }}
                 onDelete={(deleteCandidate) =>
-                  field.onChange(field.value.filter((m) => m.location !== deleteCandidate.location))
+                  field.onChange(field.value.filter((milestone) => milestone.id !== deleteCandidate.id))
                 }
                 onChange={(newMileStone) => {
                   field.onChange([...field.value, newMileStone]);

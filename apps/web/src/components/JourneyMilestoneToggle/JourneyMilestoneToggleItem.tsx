@@ -8,6 +8,7 @@ import {
   MilestoneSelectButton,
   RouteLine,
 } from '../JourneyMilestone/';
+import { MilestoneDatesTuple } from '../JourneyMilestone/MilestoneDatesTuple';
 import type { JourneyMilestoneListItemProps } from '../JourneyMilestone/types';
 
 export const JourneyMilestoneToggleItem: React.FC<JourneyMilestoneListItemProps> = ({
@@ -17,16 +18,22 @@ export const JourneyMilestoneToggleItem: React.FC<JourneyMilestoneListItemProps>
 }) => {
   const shouldDrawRouteLine = index < itemsCount - 1;
   const badgeContent = index + 1;
+  const { title, dates } = milestone;
+  const [startDate, endDate] = dates;
 
   return (
     <MilestoneBody key={index}>
-      <MilestoneSelectButton value={milestone.location}>
+      <MilestoneSelectButton value={title}>
         <MilestoneContentBody>
           <MilestoneBadge>{badgeContent}</MilestoneBadge>
 
           <MilestoneDetailsBody>
-            <MilestoneName tooltipText={milestone.location}>{milestone.location}</MilestoneName>
-            <MilestoneDatetime date={milestone.date} />
+            <MilestoneName tooltipText={title}>{title}</MilestoneName>
+
+            <MilestoneDatesTuple itemsCount={dates.length}>
+              <MilestoneDatetime date={startDate} />
+              <MilestoneDatetime date={endDate} />
+            </MilestoneDatesTuple>
           </MilestoneDetailsBody>
         </MilestoneContentBody>
       </MilestoneSelectButton>

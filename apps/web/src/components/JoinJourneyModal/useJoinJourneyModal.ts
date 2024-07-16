@@ -8,13 +8,22 @@ import type { JoinJourneyModalProps } from './types';
 // ! Remove later
 const mockMilestones = [
   {
-    location:
+    title:
       'London is the capital if Great Britain London is the capital if great briatin London is the capital if great briatin',
-    date: '12.05.2025',
+    coords: {
+      lat: 100,
+      lng: 80,
+    },
+    dates: [new Date('12.05.2025').getTime()],
   },
-  { location: 'Derby', date: '12.05.2025' },
-  { location: 'Manchester', date: '12.05.2025' },
-  { location: 'Glazgo', date: '12.05.2025' },
+  {
+    title: 'Derby',
+    dates: [new Date('12.05.2026').getTime()],
+    coords: {
+      lat: 150,
+      lng: 30,
+    },
+  },
 ];
 
 export const useJoinJourneyModal = ({ milestones = mockMilestones, toggleModal }: JoinJourneyModalProps) => {
@@ -23,7 +32,7 @@ export const useJoinJourneyModal = ({ milestones = mockMilestones, toggleModal }
   const request = useAppSelector(journeySelectors.selectRequestState);
   const dispatch = useAppDispatch();
 
-  const allMilestones = useMemo(() => milestones.map((m) => m.location), [milestones]);
+  const allMilestones = useMemo(() => milestones.map((m) => m.title), [milestones]);
   const areAllMilestonesSelected = selectedMilestones.length === milestones.length;
   const areSomeMilestonesSelected = selectedMilestones.length > 0 && !areAllMilestonesSelected;
   const isSubmitButtonDisabled = request.isLoading || !areAllMilestonesSelected;
