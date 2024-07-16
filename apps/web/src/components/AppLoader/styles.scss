@@ -1,0 +1,13 @@
+.app-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+
+  &__progress {
+    width: 60px;
+    height: 60px;
+  }
+}
