@@ -1,14 +1,16 @@
-import { useSelector } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { AbilityProvider } from './components/Ability';
+import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
-import { selectIsAuthenticated } from './store/Auth/AuthSlice';
+
+const routes = createRoutes();
+const router = createBrowserRouter(routes);
 
 export function App() {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-
-  const routes = createRoutes(isAuthenticated);
-  const router = createBrowserRouter(routes);
-
-  return <RouterProvider router={router} />;
+  return (
+    <AbilityProvider>
+      <RouterProvider router={router} fallbackElement={<AppLoader />} future={{ v7_startTransition: true }} />
+    </AbilityProvider>
+  );
 }
