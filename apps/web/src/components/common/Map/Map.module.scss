@@ -1,0 +1,17 @@
+@import '../../../style/variables.scss';
+
+.circle {
+  width: 30px;
+  height: 30px;
+  background-color: $primary-main;
+  color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 15px;
+  border: 2px solid white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

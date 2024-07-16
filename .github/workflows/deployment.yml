@@ -29,7 +29,7 @@ jobs:
       AWS_REGION: eu-central-1
       AWS_EC2_METADATA_DISABLED: true
       AWS_ECR_REGISTRY: ${{vars.AWS_ECR_REGISTRY}}
-      AWS_ECR_REPOSITORY: ${{vars.AWS_ECR_REGISTRY}}
+      AWS_ECR_REPOSITORY: ${{vars.AWS_ECR_REPOSITORY}}
       AWS_IMAGE_TAG: latest
       AWS_JOURNEY: journey
 
@@ -88,8 +88,8 @@ jobs:
       - name: Build, tag, and push Docker image to Amazon ECR
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         run: |
-          docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}/${{env.AWS_JOURNEY}}:${{env.AWS_IMAGE_TAG}} .
-          docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}/${{env.AWS_JOURNEY}}:${{env.AWS_IMAGE_TAG}}
+          docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
+          docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
 
       - name: SSH into EC2 and update Docker container
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
