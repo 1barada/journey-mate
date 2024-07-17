@@ -8,7 +8,7 @@ export const initialState: IAuthSlice = {
     email: 'djshajhb@gmail.com',
     sex: null,
     description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
-    age: null,
+    dateOfBirth: null,
     avatar: null,
   },
   loading: false,
@@ -25,7 +25,7 @@ const authSlice = createSlice({
       state.user.email = action.payload.email;
       state.user.name = action.payload.name;
       state.user.sex = action.payload.sex;
-      state.user.age = action.payload.age;
+      state.user.dateOfBirth = action.payload.age;
       console.log(action.payload);
     },
     editDescription: (state, action: PayloadAction<string>) => {

@@ -1,6 +1,6 @@
 export interface EditFormProps {
   name: string;
-  age: number | null;
+  dateOfBirth: Date | null;
   email: string;
   sex: string | null;
   file?: File | null;

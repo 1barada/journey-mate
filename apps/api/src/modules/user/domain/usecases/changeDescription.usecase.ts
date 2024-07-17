@@ -18,7 +18,7 @@ export const ChangeDescriptionResponseSchema = z.object({
 export type ChangeDescriptionResponse = z.infer<typeof ChangeDescriptionResponseSchema>;
 
 export interface ChangeDescriptionRequest {
-  id: number;
+  id: string;
   description: string;
 }
 
@@ -30,7 +30,7 @@ export class ChangeDescriptionService implements ChangeDescriptionUsecase {
   constructor(private userRepository: UserRepositoryPort) {}
 
   async changeDescription(request: ChangeDescriptionRequest): Promise<ChangeDescriptionResponse> {
-    const user = await this.userRepository.findUserById({ id: request.id });
+    const user = await this.userRepository.findUserById({ id: Number(request.id) });
     if (!user) {
       throw new UserNotFoundError();
     }

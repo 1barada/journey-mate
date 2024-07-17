@@ -30,3 +30,31 @@ export const changeDescription = (creator: ReducerCreators<IAuthSlice>) => {
     }
   );
 };
+
+export const changeProfileData = (creator: ReducerCreators<IAuthSlice>) => {
+  creator.asyncThunk(
+    async (data, { rejectWithValue }) => {
+      try {
+        const newData = trpcClient.user.changeProfileData.mutate(data);
+
+        return newData;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.loading = true;
+        state.error = null;
+      },
+      fulfilled: (state, action) => {
+        state.loading = false;
+        state.user.dateOfBirth = action.payload;
+      },
+      rejected: (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      },
+    }
+  );
+};

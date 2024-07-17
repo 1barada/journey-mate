@@ -7,24 +7,24 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Input,
   Radio,
   RadioGroup,
   TextField,
   Typography,
 } from '@mui/material';
+import { DatePicker, DatePickerProps, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import { trpcClient } from '../../../services/trpc';
-import { editProfile } from '../../../store/Auth/AuthSlice';
+import { changeProfileData } from '../../../store/Auth/asyncThunk';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
 
-export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
+export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) => {
   const { control, handleSubmit, setValue } = useForm<EditFormProps>({
     defaultValues: {
       name,
-      age,
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date(),
       email,
       sex,
       file: null,
@@ -34,10 +34,9 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
   const dispatch = useDispatch();
 
   const onSubmit = async (data: EditFormProps) => {
-    const { name, age, email, sex } = data;
-    dispatch(editProfile({ name, age: Number(age), email, sex }));
-
-    // await trpcClient.user.changeProfileData.mutate({ name, email, sex, age });
+    // const { name, age, email, sex } = data;
+    // dispatch(changeProfileData(data));
+    console.log(data);
   };
 
   return (
@@ -53,20 +52,16 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
         )}
       />
       <Controller
-        name="age"
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            id="outlined-age"
-            label="Age"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            type="text"
-            value={field.value || ''}
-          />
-        )}
+        name="dateOfBirth"
+        rules={{ required: true }}
+        render={({ field }) => {
+          return (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker label="" {...field} value={dateOfBirth} />
+            </LocalizationProvider>
+          );
+        }}
       />
       <Controller
         name="email"
@@ -84,7 +79,7 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
           name="sex"
           control={control}
           render={({ field }) => (
-            <RadioGroup {...field} className={styles.radioList} aria-label="sex" name="sex">
+            <RadioGroup {...field} className={styles.radioList} value={sex} aria-label="sex" name="sex">
               <FormControlLabel value="female" control={<Radio />} label="Female" />
               <FormControlLabel value="male" control={<Radio />} label="Male" />
             </RadioGroup>

@@ -29,7 +29,12 @@ export const userRouter = router({
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeDescriptionUsecase(ctx.db);
-      return await usecase.changeDescription({ id: ctx.req.id, description: input.description });
+
+      if (ctx.userTokenData.userId) {
+        return await usecase.changeDescription({ id: ctx.userTokenData.userId, description: input.description });
+      }
+
+      throw new Error('');
     }),
   changeProfileData: publicProcedure
     // .input({})

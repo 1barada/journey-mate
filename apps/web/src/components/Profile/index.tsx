@@ -21,7 +21,7 @@ export const Profile = () => {
   const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal();
   const [isEdited, setIsEdited] = useState(false);
-  const { age, avatar, description, email, name, sex } = useSelector(selectUser);
+  const { dateOfBirth, avatar, description, email, name, sex } = useSelector(selectUser);
 
   const dispatch = useDispatch();
 
@@ -50,9 +50,9 @@ export const Profile = () => {
                   Sex: <span>{sex}</span>
                 </Typography>
               )}
-              {age && (
+              {dateOfBirth && (
                 <Typography component="p" className={styles.text}>
-                  Age: <span>{age}</span>
+                  Age: <span>{dateOfBirth}</span>
                 </Typography>
               )}
               <Typography component="p" className={styles.text}>
@@ -87,7 +87,7 @@ export const Profile = () => {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                  <EditForm age={age} email={email} name={name} sex={sex} />
+                  <EditForm dateOfBirth={dateOfBirth} email={email} name={name} sex={sex} />
                 </TabPanel>
                 <TabPanel value="2">
                   <EditAvatar />
