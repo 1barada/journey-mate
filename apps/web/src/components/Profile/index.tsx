@@ -15,7 +15,7 @@ const Modal = lazy(() => import('../common/Modal').then((module) => ({ default: 
 const EditForm = lazy(() => import('../Forms/EditForm').then((module) => ({ default: module.EditForm })));
 
 export const Profile = () => {
-  const [isOpen, toggle] = useModal();
+  const [isOpen, toggle] = useModal({});
   const [isEdited, setIsEdited] = useState(false);
   const { age, avatar, description, email, name, sex } = useSelector(selectUser);
 
