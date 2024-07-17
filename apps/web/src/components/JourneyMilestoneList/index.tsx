@@ -31,8 +31,8 @@ export const JourneyMilestoneList: React.FC<JourneyMilestonesProps> = ({ milesto
         const [startDate, endDate] = dates;
 
         return (
-          <li key={index}>
-            <MilestoneBody key={index}>
+          <li key={milestone.id}>
+            <MilestoneBody>
               <MilestoneContentBody component="span">
                 <MilestoneBadge>{badgeContent}</MilestoneBadge>
 

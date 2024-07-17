@@ -22,7 +22,7 @@ export const JourneyMilestoneToggleItem: React.FC<JourneyMilestoneListItemProps>
   const [startDate, endDate] = dates;
 
   return (
-    <MilestoneBody key={index}>
+    <MilestoneBody key={milestone.id}>
       <MilestoneSelectButton value={title}>
         <MilestoneContentBody>
           <MilestoneBadge>{badgeContent}</MilestoneBadge>

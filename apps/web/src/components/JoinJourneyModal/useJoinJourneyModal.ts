@@ -8,6 +8,7 @@ import type { JoinJourneyModalProps } from './types';
 // ! Remove later
 const mockMilestones = [
   {
+    id: performance.now(),
     title:
       'London is the capital if Great Britain London is the capital if great briatin London is the capital if great briatin',
     coords: {
@@ -17,6 +18,7 @@ const mockMilestones = [
     dates: [new Date('12.05.2025').getTime()],
   },
   {
+    id: performance.now(),
     title: 'Derby',
     dates: [new Date('12.05.2026').getTime()],
     coords: {
