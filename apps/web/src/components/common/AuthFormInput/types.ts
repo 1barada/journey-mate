@@ -10,7 +10,7 @@ export interface AuthFormInputProps {
   inputSx?: SxProps;
   type: TextInputTypes;
   showPswBtn?: boolean;
-  inputRegister?: UseFormRegisterReturn<TextInputTypes.Email | TextInputTypes.Password | TextInputTypes.Text>;
+  inputRegister?: UseFormRegisterReturn<TextInputRegisterTypes>;
   validationErrorMessage?: string | undefined;
 }
 
@@ -23,4 +23,12 @@ export enum TextInputTypes {
   Password = 'password',
   Email = 'email',
   Text = 'text',
+}
+
+export enum TextInputRegisterTypes {
+  Email = 'email',
+  Password = 'password',
+  ConfirmPassword = 'confirmPassword',
+  Age = 'age',
+  Description = 'description',
 }
