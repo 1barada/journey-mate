@@ -6,7 +6,7 @@ import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormTypes } from '../../AuthForm/types';
 import { AuthFormInput } from '../../common/AuthFormInput';
-import { TextInputTypes } from '../../common/AuthFormInput/types';
+import { TextInputRegisterTypes, TextInputTypes } from '../../common/AuthFormInput/types';
 
 import { loginSchema } from './schemas';
 import styles from './styles.module.scss';
@@ -42,7 +42,9 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             type="button"
             underline="always"
             onClick={() => {
-              switchToRegisterForm(AuthFormTypes.SignUp);
+              if (!isLoading) {
+                switchToRegisterForm(AuthFormTypes.SignUp);
+              }
             }}
           >
             Sign up for free
@@ -57,7 +59,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             inputProps={{ fullWidth: true, variant: 'outlined' }}
             errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Email}
-            inputRegister={register(TextInputTypes.Email)}
+            inputRegister={register(TextInputRegisterTypes.Email)}
             validationErrorMessage={errors.email?.message}
           />
           <AuthFormInput
@@ -70,7 +72,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Password}
             showPswBtn={true}
-            inputRegister={register(TextInputTypes.Password)}
+            inputRegister={register(TextInputRegisterTypes.Password)}
             validationErrorMessage={errors.password?.message}
           />
         </Box>
@@ -80,7 +82,9 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
               className={styles.formLinkText}
               underline="always"
               onClick={() => {
-                console.log('Temporary event');
+                if (!isLoading) {
+                  console.log('Temporary event');
+                }
               }}
             >
               Forget password?
