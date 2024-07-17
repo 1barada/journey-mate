@@ -1,13 +1,16 @@
 import { lazy, Suspense, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
-import { Avatar, Box, Button, Container, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Avatar, Box, Button, Container, Tab, Typography } from '@mui/material';
 import clsx from 'clsx';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
 import { selectUser } from '../../store/Auth/AuthSlice';
+import { editDescription } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
+import { EditAvatar } from '../Forms/EditAvatar';
 
 import styles from './Profile.module.scss';
 
@@ -15,11 +18,22 @@ const Modal = lazy(() => import('../common/Modal').then((module) => ({ default: 
 const EditForm = lazy(() => import('../Forms/EditForm').then((module) => ({ default: module.EditForm })));
 
 export const Profile = () => {
+  const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal();
   const [isEdited, setIsEdited] = useState(false);
   const { age, avatar, description, email, name, sex } = useSelector(selectUser);
 
+  const dispatch = useDispatch();
+
   const doubleStyle = clsx(styles.button, styles.editBtn);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
+  const handleEditDescription = (newDescription: string) => {
+    dispatch(editDescription(newDescription));
+  };
 
   return (
     <Box component="section" className={styles.section}>
@@ -55,11 +69,30 @@ export const Profile = () => {
         <Button className={doubleStyle} onClick={() => setIsEdited(true)}>
           Edit Description
         </Button>
-        <CardDescription description={description} isEdited={isEdited} setIsEdited={setIsEdited} title="About myself" />
+        <CardDescription
+          description={description}
+          isEdited={isEdited}
+          setIsEdited={setIsEdited}
+          title="About myself"
+          handleEditDescription={handleEditDescription}
+        />
         <Suspense fallback="null">
           {isOpen && (
             <Modal toggleModal={toggle}>
-              <EditForm age={age} email={email} name={name} sex={sex} />
+              <TabContext value={value}>
+                <Box>
+                  <TabList onChange={handleChange} aria-label="lab API tabs example">
+                    <Tab label="Update Profile" value="1" />
+                    <Tab label="Change Avatar" value="2" />
+                  </TabList>
+                </Box>
+                <TabPanel value="1">
+                  <EditForm age={age} email={email} name={name} sex={sex} />
+                </TabPanel>
+                <TabPanel value="2">
+                  <EditAvatar />
+                </TabPanel>
+              </TabContext>
             </Modal>
           )}
         </Suspense>

@@ -5,19 +5,22 @@ import { UserPostgresRepository } from '../../adapters/user-postgres.repository'
 import { UserNotFoundError } from '../errors/user-not-found.error';
 import { UserRepositoryPort } from '../repository/user.repository';
 
-export const ChangeDescriptionRequestSchema = z.object({
-  id: z.number(),
+export const ChangeDescriptionInputSchema = z.object({
   description: z.string().max(1000),
 });
 
-export type ChangeDescriptionRequest = z.infer<typeof ChangeDescriptionRequestSchema>;
+export type ChangeDescriptionInput = z.infer<typeof ChangeDescriptionInputSchema>;
 
 export const ChangeDescriptionResponseSchema = z.object({
-  id: z.number(),
   description: z.string(),
 });
 
 export type ChangeDescriptionResponse = z.infer<typeof ChangeDescriptionResponseSchema>;
+
+export interface ChangeDescriptionRequest {
+  id: number;
+  description: string;
+}
 
 export interface ChangeDescriptionUsecase {
   changeDescription(request: ChangeDescriptionRequest): Promise<ChangeDescriptionResponse>;
@@ -33,7 +36,7 @@ export class ChangeDescriptionService implements ChangeDescriptionUsecase {
     }
     user.description = request.description;
     await this.userRepository.updateUser(user);
-    return { id: user.id, description: user.description };
+    return { description: user.description };
   }
 }
 

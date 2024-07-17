@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
-
-import { editDescription } from '../../store/Auth/AuthSlice';
 
 import styles from './CardDescription.module.scss';
 
@@ -12,16 +9,21 @@ interface CardDescriptionProps {
   isEdited: boolean;
   setIsEdited: (args: boolean) => void;
   title: string;
+  handleEditDescription?: (description: string) => void;
 }
 
-export const CardDescription: React.FC<CardDescriptionProps> = ({ description, isEdited, setIsEdited, title }) => {
+export const CardDescription: React.FC<CardDescriptionProps> = ({
+  description,
+  isEdited,
+  setIsEdited,
+  title,
+  handleEditDescription,
+}) => {
   const [isEllipsis, setIsEllipsis] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [editedDescription, setEditedDescription] = useState<string>(description);
 
   const contentRef = useRef(null);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (contentRef.current === null) return;
@@ -38,8 +40,10 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({ description, i
   }
 
   const handleEditChangeClick = () => {
-    dispatch(editDescription(editedDescription));
-    setIsEdited(false);
+    if (handleEditDescription) {
+      handleEditDescription(editedDescription);
+      setIsEdited(false);
+    }
   };
 
   return (

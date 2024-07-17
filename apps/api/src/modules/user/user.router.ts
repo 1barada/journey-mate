@@ -3,10 +3,11 @@ import { LoginRequestSchema, LoginResponseSchema } from '../auth/domain/usecases
 import { createLoginService } from '../auth/service/login/login.factory';
 
 import {
-  ChangeDescriptionRequestSchema,
+  ChangeDescriptionInputSchema,
   ChangeDescriptionResponseSchema,
   createChangeDescriptionUsecase,
 } from './domain/usecases/changeDescription.usecase';
+import { ChangeProfileRequestSchema, ChangeProfileResponseSchema } from './domain/usecases/changeUserProfile.usecase';
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
@@ -24,10 +25,22 @@ export const userRouter = router({
       return user;
     }),
   changeDescription: publicProcedure
-    .input(ChangeDescriptionRequestSchema)
+    .input(ChangeDescriptionInputSchema)
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeDescriptionUsecase(ctx.db);
       return await usecase.changeDescription({ id: ctx.req.id, description: input.description });
+    }),
+  changeProfileData: publicProcedure
+    // .input({})
+    // .output(ChangeProfileResponseSchema)
+    .mutation(async ({ input }) => {
+      console.log(input);
+    }),
+  changeAvatar: publicProcedure
+    // .input()
+    // .output()
+    .mutation(async ({ input }) => {
+      console.log(input);
     }),
 });

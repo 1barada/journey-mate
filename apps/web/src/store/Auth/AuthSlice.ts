@@ -1,4 +1,4 @@
-import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit';
+import { createDraftSafeSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { IAuthSlice } from './types';
 
@@ -14,7 +14,7 @@ export const initialState: IAuthSlice = {
   loading: false,
   error: null,
   token: '',
-  isAuthenticated: false,
+  isAuthenticated: true,
 };
 
 const authSlice = createSlice({
@@ -28,7 +28,7 @@ const authSlice = createSlice({
       state.user.age = action.payload.age;
       console.log(action.payload);
     },
-    editDescription: (state, action) => {
+    editDescription: (state, action: PayloadAction<string>) => {
       state.user.description = action.payload;
     },
   },

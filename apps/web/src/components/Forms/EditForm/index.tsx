@@ -14,13 +14,14 @@ import {
   Typography,
 } from '@mui/material';
 
+import { trpcClient } from '../../../services/trpc';
 import { editProfile } from '../../../store/Auth/AuthSlice';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
 
 export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
-  const { control, handleSubmit, watch, setValue } = useForm<EditFormProps>({
+  const { control, handleSubmit, setValue } = useForm<EditFormProps>({
     defaultValues: {
       name,
       age,
@@ -31,19 +32,12 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
   });
 
   const dispatch = useDispatch();
-  const file = watch('file');
 
-  const onSubmit = (data: EditFormProps) => {
+  const onSubmit = async (data: EditFormProps) => {
     const { name, age, email, sex } = data;
     dispatch(editProfile({ name, age: Number(age), email, sex }));
-    console.log({ file: data.file });
-  };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      setValue('file', target.files[0]);
-    }
+    await trpcClient.user.changeProfileData.mutate({ name, email, sex, age });
   };
 
   return (
@@ -81,29 +75,7 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
           <TextField {...field} id="outlined-email" label="Email" fullWidth margin="normal" variant="outlined" />
         )}
       />
-      <FormControl fullWidth margin="normal">
-        <Button variant="contained" component="label">
-          Choose Photo
-          <Input
-            type="file"
-            inputProps={{ accept: 'image/*,application/pdf' }}
-            onChange={handleFileChange}
-            className={styles.inputUnDisplayed}
-          />
-        </Button>
-        {file && (
-          <TextField
-            label="Selected file"
-            value={file.name}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        )}
-      </FormControl>
+
       <FormControl className={styles.radioWrapper}>
         <FormLabel className={styles.radioLabel} component="legend">
           Sex
