@@ -7,6 +7,7 @@ export interface JourneyCardProps {
   journeyType: string;
   onClickHandler: () => void;
   status: Status;
+  coordinates: { lat: number; lng: number }[];
 }
 
 export enum Status {
