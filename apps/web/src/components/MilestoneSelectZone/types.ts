@@ -15,5 +15,5 @@ export interface MilestoneSelectZoneProps {
   onChange: (value: SortableMilestone[]) => void;
   onDelete?: (value: SortableMilestone) => void;
   onEdit?: (value: SortableMilestone) => void;
-  onMove?: (value: SortableMilestone[]) => void;
+  onSwap: (value: SortableMilestone[]) => void;
 }

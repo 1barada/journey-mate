@@ -48,7 +48,7 @@ export const SearchLocationModal: React.FC<SearchLocationModalProps> = (props) =
                 );
               }}
             />
-            <FormHelperText>{getErrorMessage('coords')}</FormHelperText>
+            <FormHelperText>{getErrorMessage('title')}</FormHelperText>
           </FormControl>
 
           <MapWrapper>
@@ -58,7 +58,7 @@ export const SearchLocationModal: React.FC<SearchLocationModalProps> = (props) =
                 name="coords"
                 render={({ field }) => (
                   <SearchLocationMap
-                    width="80%"
+                    width="100%"
                     height="300px"
                     onPlaceSelected={(coords) => {
                       field.onChange(coords);

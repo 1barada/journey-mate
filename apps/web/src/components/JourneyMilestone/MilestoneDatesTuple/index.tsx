@@ -15,7 +15,7 @@ export const MilestoneDatesTuple: React.FC<MilestoneDatesTupleProps> = ({ itemsC
   return (
     <Box component="div" className={clsx('datetimeTuple', className)}>
       {startDateEl}
-      {itemsCount < 2 && (
+      {itemsCount > 1 && (
         <>
           <Typography>{DELIMITER}</Typography>
           {endDateEl}

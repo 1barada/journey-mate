@@ -41,6 +41,7 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
   const form = useForm<MilestoneFormValues>({
     resolver: zodResolver(MilestoneSchema),
     defaultValues: {
+      id: performance.now(),
       title: '',
       dates: [minDate],
       coords: {
@@ -62,7 +63,7 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
     if (editedItem) {
       onEdit?.(values);
     } else {
-      onChange({ ...values, id: performance.now(), date: values.dates[0].toDate() });
+      onChange(values);
     }
 
     toggleModal();
@@ -75,6 +76,7 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
       setValue('coords', editedItem.coords);
       setValue('title', editedItem.title);
       setValue('dates', dates);
+      setValue('id', editedItem.id);
     }
   }, [setValue, editedItem]);
 
@@ -83,7 +85,10 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.stopPropagation();
     form.handleSubmit(onSelect)(e);
-    dispatch(journeyActions.clearEditUnsavedMilestone());
+
+    if (editedItem) {
+      dispatch(journeyActions.clearEditUnsavedMilestone());
+    }
   };
 
   const onCloseModal = () => {
@@ -95,9 +100,10 @@ export const useSearchLocationModal = ({ toggleModal }: SearchLocationModalProps
 
   const getErrorMessage = (name: MilestoneFieldName) => form.formState.errors[name]?.message ?? '';
   const hasErrorInField = (name: MilestoneFieldName) => Boolean(form.formState.errors[name]);
+  const getDatePickerLabel = (key: number) => dateFiledLabels.get(key);
 
   return {
-    getDatePickerLabel: dateFiledLabels.get.bind(dateFiledLabels),
+    getDatePickerLabel,
     onSelect,
     onSubmit,
     register,

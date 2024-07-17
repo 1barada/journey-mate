@@ -6,6 +6,7 @@ interface BaseSlice {
 }
 
 export interface Milestone {
+  id: number;
   title: string;
   dates: number[] | Dayjs[];
   coords: {
@@ -13,6 +14,7 @@ export interface Milestone {
     lng: number;
   };
 }
+export type CreateMilestone = Omit<Milestone, 'id'>;
 
 export interface JourneySlice extends BaseSlice {
   journey: unknown;

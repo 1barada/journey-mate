@@ -1,6 +1,6 @@
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
-import type { JourneySlice, Milestone } from './types';
+import type { CreateMilestone, JourneySlice } from './types';
 
 // !TODO replace with trpc later
 const sleep = (ms: number) =>
@@ -39,7 +39,7 @@ export const joinJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
 export const createNewJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
   creator.asyncThunk(
     async (
-      journey: { title: string; description: string; category: string; milestones: Milestone[] },
+      journey: { title: string; description: string; category: string; milestones: CreateMilestone[] },
       { rejectWithValue }
     ) => {
       try {

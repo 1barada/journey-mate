@@ -11,7 +11,8 @@ import type { SortableBaseItem, SortableListProps } from './types';
 
 export const SortableList = <T extends SortableBaseItem>({
   items,
-  onChange,
+  onSwap,
+  onBeforeSwap,
   renderItem,
   className,
 }: SortableListProps<T>) => {
@@ -33,7 +34,8 @@ export const SortableList = <T extends SortableBaseItem>({
       const activeIndex = items.findIndex(({ id }) => id === active.id);
       const overIndex = items.findIndex(({ id }) => id === over.id);
 
-      onChange(arrayMove(items, activeIndex, overIndex));
+      onBeforeSwap?.(items[activeIndex], items[overIndex]);
+      onSwap(arrayMove(items, activeIndex, overIndex));
     }
     setActive(null);
   };

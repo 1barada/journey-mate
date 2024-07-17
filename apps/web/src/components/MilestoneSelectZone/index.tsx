@@ -39,7 +39,7 @@ const SearchLocationModal = lazy(() =>
 export const MilestoneSelectZone: React.FC<MilestoneSelectZoneProps> = forwardRef<
   HTMLDivElement,
   MilestoneSelectZoneProps
->(({ className, value = [], onChange, onMove, onDelete, onEdit, placeholder }, ref) => {
+>(({ className, value = [], onChange, onSwap, onDelete, onEdit, placeholder }, ref) => {
   const [isModalOpen, toggleModal] = useModal();
 
   const isEmpty = value.length === 0;
@@ -77,7 +77,13 @@ export const MilestoneSelectZone: React.FC<MilestoneSelectZoneProps> = forwardRe
           <Box className={styles.scrollable}>
             <SortableList
               items={value}
-              onChange={(v) => onMove?.(v)}
+              onSwap={onSwap}
+              onBeforeSwap={(active, over) => {
+                const temp = { ...active };
+
+                active.dates = over.dates;
+                over.dates = temp.dates;
+              }}
               renderItem={(milestone, index) => {
                 const badgeContent = index + 1;
                 const { title, dates } = milestone;

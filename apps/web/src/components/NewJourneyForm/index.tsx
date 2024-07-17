@@ -28,21 +28,21 @@ export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => 
     >
       <Stack className={styles.group}>
         <TextField
+          {...register('title')}
           placeholder="Enter journey name"
           label="Title"
           error={hasErrorInField('title')}
           helperText={getErrorMessage('title')}
-          {...register('title')}
           FormHelperTextProps={{ className: 'error-message' }}
         />
         <TextField
+          {...inputAlly('type')}
           select
           fullWidth
           label="Select journey type"
           inputProps={register('category')}
           error={hasErrorInField('category')}
           helperText={getErrorMessage('category')}
-          {...inputAlly('type')}
           FormHelperTextProps={{ className: 'error-message' }}
         >
           <MenuItem value={'10'}>Ten</MenuItem>
@@ -69,7 +69,7 @@ export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => 
                 onChange={(newMileStone) => {
                   field.onChange([...field.value, newMileStone]);
                 }}
-                onMove={field.onChange}
+                onSwap={field.onChange}
               />
               <FormHelperText className={'error-message'}>{getErrorMessage('milestones')}</FormHelperText>
             </FormControl>

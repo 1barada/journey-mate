@@ -6,7 +6,8 @@ export interface SortableBaseItem {
 
 export interface SortableListProps<T extends SortableBaseItem> {
   items: T[];
-  onChange(items: T[]): void;
+  onSwap(items: T[]): void;
+  onBeforeSwap?(itemOne: T, itemTwo: T): void;
   renderItem(item: T, index: number): React.ReactNode;
   className?: string;
 }
