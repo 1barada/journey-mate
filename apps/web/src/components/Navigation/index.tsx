@@ -7,7 +7,8 @@ import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
+import { selectIsAuthenticated, selectIsAuthLoading } from '../../store/Auth/AuthSlice';
+import { useAppSelector } from '../../types/reduxTypes';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
 import { Modal } from '../common/Modal';
@@ -16,7 +17,8 @@ import styles from './Navigation.module.scss';
 
 export const Navigation = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const [isOpen, toggle] = useModal();
+  const isLoading = useAppSelector(selectIsAuthLoading);
+  const [isOpen, toggle] = useModal({ isLoading });
   const [modalType, setModalType] = useState<AuthFormTypes>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
