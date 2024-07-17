@@ -30,7 +30,7 @@ export const EditAvatar = () => {
     console.log(data.file);
     // // dispatch(editProfile({ name, age: Number(age), email, sex }));
     // await trpcClient.user.changeAvatar.mutate({ avatar: data.file });
-    await trpcClient.user.changeAvatar.mutate({});
+    // await trpcClient.user.changeAvatar.mutate({});
     // await trpcClient.user.changeProfileData.mutate({ name, email, sex, age, avatar: data.file });
   };
 

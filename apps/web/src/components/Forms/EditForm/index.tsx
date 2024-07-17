@@ -37,7 +37,7 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
     const { name, age, email, sex } = data;
     dispatch(editProfile({ name, age: Number(age), email, sex }));
 
-    await trpcClient.user.changeProfileData.mutate({ name, email, sex, age });
+    // await trpcClient.user.changeProfileData.mutate({ name, email, sex, age });
   };
 
   return (
