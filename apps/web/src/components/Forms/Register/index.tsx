@@ -2,20 +2,27 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Typography } from '@mui/material';
 
+import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormInput } from '../../common/AuthFormInput';
-import { TextInputTypes } from '../../common/AuthFormInput/types';
+import { TextInputRegisterTypes, TextInputTypes } from '../../common/AuthFormInput/types';
 
+import { registerSchema } from './schemas';
 import styles from './styles.module.scss';
 import type { FormInputsTypes, RegisterProps } from './types';
 
-const Register: React.FC<RegisterProps> = ({ temp }) => {
+const Register: React.FC<RegisterProps> = ({ toggleModal }) => {
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectIsAuthLoading);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputsTypes>({ resolver: zodResolver(loginSchema) });
+  } = useForm<FormInputsTypes>({ resolver: zodResolver(registerSchema) });
 
   const onSubmit: SubmitHandler<FormInputsTypes> = async (data) => {
+    console.log(data);
+
     const response = await dispatch(login(data));
     if (response.meta.requestStatus === 'fulfilled') {
       toggleModal();
@@ -33,7 +40,10 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
             label="Email address"
             labelProps={{ className: styles.formInputLabel }}
             inputProps={{ fullWidth: true, variant: 'outlined' }}
+            errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Email}
+            inputRegister={register(TextInputRegisterTypes.Email)}
+            validationErrorMessage={errors.email?.message}
           />
           <AuthFormInput
             label="Password"
@@ -42,7 +52,10 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
               fullWidth: true,
               variant: 'outlined',
             }}
+            errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Password}
+            inputRegister={register(TextInputRegisterTypes.Password)}
+            validationErrorMessage={errors.password?.message}
           />
           <AuthFormInput
             label="Password conformation"
@@ -51,18 +64,22 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
               fullWidth: true,
               variant: 'outlined',
             }}
+            errorProps={{ className: styles.formInputError }}
             type={TextInputTypes.Password}
+            inputRegister={register(TextInputRegisterTypes.ConfirmPassword)}
+            validationErrorMessage={errors.confirmPassword?.message}
           />
         </Box>
         <Box component="div" className={styles.formContainerFlexColumnGap16}>
           <Button
             variant="contained"
             fullWidth
+            type="submit"
             className={styles.formSubmitBtn}
-            // disabled={}
+            disabled={isLoading}
             disableElevation
           >
-            <Typography className={styles.formSubmitBtnText}>Sign Up</Typography>
+            <Typography className={styles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Sign up'}</Typography>
           </Button>
         </Box>
       </Box>

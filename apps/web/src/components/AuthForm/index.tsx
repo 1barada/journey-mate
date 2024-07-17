@@ -12,7 +12,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ form, toggleModal }) => {
   return (
     <>
       {formType === AuthFormTypes.SignIn && <Login switchToRegisterForm={setFormType} toggleModal={toggleModal} />}
-      {formType === AuthFormTypes.SignUp && <Register temp={''} />}
+      {formType === AuthFormTypes.SignUp && <Register toggleModal={toggleModal} />}
     </>
   );
 };
