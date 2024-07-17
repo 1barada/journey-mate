@@ -6,9 +6,9 @@ import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormInput } from '../../common/AuthFormInput';
 import { TextInputRegisterTypes, TextInputTypes } from '../../common/AuthFormInput/types';
+import sharedStyles from '../shared.module.scss';
 
 import { registerSchema } from './schemas';
-import styles from './styles.module.scss';
 import type { FormInputsTypes, RegisterProps } from './types';
 
 const Register: React.FC<RegisterProps> = ({ toggleModal }) => {
@@ -30,56 +30,56 @@ const Register: React.FC<RegisterProps> = ({ toggleModal }) => {
   };
 
   return (
-    <Box component="form" className={styles.formContainer} onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Typography className={styles.formHeader} component="h3">
+    <Box component="form" className={sharedStyles.formContainer} onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Typography className={sharedStyles.formHeader} component="h3">
         Sign up
       </Typography>
-      <Box className={styles.formContainerFlexColumnGap20} component="div">
-        <Box component="div" className={styles.formContainerFlexColumnGap16}>
+      <Box className={sharedStyles.formContainerFlexColumnGap20} component="div">
+        <Box component="div" className={sharedStyles.formContainerFlexColumnGap16}>
           <AuthFormInput
             label="Email address"
-            labelProps={{ className: styles.formInputLabel }}
+            labelProps={{ className: sharedStyles.formInputLabel }}
             inputProps={{ fullWidth: true, variant: 'outlined' }}
-            errorProps={{ className: styles.formInputError }}
+            errorProps={{ className: sharedStyles.formInputError }}
             type={TextInputTypes.Email}
             inputRegister={register(TextInputRegisterTypes.Email)}
             validationErrorMessage={errors.email?.message}
           />
           <AuthFormInput
             label="Password"
-            labelProps={{ className: styles.formInputLabel }}
+            labelProps={{ className: sharedStyles.formInputLabel }}
             inputProps={{
               fullWidth: true,
               variant: 'outlined',
             }}
-            errorProps={{ className: styles.formInputError }}
+            errorProps={{ className: sharedStyles.formInputError }}
             type={TextInputTypes.Password}
             inputRegister={register(TextInputRegisterTypes.Password)}
             validationErrorMessage={errors.password?.message}
           />
           <AuthFormInput
             label="Password conformation"
-            labelProps={{ className: styles.formInputLabel }}
+            labelProps={{ className: sharedStyles.formInputLabel }}
             inputProps={{
               fullWidth: true,
               variant: 'outlined',
             }}
-            errorProps={{ className: styles.formInputError }}
+            errorProps={{ className: sharedStyles.formInputError }}
             type={TextInputTypes.Password}
             inputRegister={register(TextInputRegisterTypes.ConfirmPassword)}
             validationErrorMessage={errors.confirmPassword?.message}
           />
         </Box>
-        <Box component="div" className={styles.formContainerFlexColumnGap16}>
+        <Box component="div" className={sharedStyles.formContainerFlexColumnGap16}>
           <Button
             variant="contained"
             fullWidth
             type="submit"
-            className={styles.formSubmitBtn}
+            className={sharedStyles.formSubmitBtn}
             disabled={isLoading}
             disableElevation
           >
-            <Typography className={styles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Sign up'}</Typography>
+            <Typography className={sharedStyles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Sign up'}</Typography>
           </Button>
         </Box>
       </Box>
