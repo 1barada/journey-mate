@@ -87,10 +87,20 @@
 }
 
 .formContainer .formSubmitBtn {
-  background-color: $secondary-main;
+  background-color: $primary-main;
   border-radius: 30px;
   padding-top: 12px;
   padding-bottom: 12px;
+  transition: $transition;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: $primary-secondary;
+    color: $primary-main;
+  }
+  &:is(:hover, :focus) {
+    background-color: $primary-hover-color;
+  }
 }
 
 .formContainer .formSubmitBtnText {
