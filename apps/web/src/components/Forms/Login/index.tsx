@@ -29,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
   };
 
   return (
-    <Box className={styles.formContainer} component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box className={styles.formContainer} component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Box className={styles.formHeadersContainer} component="div">
         <Typography className={styles.formHeader} component="h3">
           Log in
@@ -94,7 +94,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             type="submit"
             disabled={isLoading}
           >
-            <Typography className={styles.formSubmitBtnText}>Log in</Typography>
+            <Typography className={styles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Log in'}</Typography>
           </Button>
         </Box>
       </Box>
