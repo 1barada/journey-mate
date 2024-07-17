@@ -1,14 +1,12 @@
-import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
-import { AuthFormInput } from '../common/AuthFormInput';
-import { TextInputTypes } from '../common/AuthFormInput/types';
+import { AuthFormInput } from '../../common/AuthFormInput';
+import { TextInputTypes } from '../../common/AuthFormInput/types';
 
 import styles from './styles.module.scss';
 import type { RegisterProps } from './types';
 
 const Register: React.FC<RegisterProps> = ({ temp }) => {
-  const [buttonState, setButtonState] = useState(true);
   return (
     <Box component="form" className={styles.formContainer}>
       <Typography className={styles.formHeader} component="h3">
@@ -46,7 +44,7 @@ const Register: React.FC<RegisterProps> = ({ temp }) => {
             variant="contained"
             fullWidth
             className={styles.formSubmitBtn}
-            disabled={buttonState}
+            // disabled={}
             disableElevation
           >
             <Typography className={styles.formSubmitBtnText}>Sign Up</Typography>

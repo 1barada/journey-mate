@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Login } from '../Forms/Login';
-import { Register } from '../Register';
+import { Register } from '../Forms/Register';
 
 import type { AuthFormProps } from './types';
 import { AuthFormTypes } from './types';
