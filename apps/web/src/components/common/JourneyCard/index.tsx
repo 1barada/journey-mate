@@ -15,6 +15,9 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
+import { Map } from '../Map';
+import { MapWrapper } from '../MapWrapper';
+
 import styles from './JourneyCard.module.scss';
 import { JourneyCardProps, Status } from './JourneyCard.types';
 
@@ -55,10 +58,13 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
   journeyType,
   onClickHandler,
   status,
+  coordinates,
 }) => {
   return (
     <Card className={styles.card}>
-      <CardMedia className={styles.cardMedia} component="img" image={imageUrl} alt={header} />
+      <MapWrapper>
+        <Map width="100%" height="25vh" coordinates={coordinates} />
+      </MapWrapper>
       <CardContent>
         <Box className={styles.flexCenterBetween}>
           <Box className={styles.flexCenter}>

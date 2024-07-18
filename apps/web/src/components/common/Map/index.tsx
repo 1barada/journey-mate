@@ -23,7 +23,7 @@ export const Map: React.FC<MapProps> = ({ width, height, coordinates }) => {
       map.fitBounds(bounds);
 
       const zoomChangeBoundsListener = google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
-        const currentZoom = map.getZoom() || 0;
+        const currentZoom = (map.getZoom() || 0) + 0.4;
         map.setZoom(Math.min(40, currentZoom));
       });
       setTimeout(() => google.maps.event.removeListener(zoomChangeBoundsListener), 2000);
