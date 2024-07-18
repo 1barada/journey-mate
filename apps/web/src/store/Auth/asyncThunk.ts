@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';
@@ -23,10 +24,12 @@ export const loginAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
+        toast.success('Welcome back!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
         state.error = payload as string;
+        toast.error(payload as string);
       },
     }
   );
@@ -49,10 +52,12 @@ export const registerAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
+        toast.success("You've successfully registered!");
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
         state.error = payload as string;
+        toast.error(payload as string);
       },
     }
   );
