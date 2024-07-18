@@ -1,7 +1,7 @@
 import { config } from '@project/api/config';
 
 import { publicProcedure, router } from '../../trpc/trpc';
-import { LoginRequestSchema, LoginResponseSchema } from '../auth/domain/usecases/login.usecase';
+import { LoginRequestSchema, LoginRouterResponseSchema } from '../auth/domain/usecases/login.usecase';
 import {
   ConfirmEmailRequestSchema,
   ConfirmEmailResponseSchema,
@@ -17,14 +17,14 @@ export const userRouter = router({
   }),
   login: publicProcedure
     .input(LoginRequestSchema)
-    .output(LoginResponseSchema)
+    .output(LoginRouterResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
-      const { user, token } = await service.login(input);
+      const { token } = await service.login(input);
 
       ctx.res.setCookie('access-token', token, { signed: true });
-      return user;
+      return;
     }),
   registerWithEmail: publicProcedure
     .input(RegisterWithEmailRequestSchema)
