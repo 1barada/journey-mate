@@ -35,7 +35,7 @@ export const registerAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
   creator.asyncThunk(
     async (data: FormInputsTypes, { rejectWithValue }) => {
       try {
-        await trpcClient.user.registerWithEmail.mutate({...data})
+        await trpcClient.user.registerWithEmail.mutate({ ...data });
         return;
       } catch (error) {
         return rejectWithValue((error as Error).message);

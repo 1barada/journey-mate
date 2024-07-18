@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Link, Typography } from '@mui/material';
 
-import { login, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
+import { loginUser, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormTypes } from '../../AuthForm/types';
 import { AuthFormInput } from '../../common/AuthFormInput';
@@ -22,7 +22,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
   } = useForm<FormInputsTypes>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit: SubmitHandler<FormInputsTypes> = async (data) => {
-    const response = await dispatch(login(data));
+    const response = await dispatch(loginUser(data));
     if (response.meta.requestStatus === 'fulfilled') {
       toggleModal();
     }
