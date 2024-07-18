@@ -36,7 +36,9 @@ export class LoginService implements LoginUsecase {
       throw new InvalidPasswordError();
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, this.jwt.secret, { expiresIn: this.jwt.expiresIn });
+    const token = jwt.sign({ userId: user.id, userEmail: user.email, userRole: user.role }, this.jwt.secret, {
+      expiresIn: this.jwt.expiresIn,
+    });
 
     return { user, token };
   }
