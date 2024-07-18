@@ -24,7 +24,7 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
 
       {
         path: routes.PROFILE,
-        element: <PrivateRoute isAuthenticated={isAuthenticated} />,
+        element: <PrivateRoute />,
         children: [
           {
             path: '',
@@ -34,7 +34,7 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
       },
       {
         path: routes.NOTIFICATIONS,
-        element: <PrivateRoute isAuthenticated={isAuthenticated} />,
+        element: <PrivateRoute />,
         children: [
           {
             path: '',
@@ -44,7 +44,7 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
       },
       {
         path: routes.JOURNEYS,
-        element: <PrivateRoute isAuthenticated={isAuthenticated} />,
+        element: <PrivateRoute />,
         children: [
           {
             path: '',
