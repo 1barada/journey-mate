@@ -21,8 +21,8 @@ const config = convict({
     default: 'localhost',
     env: 'AWS_EC2_HOST',
   },
-  secret: {
-    default: '',
+  jwtSecret: {
+    default: 'jsklfasjlkwejfsfjwkefjlwe;l',
     env: 'SECRET_KEY',
   },
   frontendUrl: {

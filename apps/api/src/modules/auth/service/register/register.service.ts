@@ -30,7 +30,7 @@ export class RegisterService implements RegisterUsecase {
     });
 
     // code is used to confirm the user on "user.confirm" route
-    const token = jwt.sign({ id: user.id.toString() }, config.get('secret'), { expiresIn: '6h' });
+    const token = jwt.sign({ id: user.id.toString() }, config.get('jwtSecret'), { expiresIn: '6h' });
 
     const confirmationUrl = `${request.baseUrl}/user.confirm?${new URLSearchParams({ token })}`;
 
@@ -40,7 +40,7 @@ export class RegisterService implements RegisterUsecase {
   }
 
   async confirm(request: ConfirmEmailRequest): Promise<ConfirmEmailResponse> {
-    const decoded = jwt.verify(request.token, config.get('secret'));
+    const decoded = jwt.verify(request.token, config.get('jwtSecret'));
 
     if (typeof decoded !== 'object' || typeof decoded['id'] !== 'string') {
       throw new Error(`Provided invalid jwt token. Decoded payload: ${decoded}`);

@@ -10,7 +10,7 @@ import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases
 
 export class LoginService implements LoginUsecase {
   private jwt = {
-    secret: config.get('secret'),
+    secret: config.get('jwtSecret'),
     expiresIn: '20h',
   };
 
