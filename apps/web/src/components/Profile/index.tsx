@@ -7,8 +7,7 @@ import clsx from 'clsx';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
-import { selectUser } from '../../store/Auth/AuthSlice';
-import { editDescription } from '../../store/Auth/AuthSlice';
+import { editDescription, selectUser } from '../../store/Auth/AuthSlice';
 import { CardDescription } from '../CardDescription';
 import { EditAvatar } from '../Forms/EditAvatar';
 

@@ -1,6 +1,6 @@
 export interface SearchLocationMapProps {
   coordinate?: Position;
-  onPlaceSelected: (coordinates: Position) => void;
+  onPlaceSelected: (coordinates: Position, address: string) => void;
   width: string;
   height: string;
 }

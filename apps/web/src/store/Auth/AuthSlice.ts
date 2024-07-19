@@ -1,6 +1,11 @@
-import { createDraftSafeSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector, PayloadAction } from '@reduxjs/toolkit';
 
+import { changeDescriptionAsyncThunk, changeProfileDataAsyncThunk } from './asyncThunk';
 import type { IAuthSlice } from './types';
+
+const createSlice = buildCreateSlice({
+  creators: { asyncThunk: asyncThunkCreator },
+});
 
 export const initialState: IAuthSlice = {
   user: {
@@ -20,18 +25,10 @@ export const initialState: IAuthSlice = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    editProfile: (state, action) => {
-      state.user.email = action.payload.email;
-      state.user.name = action.payload.name;
-      state.user.sex = action.payload.sex;
-      state.user.dateOfBirth = action.payload.age;
-      console.log(action.payload);
-    },
-    editDescription: (state, action: PayloadAction<string>) => {
-      state.user.description = action.payload;
-    },
-  },
+  reducers: (creator) => ({
+    // changeProfileData: changeProfileDataAsyncThunk(creator),
+    // editDescription: changeDescriptionAsyncThunk(creator),
+  }),
   selectors: {
     selectIsAuthenticated: createDraftSafeSelector(
       (state) => state.isAuthenticated,
@@ -47,6 +44,6 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const { editProfile, editDescription } = authSlice.actions;
+export const { changeProfileData, editDescription } = authSlice.actions;
 
 export const { selectIsAuthenticated, selectUser } = authSlice.selectors;

@@ -4,7 +4,7 @@ import { trpcClient } from '../../services/trpc';
 
 import { IAuthSlice } from './types';
 
-export const changeDescription = (creator: ReducerCreators<IAuthSlice>) => {
+export const changeDescriptionAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
   creator.asyncThunk(
     async (description: string, { rejectWithValue }) => {
       try {
@@ -31,11 +31,11 @@ export const changeDescription = (creator: ReducerCreators<IAuthSlice>) => {
   );
 };
 
-export const changeProfileData = (creator: ReducerCreators<IAuthSlice>) => {
+export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
   creator.asyncThunk(
     async (data, { rejectWithValue }) => {
       try {
-        const newData = trpcClient.user.changeProfileData.mutate(data);
+        const newData = await trpcClient.user.changeProfileData.mutate(data);
 
         return newData;
       } catch (error) {

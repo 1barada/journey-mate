@@ -9,7 +9,7 @@ import { PrivateRoute } from './PrivateRoute';
 const HomePage = lazy(() => import('../pages/HomePage/HomePage'));
 const JourneysPage = lazy(() => import('../pages/JourneysPage/JourneysPage'));
 const Notifications = lazy(() => import('../pages/Notifications/Notifications'));
-
+const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 
 export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
@@ -49,6 +49,15 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
           {
             path: '',
             element: <JourneysPage />,
+          },
+        ],
+      },
+      {
+        path: routes.AUTH,
+        children: [
+          {
+            path: routes.AUTH_CONFIRM,
+            element: <AccountConfirmedPage />,
           },
         ],
       },

@@ -11,6 +11,8 @@ export const SearchLocationMap: React.FC<SearchLocationMapProps> = ({ coordinate
     }
   );
   const [selectedPosition, setSelectedPosition] = useState<Position | undefined>(undefined);
+  const [geocoder, setGeocoder] = useState<google.maps.Geocoder | undefined>(undefined);
+
   const onClick = useCallback(
     (e: google.maps.MapMouseEvent) => {
       if (!e.latLng) return;
@@ -18,20 +20,40 @@ export const SearchLocationMap: React.FC<SearchLocationMapProps> = ({ coordinate
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       setSelectedPosition({ lat, lng });
-      onPlaceSelected({ lat, lng });
+
+      if (geocoder) {
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+          if (status === 'OK' && results && results[0]) {
+            const address = results[0].formatted_address;
+            onPlaceSelected({ lat, lng }, address);
+          } else {
+            console.error('Geocoder failed due to: ' + status);
+          }
+        });
+      } else {
+        onPlaceSelected({ lat, lng }, '');
+      }
     },
-    [onPlaceSelected]
+    [geocoder, onPlaceSelected]
   );
+  const mapOptions = {
+    disableDefaultUI: true,
+    zoomControl: true,
+  };
 
   useEffect(() => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setCurrentPosition({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
+        setCurrentPosition(
+          coordinate || {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
+        );
       });
     }
+
+    setGeocoder(new google.maps.Geocoder());
   }, []);
 
   useEffect(() => {
@@ -45,6 +67,7 @@ export const SearchLocationMap: React.FC<SearchLocationMapProps> = ({ coordinate
     <GoogleMap
       mapContainerStyle={{ width: width, height: height }}
       center={currentPosition}
+      options={mapOptions}
       zoom={10}
       onClick={onClick}
     >

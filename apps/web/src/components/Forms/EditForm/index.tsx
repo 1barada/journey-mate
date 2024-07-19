@@ -12,31 +12,29 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { DatePicker, DatePickerProps, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-import { changeProfileData } from '../../../store/Auth/asyncThunk';
+import { changeProfileData } from '../../../store/Auth/AuthSlice';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
 
 export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) => {
-  const { control, handleSubmit, setValue } = useForm<EditFormProps>({
+  const { control, handleSubmit } = useForm<EditFormProps>({
     defaultValues: {
       name,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date(),
       email,
       sex,
-      file: null,
     },
   });
 
   const dispatch = useDispatch();
 
   const onSubmit = async (data: EditFormProps) => {
-    // const { name, age, email, sex } = data;
-    // dispatch(changeProfileData(data));
-    console.log(data);
+    dispatch(changeProfileData(data));
   };
 
   return (
@@ -48,7 +46,15 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
         name="name"
         control={control}
         render={({ field }) => (
-          <TextField {...field} id="outlined-name" label="Full name" fullWidth margin="normal" variant="outlined" />
+          <TextField
+            {...field}
+            id="outlined-name"
+            label="Full name"
+            fullWidth
+            margin="normal"
+            onChange={field.onChange}
+            variant="outlined"
+          />
         )}
       />
       <Controller
@@ -56,9 +62,16 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
         name="dateOfBirth"
         rules={{ required: true }}
         render={({ field }) => {
+          console.log(field);
           return (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="" {...field} value={dateOfBirth} />
+              <DatePicker
+                label=""
+                {...field}
+                value={dayjs(field.value)}
+                onChange={field.onChange}
+                format={'DD.MM.YYYY'}
+              />
             </LocalizationProvider>
           );
         }}
@@ -67,7 +80,15 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
         name="email"
         control={control}
         render={({ field }) => (
-          <TextField {...field} id="outlined-email" label="Email" fullWidth margin="normal" variant="outlined" />
+          <TextField
+            {...field}
+            id="outlined-email"
+            onChange={field.onChange}
+            label="Email"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+          />
         )}
       />
 
@@ -79,7 +100,14 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
           name="sex"
           control={control}
           render={({ field }) => (
-            <RadioGroup {...field} className={styles.radioList} value={sex} aria-label="sex" name="sex">
+            <RadioGroup
+              {...field}
+              className={styles.radioList}
+              value={sex}
+              aria-label="sex"
+              name="sex"
+              onChange={field.onChange}
+            >
               <FormControlLabel value="female" control={<Radio />} label="Female" />
               <FormControlLabel value="male" control={<Radio />} label="Male" />
             </RadioGroup>

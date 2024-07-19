@@ -2,6 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 import { UserWithPassword } from '../domain/entities/user.entity';
 import {
+  ConfirmUserAccountParams,
+  CreateUserWithEmailParams,
+  CreateUserWithEmailResult,
   FindUserByEmailParams,
   FindUserByEmailResult,
   FindUserByIdParams,
@@ -21,7 +24,40 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
-      password: user.password,
+      description: user.description,
+      authProvider: user.authProvider,
+      passwordHash: user.passwordHash,
+      active: user.active,
+    };
+  }
+
+  async confirmUserAccount(params: ConfirmUserAccountParams): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: params.id },
+      data: {
+        active: true,
+      },
+    });
+
+    return;
+  }
+
+  async createUserWithEmail(params: CreateUserWithEmailParams): Promise<CreateUserWithEmailResult> {
+    const user = await this.prisma.user.create({
+      data: {
+        email: params.email,
+        passwordHash: params.passwordHash,
+        authProvider: 'password',
+        active: false,
+      },
+    });
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      authProvider: user.authProvider,
       description: user.description,
     };
   }
@@ -35,6 +71,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       name: user.name,
       role: user.role,
       description: user.description,
+      authProvider: user.authProvider,
     };
   }
 

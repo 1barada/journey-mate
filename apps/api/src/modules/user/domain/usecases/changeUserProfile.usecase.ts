@@ -1,12 +1,11 @@
-import { PrismaClient, Sex } from '@prisma/client';
+import { Sex } from '@prisma/client';
 import { z } from 'zod';
 
 const SexValues = Object.values(Sex) as [string, ...string[]];
 
 export const ChangeProfileRequestSchema = z.object({
-  //   id: z.number(),
   name: z.string(),
-  age: z.number().max(100),
+  dateOfBirth: z.date(),
   email: z.string().email(),
   sex: z.enum(SexValues),
 });
@@ -14,10 +13,9 @@ export const ChangeProfileRequestSchema = z.object({
 export type ChangeProfileRequest = z.infer<typeof ChangeProfileRequestSchema>;
 
 export const ChangeProfileResponseSchema = z.object({
-  //   id: z.number(),
   name: z.string(),
-  age: z.number().max(100),
-  email: z.number(),
+  dateOfBirth: z.date(),
+  email: z.string().email(),
   sex: z.enum(SexValues),
 });
 
