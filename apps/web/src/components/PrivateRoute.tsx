@@ -1,10 +1,11 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-interface PrivateRouteProps {
-  isAuthenticated: boolean;
-}
+import { selectIsAuthenticated } from '../store/Auth/AuthSlice';
+import { useAppSelector } from '../types/reduxTypes';
 
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({ isAuthenticated }) => {
+export const PrivateRoute: React.FC = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };

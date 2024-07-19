@@ -10,7 +10,7 @@ import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases
 
 export class LoginService implements LoginUsecase {
   private jwt = {
-    secret: config.get('secret'),
+    secret: config.get('jwtSecret'),
     expiresIn: '20h',
   };
 
@@ -36,7 +36,9 @@ export class LoginService implements LoginUsecase {
       throw new InvalidPasswordError();
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, this.jwt.secret, { expiresIn: this.jwt.expiresIn });
+    const token = jwt.sign({ userId: user.id, userEmail: user.email, userRole: user.role }, this.jwt.secret, {
+      expiresIn: this.jwt.expiresIn,
+    });
 
     return { user, token };
   }

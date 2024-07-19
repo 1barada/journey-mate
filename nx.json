@@ -27,6 +27,12 @@
       "options": {
         "commands": ["tsc --noEmit --pretty"]
       }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest"
+      }
     }
   },
   "plugins": [

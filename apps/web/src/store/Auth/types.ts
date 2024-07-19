@@ -1,7 +1,7 @@
 export interface User {
   name: string;
   email: string;
-  sex: 'femail' | 'male' | null;
+  sex: Sex | null;
   description: string;
   dateOfBirth: Date | null;
   avatar: string | null;
@@ -9,8 +9,19 @@ export interface User {
 
 export interface IAuthSlice {
   user: User;
-  loading: boolean;
+  isLoading: boolean;
   error: null | string;
-  token: string;
   isAuthenticated: boolean;
+}
+
+export interface ProfileDataPayload {
+  email: string;
+  name: string;
+  sex: Sex | null;
+  age: number;
+}
+
+export enum Sex {
+  Female = 'female',
+  Male = 'male',
 }

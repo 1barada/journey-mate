@@ -1,60 +1,63 @@
+import { toast } from 'react-toastify';
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
+import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 
-import { IAuthSlice } from './types';
+import type { IAuthSlice } from './types';
 
-export const changeDescriptionAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
+export const loginAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
   creator.asyncThunk(
-    async (description: string, { rejectWithValue }) => {
+    async (data: FormInputsTypes, { rejectWithValue }) => {
       try {
-        const newDescription = await trpcClient.user.changeDescription.mutate({ description });
-        return newDescription;
+        await trpcClient.user.login.mutate(data);
+        return;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
     },
     {
       pending: (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state, action) => {
-        state.user.description = action.payload.description;
-        state.loading = false;
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success('Welcome back!');
       },
-      rejected: (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
       },
     }
   );
-};
 
-export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
+export const registerAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
   creator.asyncThunk(
-    async (data, { rejectWithValue }) => {
+    async (data: FormInputsTypes, { rejectWithValue }) => {
       try {
-        const newData = await trpcClient.user.changeProfileData.mutate(data);
-
-        return newData;
+        await trpcClient.user.registerWithEmail.mutate({ ...data });
+        return;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
     },
     {
       pending: (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state, action) => {
-        state.loading = false;
-        state.user.dateOfBirth = action.payload;
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success("You've successfully registered!");
       },
-      rejected: (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
       },
     }
   );
-};

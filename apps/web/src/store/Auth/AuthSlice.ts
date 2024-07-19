@@ -1,33 +1,28 @@
 import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector, PayloadAction } from '@reduxjs/toolkit';
 
-import { changeDescriptionAsyncThunk, changeProfileDataAsyncThunk } from './asyncThunk';
-import type { IAuthSlice } from './types';
+import { loginAsyncThunk, registerAsyncThunk } from './asyncThunk';
+import { initialState } from './initialState';
+import type { ProfileDataPayload } from './types';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
 });
 
-export const initialState: IAuthSlice = {
-  user: {
-    name: 'Oleksii Korotenko',
-    email: 'djshajhb@gmail.com',
-    sex: null,
-    description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
-    dateOfBirth: null,
-    avatar: null,
-  },
-  loading: false,
-  error: null,
-  token: '',
-  isAuthenticated: true,
-};
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: (creator) => ({
-    // changeProfileData: changeProfileDataAsyncThunk(creator),
-    // editDescription: changeDescriptionAsyncThunk(creator),
+    // editProfile: creator.reducer((state, action: PayloadAction<ProfileDataPayload>) => {
+    //   state.user.email = action.payload.email;
+    //   state.user.name = action.payload.name;
+    //   state.user.sex = action.payload.sex;
+    //   state.user.age = action.payload.age;
+    // }),
+    // editDescription: creator.reducer((state, action: PayloadAction<string>) => {
+    //   state.user.description = action.payload;
+    // }),
+    loginUser: loginAsyncThunk(creator),
+    registerUser: registerAsyncThunk(creator),
   }),
   selectors: {
     selectIsAuthenticated: createDraftSafeSelector(
@@ -39,11 +34,16 @@ const authSlice = createSlice({
       (state) => state.user,
       (user) => ({ ...user })
     ),
+
+    selectIsAuthLoading: createDraftSafeSelector(
+      (state) => state.isLoading,
+      (isLoading) => Boolean(isLoading)
+    ),
   },
 });
 
 export const authReducer = authSlice.reducer;
 
-export const { changeProfileData, editDescription } = authSlice.actions;
+export const { loginUser, registerUser } = authSlice.actions;
 
-export const { selectIsAuthenticated, selectUser } = authSlice.selectors;
+export const { selectIsAuthenticated, selectUser, selectIsAuthLoading } = authSlice.selectors;
