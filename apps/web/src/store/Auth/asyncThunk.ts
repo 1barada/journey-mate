@@ -67,7 +67,8 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>
   return creator.asyncThunk(
     async (data: DataTypes, { rejectWithValue }) => {
       try {
-        return await trpcClient.user.changeProfileData.mutate(data);
+        // return await trpcClient.user.changeProfileData.mutate(data);
+        return;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }

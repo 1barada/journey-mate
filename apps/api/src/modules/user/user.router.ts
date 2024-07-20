@@ -53,15 +53,15 @@ export const userRouter = router({
 
       throw new Error('User ID not found in token data');
     }),
-  changeProfileData: publicProcedure
-    .input(ChangeProfileRequestSchema)
-    .output(ChangeProfileResponseSchema)
-    .mutation(async ({ input, ctx }) => {
-      console.log(input);
-      console.log(ctx);
+  // changeProfileData: publicProcedure
+  //   .input(ChangeProfileRequestSchema)
+  //   .output(ChangeProfileResponseSchema)
+  //   .mutation(async ({ input, ctx }) => {
+  //     console.log(input);
+  //     console.log(ctx);
 
-      return input;
-    }),
+  //     return input;
+  //   }),
   changeAvatar: publicProcedure
     // .input()
     // .output()

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import {
   Box,
   Button,
@@ -17,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 import { changeProfileData } from '../../../store/Auth/AuthSlice';
+import { useAppDispatch } from '../../../types/reduxTypes';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
@@ -31,7 +31,7 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
     },
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmit = async (data: EditFormProps) => {
     dispatch(changeProfileData(data));

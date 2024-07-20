@@ -28,11 +28,11 @@ export enum Sex {
   Male = 'male',
 }
 
-export const Schema = z.object({
+export const EditProfileSchema = z.object({
   email: z.string().email({ message: 'Email is required' }).trim(),
   name: z.string(),
-  sex: z.enum(['female', 'male']),
-  dateOfBirth: z.date(),
+  sex: z.enum(['female', 'male']).nullable(),
+  dateOfBirth: z.date().nullable(),
 });
 
-export type DataTypes = z.infer<typeof Schema>;
+export type DataTypes = z.infer<typeof EditProfileSchema>;
