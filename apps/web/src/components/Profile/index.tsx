@@ -1,5 +1,4 @@
 import { lazy, Suspense, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import CreateIcon from '@mui/icons-material/Create';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Avatar, Box, Button, Container, Tab, Typography } from '@mui/material';
@@ -8,6 +7,7 @@ import clsx from 'clsx';
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
 import { editDescription, selectUser } from '../../store/Auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 import { CardDescription } from '../CardDescription';
 import { EditAvatar } from '../Forms/EditAvatar';
 
@@ -20,9 +20,9 @@ export const Profile = () => {
   const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal({});
   const [isEdited, setIsEdited] = useState(false);
-  const { dateOfBirth, avatar, description, email, name, sex } = useSelector(selectUser);
+  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const doubleStyle = clsx(styles.button, styles.editBtn);
 

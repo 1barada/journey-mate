@@ -94,6 +94,7 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>
 export const changeDescriptionAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
   return creator.asyncThunk(
     async (description: string, { rejectWithValue }) => {
+      console.log(description);
       try {
         const newD = await trpcClient.user.changeDescription.mutate({ description });
         return newD;

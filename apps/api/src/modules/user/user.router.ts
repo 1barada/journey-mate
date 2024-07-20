@@ -41,7 +41,7 @@ export const userRouter = router({
       if (ctx.userTokenData && ctx.userTokenData.userId) {
         try {
           const result = await usecase.changeDescription({
-            id: ctx.userTokenData.userId,
+            id: ctx.userTokenData.userId.toString(),
             description: input.description,
           });
           return result;
