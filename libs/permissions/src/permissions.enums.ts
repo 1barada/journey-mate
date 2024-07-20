@@ -11,6 +11,7 @@ export enum PermissionEntity {
   Event = 'event',
   User = 'user',
   Chat = 'chat',
+  Notification = 'notification',
 }
 
 export enum Role {

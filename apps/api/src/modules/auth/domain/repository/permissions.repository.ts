@@ -6,19 +6,29 @@ export type permissionTableType = {
 
 export const permissionTable: Record<Role, permissionTableType> = {
   admin: {
-    [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event, PermissionEntity.Chat],
-    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat],
+    [PermissionAction.Read]: [
+      PermissionEntity.User,
+      PermissionEntity.Event,
+      PermissionEntity.Chat,
+      PermissionEntity.Notification,
+    ],
+    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat, PermissionEntity.Notification],
     [PermissionAction.Join]: [PermissionEntity.Event],
     [PermissionAction.Update]: [PermissionEntity.User, PermissionEntity.Event],
-    [PermissionAction.Delete]: [PermissionEntity.User, PermissionEntity.Event],
+    [PermissionAction.Delete]: [PermissionEntity.User, PermissionEntity.Event, PermissionEntity.Notification],
     [PermissionAction.Suspend]: [PermissionEntity.User, PermissionEntity.Event],
   },
   viewer: {
-    [PermissionAction.Read]: [PermissionEntity.Event, PermissionEntity.User, PermissionEntity.Chat],
-    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat],
+    [PermissionAction.Read]: [
+      PermissionEntity.Event,
+      PermissionEntity.User,
+      PermissionEntity.Chat,
+      PermissionEntity.Notification,
+    ],
+    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat, PermissionEntity.Notification],
     [PermissionAction.Join]: [PermissionEntity.Event],
     [PermissionAction.Update]: [PermissionEntity.Event, PermissionEntity.User],
-    [PermissionAction.Delete]: [PermissionEntity.Event, PermissionEntity.User],
+    [PermissionAction.Delete]: [PermissionEntity.Event, PermissionEntity.User, PermissionEntity.Notification],
   },
   guest: {
     [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event, PermissionEntity.Chat],
