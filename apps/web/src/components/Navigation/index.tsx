@@ -7,7 +7,7 @@ import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-import { selectIsAuthenticated } from '../../store/Auth/AuthSlice';
+import { selectIsAuthenticated } from '../../store/auth/slice';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
 import { Modal } from '../common/Modal';

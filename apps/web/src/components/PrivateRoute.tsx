@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { selectIsAuthenticated } from '../store/Auth/AuthSlice';
+import { selectIsAuthenticated } from '../store/auth/slice';
 import { useAppSelector } from '../types/reduxTypes';
 
 interface PrivateRouteProps {

@@ -4,8 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AbilityProvider } from './components/Ability';
 import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
-import { whoamiAsyncThunk } from './store/Auth/asyncThunks';
-import { selectUser } from './store/Auth/AuthSlice';
+import { whoamiAsyncThunk } from './store/auth/asyncThunks';
+import { selectUser } from './store/auth/slice';
 import { useAppDispatch, useAppSelector } from './types/reduxTypes';
 
 const routes = createRoutes();

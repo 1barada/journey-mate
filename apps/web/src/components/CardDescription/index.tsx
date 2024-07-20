@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 
-import { editDescription } from '../../store/Auth/AuthSlice';
+import { editDescription } from '../../store/auth/slice';
 
 import styles from './CardDescription.module.scss';
 

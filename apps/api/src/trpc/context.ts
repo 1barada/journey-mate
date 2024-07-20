@@ -1,10 +1,10 @@
+import { Role } from '@project/permissions';
 import { inferAsyncReturnType } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 
 import '@fastify/cookie';
 
 import { prisma } from '../database';
-import { Role } from '../modules/auth/domain/enums/permissions.enums';
 import { transporter } from '../transporter';
 
 import { cookieSchema } from './schemas/cookieSchema';

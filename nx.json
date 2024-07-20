@@ -27,6 +27,11 @@
       "options": {
         "commands": ["tsc --noEmit --pretty"]
       }
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "plugins": [

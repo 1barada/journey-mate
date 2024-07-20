@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
-import { selectUser } from '../../store/Auth/AuthSlice';
+import { selectUser } from '../../store/auth/slice';
 import { CardDescription } from '../CardDescription';
 
 import styles from './Profile.module.scss';

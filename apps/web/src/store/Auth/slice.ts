@@ -3,26 +3,10 @@ import { createDraftSafeSelector, createSlice } from '@reduxjs/toolkit';
 import { isWhoamiError } from '../../utils/type-guards';
 
 import { whoamiAsyncThunk } from './asyncThunks';
-import type { IAuthSlice } from './types';
+import { initialState } from './initialState';
+import type { AuthSlice } from './types';
 
-export const initialState: IAuthSlice = {
-  user: {
-    name: 'Oleksii Korotenko',
-    email: 'djshajhb@gmail.com',
-    sex: null,
-    description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
-    age: null,
-    avatar: null,
-  },
-  loading: false,
-  error: null,
-  token: '',
-  isAuthenticated: false,
-  permissions: [],
-  statusCode: null,
-};
-
-const rootSelector = (state: IAuthSlice) => state;
+const rootSelector = (state: AuthSlice) => state;
 
 const authSlice = createSlice({
   name: 'auth',

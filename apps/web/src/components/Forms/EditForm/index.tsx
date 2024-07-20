@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { editProfile } from '../../../store/Auth/AuthSlice';
+import { editProfile } from '../../../store/auth/slice';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
