@@ -1,4 +1,5 @@
-import { PermissionAction, PermissionEntity, Role } from '../../domain/enums/permissions.enums';
+import { PermissionAction, PermissionEntity, Role } from '@project/permissions';
+
 import {
   PermissionRepositoryPort,
   permissionTable,

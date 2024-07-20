@@ -1,21 +1,13 @@
+import { PermissionAction, PermissionEntity, Role } from '@project/permissions';
 import { z } from 'zod';
-
-import { PermissionAction, PermissionEntity, Role } from '../enums/permissions.enums';
 
 export const WhoAmIRequestSchema = z.object({
   email: z.string().email().nullable(),
-  role: z.enum([Role.Admin, Role.Guest, Role.SuspendedViewer, Role.Viewer]),
+  role: z.nativeEnum(Role),
 });
 
-const PermissionActionSchema = z.enum([
-  PermissionAction.Create,
-  PermissionAction.Read,
-  PermissionAction.Join,
-  PermissionAction.Delete,
-  PermissionAction.Suspend,
-  PermissionAction.Update,
-]);
-const PermissionEntitySchema = z.enum([PermissionEntity.Event, PermissionEntity.User]);
+const PermissionActionSchema = z.nativeEnum(PermissionAction);
+const PermissionEntitySchema = z.nativeEnum(PermissionEntity);
 
 const UserPermissionSchema = z
   .tuple([PermissionActionSchema, z.array(PermissionEntitySchema)])

@@ -1,4 +1,4 @@
-import { Role } from '../modules/auth/domain/enums/permissions.enums';
+import { Role } from '@project/permissions';
 
 export interface UserTokenDataTypes {
   userId: string | null;

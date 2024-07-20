@@ -1,6 +1,6 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 
-import { UserAbility, UserPermission } from '../../store/Auth/types';
+import { UserAbility, UserPermission } from '../../store/auth/types';
 
 export const defineAppAbility = (permission: UserPermission[]): UserAbility => {
   const { can, build } = new AbilityBuilder<UserAbility>(PureAbility);

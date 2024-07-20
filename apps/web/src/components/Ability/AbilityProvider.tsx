@@ -1,6 +1,6 @@
 import { createContext, useMemo } from 'react';
 
-import { selectUserPermissions } from '../../store/Auth/AuthSlice';
+import { selectUserPermissions } from '../../store/auth/slice';
 import { useAppSelector } from '../../types/reduxTypes';
 
 import type { UserAbilities } from './ability';

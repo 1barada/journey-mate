@@ -1,15 +1,19 @@
-import { IAuthSlice } from './types';
+import type { AuthSlice } from './types';
 
-export const initialState: IAuthSlice = {
+export const initialState: AuthSlice = {
   user: {
-    name: '',
-    email: '',
+    name: 'Oleksii Korotenko',
+    email: 'djshajhb@gmail.com',
     sex: null,
-    description: '',
-    dateOfBirth: null,
+    description: 'asdhjhdbshjbdasjbdas dashg djhvas asdhvbjhsbd jhvdasjhvsd mbnvjhdvas mdjhdvjash dasb jh',
+    age: null,
     avatar: null,
+    dateOfBirth: null,
   },
-  isLoading: false,
+  loading: false,
   error: null,
+  token: '',
   isAuthenticated: false,
+  permissions: [],
+  statusCode: null,
 };

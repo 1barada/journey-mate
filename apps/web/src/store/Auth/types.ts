@@ -1,10 +1,6 @@
 import { PureAbility } from '@casl/ability';
-import {
-  PermissionAction as PermissionActionEnum,
-  PermissionEntity as PermissionEntityEnum,
-} from '@project/api/modules/auth/domain/enums/permissions.enums';
+import { PermissionActionKey, PermissionEntityKey } from '@project/permissions';
 import { z } from 'zod';
-
 export interface User {
   name: string;
   email: string;
@@ -14,12 +10,9 @@ export interface User {
   avatar: string | null;
 }
 
-export type PermissionActionName = Lowercase<keyof typeof PermissionActionEnum>;
-export type PermissionEntityName = Lowercase<keyof typeof PermissionEntityEnum>;
-
-export type UserPermission = [PermissionActionName, PermissionEntityName[]];
-export type UserAbility = PureAbility<[PermissionActionName, PermissionEntityName]>;
-export interface IAuthSlice {
+export type UserPermission = [PermissionActionKey, PermissionEntityKey[]];
+export type UserAbility = PureAbility<[PermissionActionKey, PermissionEntityKey]>;
+export interface AuthSlice {
   user: User;
   isLoading: boolean;
   error: null | string;
