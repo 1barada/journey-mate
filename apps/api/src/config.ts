@@ -31,7 +31,7 @@ const config = convict({
     env: 'FRONTEND_URL',
   },
   cookieSecret: {
-    default: '',
+    default: 'dsadsadsadsa',
     env: 'COOKIE_SECRET',
   },
   emailUser: {

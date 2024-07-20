@@ -38,18 +38,28 @@ export const userRouter = router({
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeDescriptionUsecase(ctx.db);
-
-      if (ctx.userTokenData.userId) {
-        return await usecase.changeDescription({ id: ctx.userTokenData.userId, description: input.description });
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const result = await usecase.changeDescription({
+            id: ctx.userTokenData.userId,
+            description: input.description,
+          });
+          return result;
+        } catch (error) {
+          console.error('Error in usecase.changeDescription:', error);
+          throw new Error('Failed to change description');
+        }
       }
 
-      throw new Error('');
+      throw new Error('User ID not found in token data');
     }),
   changeProfileData: publicProcedure
     .input(ChangeProfileRequestSchema)
     .output(ChangeProfileResponseSchema)
     .mutation(async ({ input, ctx }) => {
       console.log(input);
+      console.log(ctx);
+
       return input;
     }),
   changeAvatar: publicProcedure

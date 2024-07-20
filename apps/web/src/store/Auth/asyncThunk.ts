@@ -4,7 +4,7 @@ import type { ReducerCreators } from '@reduxjs/toolkit';
 import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 
-import type { IAuthSlice } from './types';
+import type { DataTypes, IAuthSlice, ProfileDataPayload } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
   creator.asyncThunk(
@@ -25,6 +25,7 @@ export const loginAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
         state.isLoading = false;
         state.error = null;
         toast.success('Welcome back!');
+        state.isAuthenticated = true;
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
@@ -63,11 +64,10 @@ export const registerAsyncThunk = (creator: ReducerCreators<IAuthSlice>) =>
   );
 
 export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
-  creator.asyncThunk(
-    async (data, { rejectWithValue }) => {
+  return creator.asyncThunk(
+    async (data: DataTypes, { rejectWithValue }) => {
       try {
-        const newData = await trpcClient.user.changeProfileData.mutate(data);
-        return newData;
+        return await trpcClient.user.changeProfileData.mutate(data);
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -92,11 +92,11 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<IAuthSlice>
 };
 
 export const changeDescriptionAsyncThunk = (creator: ReducerCreators<IAuthSlice>) => {
-  creator.asyncThunk(
+  return creator.asyncThunk(
     async (description: string, { rejectWithValue }) => {
       try {
-        const newDescription = await trpcClient.user.changeDescription.mutate({ description });
-        return newDescription;
+        const newD = await trpcClient.user.changeDescription.mutate({ description });
+        return newD;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -109,7 +109,9 @@ export const changeDescriptionAsyncThunk = (creator: ReducerCreators<IAuthSlice>
       fulfilled: (state, action) => {
         state.isLoading = false;
         state.error = null;
+
         state.user.description = action.payload.description;
+
         toast.success("You've successfully changed your description!");
       },
       rejected: (state, { payload }) => {

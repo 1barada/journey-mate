@@ -6,7 +6,7 @@ export const initialState: IAuthSlice = {
     email: '',
     sex: null,
     description: '',
-    age: null,
+    dateOfBirth: null,
     avatar: null,
   },
   isLoading: false,

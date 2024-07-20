@@ -1,8 +1,12 @@
-import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector, PayloadAction } from '@reduxjs/toolkit';
+import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
 
-import { changeDescriptionAsyncThunk, loginAsyncThunk, registerAsyncThunk } from './asyncThunk';
+import {
+  changeDescriptionAsyncThunk,
+  changeProfileDataAsyncThunk,
+  loginAsyncThunk,
+  registerAsyncThunk,
+} from './asyncThunk';
 import { initialState } from './initialState';
-import type { ProfileDataPayload } from './types';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
@@ -12,6 +16,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: (creator) => ({
+    changeProfileData: changeProfileDataAsyncThunk(creator),
     editDescription: changeDescriptionAsyncThunk(creator),
     loginUser: loginAsyncThunk(creator),
     registerUser: registerAsyncThunk(creator),
@@ -36,6 +41,6 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const { loginUser, registerUser, editDescription } = authSlice.actions;
+export const { loginUser, registerUser, editDescription, changeProfileData } = authSlice.actions;
 
 export const { selectIsAuthenticated, selectUser, selectIsAuthLoading } = authSlice.selectors;
