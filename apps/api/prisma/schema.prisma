@@ -126,6 +126,7 @@ model Notification {
   events NotificationEvent[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  @@unique([userId, journeyId])
 }
 
 model NotificationEvent {
