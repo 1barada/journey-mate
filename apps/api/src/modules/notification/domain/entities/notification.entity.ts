@@ -5,7 +5,7 @@ export const NotificationEventTypeSchema = z.enum(['joinRequest', 'chatMessage',
 export const NotificationEventSchema = z.object({
   id: z.number(),
   notificationId: z.number(),
-  userId: z.number(),
+  userId: z.number().optional(),
   type: NotificationEventTypeSchema,
   createdAt: z.date(),
 });
@@ -16,7 +16,7 @@ export const NotificationSchema = z.object({
   id: z.number(),
   userId: z.number(),
   journeyId: z.number(),
-  events: z.array(NotificationEventSchema).default([]),
+  events: z.array(NotificationEventSchema).default([]).optional(),
   createdAt: z.date(),
 });
 
