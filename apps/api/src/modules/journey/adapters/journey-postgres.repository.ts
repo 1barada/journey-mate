@@ -4,6 +4,7 @@ import type { JourneyCategory } from '../domain/entities/journey-category.entity
 import type {
   CreateJourneyParams,
   CreateJourneyResult,
+  getAllJourneysResult,
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
 
@@ -68,6 +69,29 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       milestones: databaseMilestonesToMilestones({ milestones }),
       category: categories,
     } satisfies CreateJourneyResult;
+
+    return result;
+  }
+
+  async getJourneys(): Promise<getAllJourneysResult> {
+    const journeys = await this.db.journey.findMany({
+      include: {
+        journeyUsers: true,
+        milestones: true,
+        category: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+
+    const result = journeys.map((journey) => ({
+      ...journey,
+      milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
+      category: [journey.category[0].category],
+      participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
+    }));
 
     return result;
   }

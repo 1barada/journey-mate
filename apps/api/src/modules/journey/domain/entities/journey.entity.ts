@@ -14,10 +14,12 @@ export const JourneySchema = CreateJourneySchema.omit({ category: true }).extend
   category: z.array(JourneyCategorySchema),
   id: z.number(),
 });
+export const JourneysSchema = z.array(JourneySchema.extend({ participantsNumber: z.number() }));
 export const CreateJourneyWithUserIdSchema = CreateJourneySchema.extend({
   userId: z.number(),
 });
 
 export type Journey = z.infer<typeof JourneySchema>;
+export type Journeys = z.infer<typeof JourneysSchema>;
 export type CreateJourney = z.infer<typeof CreateJourneySchema>;
 export type CreateJourneyWithUserId = z.infer<typeof CreateJourneyWithUserIdSchema>;
