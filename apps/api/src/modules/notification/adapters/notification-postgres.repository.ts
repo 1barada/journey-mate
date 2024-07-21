@@ -44,7 +44,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     params: FindNotificationEventsByNotificationIdParams
   ): Promise<GetNotificationEventsResult> {
     const events = await this.prisma.notificationEvent.findMany({
-      where: { notificationId: Number(params.id) },
+      where: { notificationId: Number(params.notificationId) },
       select: {
         id: true,
         notificationId: true,
