@@ -1,6 +1,7 @@
 import { Journey } from '@project/api/modules/journey/domain/entities/journey.entity';
 
-import { Notification, NotificationEvent, NotificationEventTypeSchema } from '../entities/notification.entity';
+import { Notification } from '../entities/notification.entity';
+import { NotificationEvent, NotificationEventTypeSchema } from '../entities/notificationEvent.entity';
 
 export interface FindAllNotificationByUserIdParams {
   id: string;
