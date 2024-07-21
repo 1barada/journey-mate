@@ -1,26 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 
-import { journeyActions, journeySelectors } from '../../store/journey/slice';
-import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
-import { MilestoneSchema } from '../MilestoneSelectZone/SearchLocationModal/useSearchLocationModal';
-
-const NewJourneySchema = z.object({
-  title: z.string().min(3, 'Must be at least 3 chars long'),
-  category: z.string().min(1, 'Journey category is required'),
-  description: z.string().min(10, 'Must be at least 10 chars long'),
-  milestones: z.array(MilestoneSchema).min(1, 'Journey must contain at least one location'),
-});
-
-type NewJourneyValues = z.infer<typeof NewJourneySchema>;
-type NewJourneyFieldName = keyof NewJourneyValues;
+import { journeyActions, journeySelectors } from '../../../store/journey/slice';
+import type { NewJourneyFieldName, NewJourneyValues } from '../../../store/journey/types';
+import { NewJourneySchema } from '../../../store/journey/types';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 
 const defaultValues = {
   description: '',
   title: '',
-  category: '',
+  category: [{ value: '', title: '', id: 0 }],
   milestones: [],
 };
 
@@ -41,6 +31,7 @@ export const useNewJourneyForm = () => {
     dispatch(
       journeyActions.createNewJourney({
         ...values,
+        category: values.category.map(({ value }) => ({ value })),
         milestones: values.milestones.map((milestone) => ({
           coords: milestone.coords,
           title: milestone.title,

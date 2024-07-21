@@ -2,17 +2,17 @@ import { Controller } from 'react-hook-form';
 import { CircularProgress, FormControl, FormHelperText } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import clsx from 'clsx';
 
 import { MilestoneSelectZone } from '../MilestoneSelectZone';
 
+import { SelectJourneyCategory } from './components/SelectJourneyCategory';
+import { useNewJourneyForm } from './hooks/useNewJourneyForm';
+import { inputAlly } from './lib/utils';
 import styles from './styles.module.scss';
 import type { NewJourneyFormProps } from './types';
-import { useNewJourneyForm } from './useNewJourneyForm';
-import { inputAlly } from './utils';
 
 export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => {
   const { getErrorMessage, hasErrorInField, onCancel, onFormSubmit, form, isFormDisabled, needShowSpinner } =
@@ -35,20 +35,18 @@ export const NewJourneyForm: React.FC<NewJourneyFormProps> = ({ className }) => 
           helperText={getErrorMessage('title')}
           FormHelperTextProps={{ className: 'error-message' }}
         />
-        <TextField
-          {...inputAlly('type')}
-          select
-          fullWidth
-          label="Select journey type"
-          inputProps={register('category')}
-          error={hasErrorInField('category')}
-          helperText={getErrorMessage('category')}
-          FormHelperTextProps={{ className: 'error-message' }}
-        >
-          <MenuItem value={'10'}>Ten</MenuItem>
-          <MenuItem value={'20'}>Twenty</MenuItem>
-          <MenuItem value={'30'}>Thirty</MenuItem>
-        </TextField>
+        <Controller
+          name="category"
+          control={form.control}
+          render={({ field }) => (
+            <SelectJourneyCategory
+              {...field}
+              error={hasErrorInField('category')}
+              errorMessage={getErrorMessage('category')}
+              label="Select journey type"
+            />
+          )}
+        />
 
         <Controller
           name="milestones"

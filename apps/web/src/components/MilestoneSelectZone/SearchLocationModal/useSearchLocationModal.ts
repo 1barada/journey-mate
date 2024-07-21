@@ -14,6 +14,7 @@ import type { SearchLocationModalProps } from './types';
 const DATE_PICKERS_LIMIT = 2;
 
 const DayjsDateSchema = z.custom<Dayjs>((val) => val instanceof dayjs, 'Invalid date');
+
 export const MilestoneSchema = z.object({
   id: z.number().default(performance.now()),
   title: z.string().min(1),
