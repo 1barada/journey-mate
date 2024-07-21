@@ -13,9 +13,10 @@ export type NotificationSummary =
 export type GetAllNotificationsResult = NotificationSummary[] | null;
 
 export interface FindNotificationEventsByNotificationIdParams {
-  id: string;
+  notificationId: string;
 }
 
+// TODO:trying to find the correct type for NotificationEventSummary, error called because of Pick and optional userId field
 // export type NotificationEventSummary = Pick<
 //   NotificationEvent,
 //   'id' | 'notificationId' | 'type' | 'userId' | 'createdAt'
