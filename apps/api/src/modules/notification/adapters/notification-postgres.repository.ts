@@ -31,11 +31,31 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
       totalEvents: n._count.events,
     }));
   }
+
   async getNotificationEvents(
     params: FindNotificationEventsByNotificationIdParams
   ): Promise<GetNotificationEventsResult> {
-    // const
+    const events = await this.prisma.notificationEvent.findMany({
+      where: { notificationId: Number(params.id) },
+      select: {
+        id: true,
+        notificationId: true,
+        type: true,
+        userId: true,
+        createdAt: true,
+        user: { select: { name: true } },
+      },
+    });
 
-    throw new Error('Method not implemented.');
+    if (!events) return [];
+
+    return events.map((e) => ({
+      id: e.id,
+      notificationId: e.notificationId,
+      type: e.type,
+      userId: e.userId ?? null,
+      userName: e.user?.name ?? null,
+      createdAt: e.createdAt,
+    }));
   }
 }
