@@ -65,7 +65,7 @@ export const createRoutes = (): RouteObject[] => [
       },
       {
         path: '/journey/new',
-        element: <PrivateRoute isAuthenticated={isAuthenticated} />,
+        element: <PrivateRoute />,
         children: [
           {
             path: '',

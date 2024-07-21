@@ -40,7 +40,7 @@ export const MilestoneSelectZone: React.FC<MilestoneSelectZoneProps> = forwardRe
   HTMLDivElement,
   MilestoneSelectZoneProps
 >(({ className, value = [], onChange, onSwap, onDelete, onEdit, placeholder }, ref) => {
-  const [isModalOpen, toggleModal] = useModal();
+  const [isModalOpen, toggleModal] = useModal({});
 
   const isEmpty = value.length === 0;
   const showPlaceholder = !!placeholder && isEmpty;
