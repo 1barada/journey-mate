@@ -7,7 +7,7 @@ export const CreateMilestoneSchema = z.object({
     lat: z.number(),
     lng: z.number(),
   }),
-  dates: z.tuple([PreprocessDateSchema, PreprocessDateSchema.nullable()]),
+  dates: z.array(PreprocessDateSchema).min(1),
 });
 
 export const MilestoneSchema = CreateMilestoneSchema.extend({
