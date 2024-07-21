@@ -16,7 +16,7 @@ CREATE TABLE "Notification" (
 CREATE TABLE "NotificationEvent" (
     "id" SERIAL NOT NULL,
     "notificationId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" INTEGER,
     "type" "NotificationType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
