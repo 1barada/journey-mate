@@ -6,6 +6,7 @@ import {
   CreateNotificationResult,
   CreateNotificationWithIdsParams,
   DeleteNotificationEventByIdParams,
+  DeleteNotificationEventResult,
   FindAllNotificationByUserIdParams,
   FindNotificationEventsByNotificationIdParams,
   GetAllNotificationsResult,
@@ -66,26 +67,11 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     }));
   }
 
-  async deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<void | null> {
-    const event = await this.prisma.notificationEvent.findUnique({ where: { id: Number(params.id) } });
-
-    if (!event) {
-      return null;
-    }
-
-    await this.prisma.notificationEvent.delete({ where: { id: Number(params.id) } });
-    return;
+  async deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult> {
+    return await this.prisma.notificationEvent.delete({ where: { id: Number(params.id) } });
   }
 
   async createNotification(params: CreateNotificationWithIdsParams): Promise<CreateNotificationResult> {
-    const notification = await this.prisma.notification.findFirst({
-      where: { journeyId: Number(params.journeyId), userId: Number(params.userId) },
-    });
-
-    if (notification) {
-      return null;
-    }
-
     const newNotification = await this.prisma.notification.create({
       data: { journeyId: Number(params.journeyId), userId: Number(params.userId) },
     });
@@ -98,14 +84,6 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
   }
 
   async createNotificationEvent(params: CreateNotificationEventWithTypeParams): Promise<CreateNotificationEventResult> {
-    const notification = await this.prisma.notificationEvent.findFirst({
-      where: { notificationId: Number(params.notificationId), userId: Number(params.userId), type: params.type },
-    });
-
-    if (notification) {
-      return null;
-    }
-
     const newNotificationEvent = await this.prisma.notificationEvent.create({
       data: {
         type: params.type,

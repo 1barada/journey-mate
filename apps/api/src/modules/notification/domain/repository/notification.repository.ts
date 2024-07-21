@@ -35,6 +35,8 @@ export type GetNotificationEventsResult = NotificationEventSummary[] | null;
 
 export type DeleteNotificationEventByIdParams = { id: string };
 
+export type DeleteNotificationEventResult = NotificationEvent;
+
 export type CreateNotificationWithIdsParams = {
   journeyId: string;
   userId: string;
@@ -53,7 +55,7 @@ export type CreateNotificationEventResult = NotificationEvent | null;
 export interface NotificationRepositoryPort {
   getAllNotifications(params: FindAllNotificationByUserIdParams): Promise<GetAllNotificationsResult>;
   getNotificationEvents(params: FindNotificationEventsByNotificationIdParams): Promise<GetNotificationEventsResult>;
-  deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<void | null>;
+  deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult>;
   createNotification(params: CreateNotificationWithIdsParams): Promise<CreateNotificationResult>;
   createNotificationEvent(params: CreateNotificationEventWithTypeParams): Promise<CreateNotificationEventResult>;
 }
