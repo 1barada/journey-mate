@@ -23,6 +23,12 @@ CREATE TABLE "NotificationEvent" (
     CONSTRAINT "NotificationEvent_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Notification_userId_journeyId_key" ON "Notification"("userId", "journeyId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "NotificationEvent_notificationId_userId_key" ON "NotificationEvent"("notificationId", "userId");
+
 -- AddForeignKey
 ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

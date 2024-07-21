@@ -137,6 +137,7 @@ model NotificationEvent {
   user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   type           NotificationType
   createdAt      DateTime     @default(now())
+  @@unique([notificationId, userId])
 }
 
 enum NotificationType {
