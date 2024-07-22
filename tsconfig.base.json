@@ -17,7 +17,6 @@
     "paths": {
       "@project/api/*": ["apps/api/src/*"],
       "@project/api/trpc": ["apps/api/src/trpc/router.ts"],
-      // second path is for "tsc-alias" tool, as it fials to resolve first one correctly
       "@project/permissions": ["libs/permissions/src/index.ts", "../../libs/permissions/src/index.ts"]
     }
   },
