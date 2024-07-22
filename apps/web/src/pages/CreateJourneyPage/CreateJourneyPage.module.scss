@@ -1,0 +1,13 @@
+@import '../../style/variables.scss';
+
+.createJourneyPage {
+  .contentWrapper {
+    padding-top: 16px;
+    padding-bottom: 24px;
+
+    @media screen and (min-width: $md) {
+      padding-top: 48px;
+      padding-bottom: 80px;
+    }
+  }
+}

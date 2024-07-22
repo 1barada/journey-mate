@@ -1,0 +1,11 @@
+.dragHandle {
+  background-color: transparent;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
+  &:focus-visible {
+    box-shadow: 0 0px 0px 2px #4c9ffe;
+  }
+}

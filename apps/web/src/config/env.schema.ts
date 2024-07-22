@@ -9,7 +9,8 @@ const APP_SERVER_HOST = z.string().min(1).default('localhost');
 const APP_PREVIEW_SERVER_PORT = z.coerce.number().default(4300);
 const APP_PREVIEW_SERVER_HOST = z.string().min(1).default('localhost');
 const APP_API_URL = z.string().url().default('http://localhost:5000/trpc');
-const APP_GOOGLE_MAPS_API_KEY = z.string().default('AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0');
+const APP_GOOGLE_MAPS_API_KEY = z.string().default('AIzaSyCCm28dWD3_IteVRce4M-nXSXejoZOKp_o');
+// const APP_GOOGLE_MAPS_API_KEY = z.string().default('AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0');
 
 /**
  * schema with env keys needed in vite.config.ts file
