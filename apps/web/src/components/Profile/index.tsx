@@ -6,7 +6,8 @@ import clsx from 'clsx';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
-import { editDescription, selectUser } from '../../store/Auth/AuthSlice';
+import { editDescription, selectUser } from '../../store/auth/slice';
+import { User } from '../../store/Auth/types';
 import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 import { CardDescription } from '../CardDescription';
 import { EditAvatar } from '../Forms/EditAvatar';
@@ -20,7 +21,7 @@ export const Profile = () => {
   const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal({});
   const [isEdited, setIsEdited] = useState(false);
-  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser);
+  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser) ?? ({} as User);
 
   const dispatch = useAppDispatch();
 
