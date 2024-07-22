@@ -4,10 +4,10 @@ import { UserRepositoryPort } from '@project/api/modules/user/domain/repository/
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+import { AccountNotActivatedError } from '../../domain/errors/account-not-activated.error';
 import { InvalidPasswordError } from '../../domain/errors/invalid-password.error';
 import { WrongAuthenticationFlowError } from '../../domain/errors/wrong-authentication-flow.error';
 import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases/login.usecase';
-import { AccountNotActivatedError } from '../../domain/errors/account-not-activated.error';
 
 export class LoginService implements LoginUsecase {
   private jwt = {

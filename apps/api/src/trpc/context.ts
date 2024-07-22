@@ -6,11 +6,11 @@ import cookie from 'cookie';
 import '@fastify/cookie';
 
 import { prisma } from '../database';
+import { server } from '../server';
 import { transporter } from '../transporter';
 
 import { cookiesValidation } from './utils/cookieValidation';
 import { UserTokenDataTypes } from './types';
-import { server } from '../server';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log || server.log;

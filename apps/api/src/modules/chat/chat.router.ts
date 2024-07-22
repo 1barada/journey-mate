@@ -1,8 +1,8 @@
+import { PermissionAction, PermissionEntity } from '@project/permissions';
 import { observable } from '@trpc/server/observable';
 import EventEmitter from 'events';
 
 import { authorizedProcedure, router } from '../../trpc/trpc';
-import { PermissionAction, PermissionEntity } from '@project/permissions';
 import { NotAuthenticatedError } from '../auth/domain/errors/not-authenticated.error';
 
 import { Message } from './domain/entities/chat.entity';
