@@ -13,17 +13,21 @@
     "format-check": "nx format:check",
     "typecheck": "nx run-many -t typecheck",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "testbe:e2e": "vitest run --config ./apps/api/test/vitest.config.ts",
+    "docker:e2e": "docker-compose -f docker-compose.e2e.yml up --build --exit-code-from backendtests"
   },
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@faker-js/faker": "^8.4.1",
     "@fastify/cookie": "^9.3.1",
     "@fastify/cors": "^9.0.1",
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@ngneat/falso": "^7.2.0",
     "@prisma/client": "^5.15.1",
     "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.5",

@@ -1,0 +1,25 @@
+services:
+  backendtests:
+    build: 
+      dockerfile: Dockerfile.e2e
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:1111@db:5432/jmate
+      - EMAIL_USER=asdn268yia@gmail.com
+      - EMAIL_PASSWORD=llbworxgnhtldgqs
+      - FRONTEND_URL=http://localhost:4200
+  db:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    environment:
+      - POSTGRES_DB=jmate
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1111
+      - DATABASE_URL=postgresql://postgres:1111@db:5432/jmate
+    ports:
+      - "5432:5432"
