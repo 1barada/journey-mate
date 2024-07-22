@@ -4,7 +4,7 @@ import { isWhoamiError } from '../../utils/type-guards';
 
 import { whoamiAsyncThunk } from './asyncThunks';
 import { initialState } from './initialState';
-import type { AuthSlice } from './types';
+import type { AuthSlice, User } from './types';
 
 const rootSelector = (state: AuthSlice) => state;
 
@@ -13,6 +13,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     editProfile: (state, action) => {
+      if (!state.user) {
+        state.user = {} as User;
+      }
+
       state.user.email = action.payload.email;
       state.user.name = action.payload.name;
       state.user.sex = action.payload.sex;
@@ -20,6 +24,10 @@ const authSlice = createSlice({
       console.log(action.payload);
     },
     editDescription: (state, action) => {
+      if (!state.user) {
+        state.user = {} as User;
+      }
+
       state.user.description = action.payload;
     },
     setIsAuthenticated: (state, { payload }) => {
@@ -52,7 +60,7 @@ const authSlice = createSlice({
   },
   selectors: {
     selectIsAuthenticated: createDraftSafeSelector(rootSelector, (state) => Boolean(state.isAuthenticated)),
-    selectUser: createDraftSafeSelector(rootSelector, (state) => ({ ...state.user })),
+    selectUser: createDraftSafeSelector(rootSelector, (state) => (state.user ? { ...state.user } : null)),
     selectUserPermissions: createDraftSafeSelector(rootSelector, (state) => state.permissions),
   },
 });

@@ -13,8 +13,8 @@ export interface User {
 export type UserPermission = [PermissionActionKey, PermissionEntityKey[]];
 export type UserAbility = PureAbility<[PermissionActionKey, PermissionEntityKey]>;
 export interface AuthSlice {
-  user: User;
-  isLoading: boolean;
+  user: User | null;
+  loading: boolean;
   error: null | string;
   isAuthenticated: boolean;
   permissions: UserPermission[];
