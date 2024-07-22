@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
@@ -20,6 +21,7 @@ import styles from './HomePage.module.scss';
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -27,6 +29,10 @@ const HomePage = () => {
 
   const handleFilterChange = (event: SelectChangeEvent<string>) => {
     setFilterType(event.target.value);
+  };
+
+  const handleCreateNewJourney = () => {
+    navigate('/journey/new');
   };
 
   return (
@@ -40,7 +46,12 @@ const HomePage = () => {
       </Typography>
 
       <Box className={styles.searchBar}>
-        <Button variant="contained" color="primary" className={styles.createJourneyButton}>
+        <Button
+          onClick={handleCreateNewJourney}
+          variant="contained"
+          color="primary"
+          className={styles.createJourneyButton}
+        >
           Create New Journey
         </Button>
       </Box>
