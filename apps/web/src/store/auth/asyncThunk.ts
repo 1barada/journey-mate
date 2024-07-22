@@ -55,7 +55,7 @@ export const registerAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
-        toast.success("You've successfully registered!");
+        toast.success("You've successfully registered! Please proceed to your email to activate your account.");
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
