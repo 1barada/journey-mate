@@ -1,11 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
+import { UserWithPassword } from '../domain/entities/user.entity';
 import {
   ConfirmUserAccountParams,
   CreateUserWithEmailParams,
   CreateUserWithEmailResult,
   FindUserByEmailParams,
   FindUserByEmailResult,
+  FindUserByIdParams,
+  FindUserByIdResult,
   UserRepositoryPort,
 } from '../domain/repository/user.repository';
 
@@ -21,6 +24,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      description: user.description,
       authProvider: user.authProvider,
       passwordHash: user.passwordHash,
       active: user.active,
@@ -54,6 +58,29 @@ export class UserPostgresRepository implements UserRepositoryPort {
       name: user.name,
       role: user.role,
       authProvider: user.authProvider,
+      description: user.description,
     };
+  }
+
+  async findUserById(params: FindUserByIdParams): Promise<FindUserByIdResult> {
+    const user = await this.prisma.user.findUnique({ where: { id: params.id } });
+    if (!user) return null;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      description: user.description,
+      authProvider: user.authProvider,
+    };
+  }
+
+  async updateUser(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        description: user.description,
+      },
+    });
   }
 }

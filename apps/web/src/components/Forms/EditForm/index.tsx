@@ -1,49 +1,40 @@
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import {
   Box,
   Button,
   FormControl,
   FormControlLabel,
   FormLabel,
-  Input,
   Radio,
   RadioGroup,
   TextField,
   Typography,
 } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
-import { editProfile } from '../../../store/Auth/AuthSlice';
+import { changeProfileData } from '../../../store/Auth/AuthSlice';
+import { useAppDispatch } from '../../../types/reduxTypes';
 
 import styles from './EditForm.module.scss';
 import type { EditFormProps } from './types';
 
-export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
-  const { control, handleSubmit, watch, setValue } = useForm<EditFormProps>({
+export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) => {
+  const { control, handleSubmit } = useForm<EditFormProps>({
     defaultValues: {
       name,
-      age,
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date(),
       email,
       sex,
-      file: null,
     },
   });
 
-  const dispatch = useDispatch();
-  const file = watch('file');
+  const dispatch = useAppDispatch();
 
-  const onSubmit = (data: EditFormProps) => {
-    const { name, age, email, sex } = data;
-    dispatch(editProfile({ name, age: Number(age), email, sex }));
-    console.log({ file: data.file });
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      setValue('file', target.files[0]);
-    }
+  const onSubmit = async (data: EditFormProps) => {
+    dispatch(changeProfileData(data));
   };
 
   return (
@@ -55,55 +46,52 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
         name="name"
         control={control}
         render={({ field }) => (
-          <TextField {...field} id="outlined-name" label="Full name" fullWidth margin="normal" variant="outlined" />
+          <TextField
+            {...field}
+            id="outlined-name"
+            label="Full name"
+            fullWidth
+            margin="normal"
+            onChange={field.onChange}
+            variant="outlined"
+          />
         )}
       />
       <Controller
-        name="age"
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            id="outlined-age"
-            label="Age"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            type="text"
-            value={field.value || ''}
-          />
-        )}
+        name="dateOfBirth"
+        rules={{ required: true }}
+        render={({ field }) => {
+          console.log(field);
+          return (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label=""
+                {...field}
+                value={dayjs(field.value)}
+                onChange={field.onChange}
+                format={'DD.MM.YYYY'}
+              />
+            </LocalizationProvider>
+          );
+        }}
       />
       <Controller
         name="email"
         control={control}
         render={({ field }) => (
-          <TextField {...field} id="outlined-email" label="Email" fullWidth margin="normal" variant="outlined" />
+          <TextField
+            {...field}
+            id="outlined-email"
+            onChange={field.onChange}
+            label="Email"
+            fullWidth
+            margin="normal"
+            variant="outlined"
+          />
         )}
       />
-      <FormControl fullWidth margin="normal">
-        <Button variant="contained" component="label">
-          Choose Photo
-          <Input
-            type="file"
-            inputProps={{ accept: 'image/*,application/pdf' }}
-            onChange={handleFileChange}
-            className={styles.inputUnDisplayed}
-          />
-        </Button>
-        {file && (
-          <TextField
-            label="Selected file"
-            value={file.name}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-        )}
-      </FormControl>
+
       <FormControl className={styles.radioWrapper}>
         <FormLabel className={styles.radioLabel} component="legend">
           Sex
@@ -112,7 +100,14 @@ export const EditForm: FC<EditFormProps> = ({ age, email, name, sex }) => {
           name="sex"
           control={control}
           render={({ field }) => (
-            <RadioGroup {...field} className={styles.radioList} aria-label="sex" name="sex">
+            <RadioGroup
+              {...field}
+              className={styles.radioList}
+              value={sex}
+              aria-label="sex"
+              name="sex"
+              onChange={field.onChange}
+            >
               <FormControlLabel value="female" control={<Radio />} label="Female" />
               <FormControlLabel value="male" control={<Radio />} label="Male" />
             </RadioGroup>

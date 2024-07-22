@@ -1,9 +1,11 @@
+import { z } from 'zod';
+
 export interface User {
   name: string;
   email: string;
   sex: Sex | null;
   description: string;
-  age: number | null;
+  dateOfBirth: Date | null;
   avatar: string | null;
 }
 
@@ -17,11 +19,20 @@ export interface IAuthSlice {
 export interface ProfileDataPayload {
   email: string;
   name: string;
-  sex: Sex | null;
-  age: number;
+  sex: 'female' | 'male';
+  dateOfBirth: Date;
 }
 
 export enum Sex {
   Female = 'female',
   Male = 'male',
 }
+
+export const EditProfileSchema = z.object({
+  email: z.string().email({ message: 'Email is required' }).trim(),
+  name: z.string(),
+  sex: z.enum(['female', 'male']).nullable(),
+  dateOfBirth: z.date().nullable(),
+});
+
+export type DataTypes = z.infer<typeof EditProfileSchema>;

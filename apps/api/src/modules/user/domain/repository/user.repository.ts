@@ -4,6 +4,12 @@ export interface FindUserByEmailParams {
   email: string;
 }
 
+export interface FindUserByIdParams {
+  id: number;
+}
+
+export type FindUserByIdResult = User | null;
+
 export type FindUserByEmailResult = UserWithPassword | null;
 
 export interface ConfirmUserAccountParams {
@@ -21,6 +27,8 @@ export type CreateUserWithEmailResult = User;
 
 export interface UserRepositoryPort {
   findUserByEmail(params: FindUserByEmailParams): Promise<FindUserByEmailResult>;
+  findUserById(params: FindUserByIdParams): Promise<FindUserByIdResult>;
+  updateUser(user: User): Promise<void>;
   confirmUserAccount(params: ConfirmUserAccountParams): Promise<ConfirmUserAccountResult>;
   createUserWithEmail(params: CreateUserWithEmailParams): Promise<CreateUserWithEmailResult>;
 }
