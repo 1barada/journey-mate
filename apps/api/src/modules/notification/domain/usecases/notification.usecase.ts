@@ -57,14 +57,15 @@ export type CreateNotificationParams = {
 export type CreateNotificationResult = Notification | null;
 
 export type CreateNotificationEventParams = {
-  journeyId: string;
-  userId: string;
+  notificationId: string;
+  userId: string | null;
   type: keyof typeof NotificationEventTypeSchema.Values;
 };
 
 export type CreateNotificationEventResult = NotificationEvent | null;
 
 export interface NotificationUsecase {
+  getNotification(params: GetNotificationParams): Promise<GetNotificationResult>;
   getAllNotifications(params: GetAllNotificationParams): Promise<GetAllNotificationsResult>;
   getNotificationEvents(params: GetNotificationEventsParams): Promise<GetNotificationEventsResult>;
   deleteNotificationEvent(params: DeleteNotificationEventParams): Promise<DeleteNotificationEventResult>;

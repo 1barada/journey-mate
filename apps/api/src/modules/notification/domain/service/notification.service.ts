@@ -96,7 +96,7 @@ export class NotificationService implements NotificationUsecase {
   async createNotificationEvent(params: CreateNotificationEventParams): Promise<CreateNotificationEventResult> {
     return await this.db.createNotificationEvent({
       userId: params.userId,
-      notificationId: params.userId,
+      notificationId: params.notificationId,
       type: params.type,
     });
   }

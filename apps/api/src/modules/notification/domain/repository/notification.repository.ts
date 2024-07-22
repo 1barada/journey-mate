@@ -63,7 +63,7 @@ export type CreateNotificationResult = Notification | null;
 export type CreateNotificationEventWithTypeParams = {
   type: keyof typeof NotificationEventTypeSchema.Values;
   notificationId: string;
-  userId?: string;
+  userId: string | null;
 };
 
 export type CreateNotificationEventResult = NotificationEvent | null;
