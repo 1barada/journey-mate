@@ -1,35 +1,49 @@
-import { Journey } from '@project/api/modules/journey/domain/entities/journey.entity';
-
 import { Notification } from '../entities/notification.entity';
 import { NotificationEvent, NotificationEventTypeSchema } from '../entities/notificationEvent.entity';
 
-export interface FindAllNotificationByUserIdParams {
-  id: string;
-}
+export type GetNotificationParams = {
+  notificationId: string;
+};
 
-export type NotificationSummary =
-  | Pick<Notification, 'id' | 'userId' | 'journeyId'> & Pick<Journey, 'title'> & { totalEvents: number };
+export type GetNotificationResult = {
+  id: number;
+  journeyId: number;
+  journey: { title: string };
+  userId: number;
+  events: NotificationEvent[] | [];
+  _count: {
+    events: number;
+  };
+} | null;
+
+export type GetAllNotificationByUserIdParams = {
+  id: string;
+};
+
+export type NotificationSummary = {
+  id: number;
+  userId: number;
+  journeyId: number;
+  journey: {
+    title: string;
+  };
+  _count: {
+    events: number;
+  };
+};
 
 export type GetAllNotificationsResult = NotificationSummary[] | null;
 
-export interface FindNotificationEventsByNotificationIdParams {
+export type GetNotificationEventsByNotificationIdParams = {
   notificationId: string;
-}
-
-// TODO:trying to find the correct type for NotificationEventSummary, error called because of Pick and optional userId field
-// export type NotificationEventSummary = Pick<
-//   NotificationEvent,
-//   'id' | 'notificationId' | 'type' | 'userId' | 'createdAt'
-// > & {
-//   userName: Pick<User, 'name'> | null;
-// };
+};
 
 export type NotificationEventSummary = {
   id: number;
   notificationId: number;
   type: string;
   userId: number | null;
-  userName: string | null;
+  user: { name: string | null } | null;
   createdAt: Date;
 };
 
@@ -37,7 +51,7 @@ export type GetNotificationEventsResult = NotificationEventSummary[] | null;
 
 export type DeleteNotificationEventByIdParams = { id: string };
 
-export type DeleteNotificationEventResult = NotificationEvent;
+export type DeleteNotificationEventResult = NotificationEvent | null;
 
 export type CreateNotificationWithIdsParams = {
   journeyId: string;
@@ -55,8 +69,9 @@ export type CreateNotificationEventWithTypeParams = {
 export type CreateNotificationEventResult = NotificationEvent | null;
 
 export interface NotificationRepositoryPort {
-  getAllNotifications(params: FindAllNotificationByUserIdParams): Promise<GetAllNotificationsResult>;
-  getNotificationEvents(params: FindNotificationEventsByNotificationIdParams): Promise<GetNotificationEventsResult>;
+  getNotification(params: GetNotificationParams): Promise<GetNotificationResult>;
+  getAllNotifications(params: GetAllNotificationByUserIdParams): Promise<GetAllNotificationsResult>;
+  getNotificationEvents(params: GetNotificationEventsByNotificationIdParams): Promise<GetNotificationEventsResult>;
   deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult>;
   createNotification(params: CreateNotificationWithIdsParams): Promise<CreateNotificationResult>;
   createNotificationEvent(params: CreateNotificationEventWithTypeParams): Promise<CreateNotificationEventResult>;
