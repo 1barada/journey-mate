@@ -1,5 +1,6 @@
+import { PermissionAction, PermissionEntity } from '@project/permissions';
+
 import { authorizedProcedure, router } from '../../trpc/trpc';
-import { PermissionAction, PermissionEntity } from '../auth/domain/enums/permissions.enums';
 
 // import { createJourneyService } from '../journey/service/journey/journey.factory';
 // import { Journey } from './../journey/domain/entities/journey.entity';
