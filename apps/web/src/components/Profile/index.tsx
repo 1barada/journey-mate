@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
 import { selectUser } from '../../store/auth/slice';
+import type { User } from '../../store/auth/types';
 import { CardDescription } from '../CardDescription';
 
 import styles from './Profile.module.scss';
@@ -17,7 +18,7 @@ const EditForm = lazy(() => import('../Forms/EditForm').then((module) => ({ defa
 export const Profile = () => {
   const [isOpen, toggle] = useModal();
   const [isEdited, setIsEdited] = useState(false);
-  const { age, avatar, description, email, name, sex } = useSelector(selectUser);
+  const { age, avatar, description, email, name, sex } = useSelector(selectUser) ?? ({} as User);
 
   const doubleStyle = clsx(styles.button, styles.editBtn);
 
