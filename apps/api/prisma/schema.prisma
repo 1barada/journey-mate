@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id           Int          @id @default(autoincrement())
-  email        String       @unique @db.VarChar(255)
-  name         String?      @db.VarChar(255)
-  role         Role         @default(viewer)
+  id           Int                     @id @default(autoincrement())
+  email        String                  @unique @db.VarChar(255)
+  name         String?                 @db.VarChar(255)
+  role         Role                    @default(viewer)
+  avatarUrl    String?
   description  String?
   sex          Sex?
   dateOfBirth  DateTime?
-  passwordHash String?      @db.VarChar(72)
+  passwordHash String?                 @db.VarChar(72)
   authProvider AuthProvider
-  active       Boolean      @default(false)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  active       Boolean                 @default(false)
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
   journey      Journey[]
   journeyUsers JourneyUsersMilestone[]
+  messages     Message[]
 }
 
 enum Role {
@@ -38,56 +40,60 @@ enum AuthProvider {
   password
   socials
 }
+
 model Journey {
-  id            Int       @id @default(autoincrement())
-  title         String    @db.VarChar(255)
-  description   String    @db.VarChar(500)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  userId        Int
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  milestones    Milestone[]
-  journeyUsers  JourneyUsersMilestone[]
-  category      JourneyToCategory[]
+  id           Int                     @id @default(autoincrement())
+  title        String                  @db.VarChar(255)
+  description  String                  @db.VarChar(500)
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  userId       Int
+  user         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestones   Milestone[]
+  journeyUsers JourneyUsersMilestone[]
+  category     JourneyToCategory[]
+  chat         Chat                    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId       Int                     @unique
 }
 
 model JourneyCategory {
-  id      Int       @id @default(autoincrement())
-  title   String    @db.VarChar(255)
-  value   String    @unique @db.VarChar(255)
+  id      Int                 @id @default(autoincrement())
+  title   String              @db.VarChar(255)
+  value   String              @unique @db.VarChar(255)
   journey JourneyToCategory[]
 }
 
 model JourneyToCategory {
-  journeyId    Int
-  categoryId   Int
-  journey      Journey            @relation(fields: [journeyId], references: [id], onDelete: Cascade)
-  category     JourneyCategory    @relation(fields: [categoryId], references: [id])
+  journeyId  Int
+  categoryId Int
+  journey    Journey         @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  category   JourneyCategory @relation(fields: [categoryId], references: [id])
+
   @@id([journeyId, categoryId])
 }
 
-
 model Milestone {
-  id              Int           @id @default(autoincrement())
-  title           String        @db.VarChar(255)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  startDate       DateTime
-  endDate         DateTime?
-  lat             Float
-  lng             Float
-  journeyId       Int
-  journey         Journey       @relation(fields: [journeyId], references: [id], onDelete: Cascade)
-  journeyUsers    JourneyUsersMilestone[]
+  id           Int                     @id @default(autoincrement())
+  title        String                  @db.VarChar(255)
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  startDate    DateTime
+  endDate      DateTime?
+  lat          Float
+  lng          Float
+  journeyId    Int
+  journey      Journey                 @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  journeyUsers JourneyUsersMilestone[]
 }
 
 model JourneyUsersMilestone {
-  journeyId    Int
-  userId       Int
-  milestoneId  Int
-  journey      Journey     @relation(fields: [journeyId], references: [id], onDelete: Cascade)
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  milestone    Milestone   @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  journeyId   Int
+  userId      Int
+  milestoneId Int
+  journey     Journey   @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+
   @@id([journeyId, userId, milestoneId])
 }
 
@@ -102,3 +108,20 @@ model JourneyUsersMilestone {
 //   1       2     2
 //   1       2     4
 //   1       2     5
+
+model Chat {
+  id       Int       @id @default(autoincrement())
+  journey  Journey?
+  messages Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.VarChar(400)
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

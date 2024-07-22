@@ -1,22 +1,23 @@
 import { Role } from '@project/permissions';
 import { inferAsyncReturnType } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
+import cookie from 'cookie';
 
 import '@fastify/cookie';
 
 import { prisma } from '../database';
 import { transporter } from '../transporter';
 
-import { cookieSchema } from './schemas/cookieSchema';
 import { cookiesValidation } from './utils/cookieValidation';
 import { UserTokenDataTypes } from './types';
+import { server } from '../server';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
-  const log = req.log;
+  const log = req.log || server.log;
+  const cookies = req.cookies || cookie.parse(req.headers.cookie || '');
 
-  const validation = cookiesValidation({ cookieObj: req.cookies, cookiesValidationSchema: cookieSchema });
+  const validatedCookies = cookiesValidation(cookies);
 
-  const validatedCookies = validation.success ? validation.data : null;
   const userTokenData: UserTokenDataTypes = {
     userId: null,
     userRole: Role.Guest,

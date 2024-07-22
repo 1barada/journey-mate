@@ -22,7 +22,7 @@ export const Profile = () => {
   const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal({});
   const [isEdited, setIsEdited] = useState(false);
-  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser) ?? ({} as User);
+  const { dateOfBirth, avatarUrl, description, email, name, sex } = useAppSelector(selectUser) ?? ({} as User);
 
   const dispatch = useAppDispatch();
 
@@ -42,7 +42,7 @@ export const Profile = () => {
       <Container>
         <Box component="div" className={styles.profileWrapper}>
           <Box component="div" className={styles.infoWrapper}>
-            <Avatar src={avatar ? avatar : defaultImg} className={styles.avatar} />
+            <Avatar src={avatarUrl ? avatarUrl : defaultImg} className={styles.avatarUrl} />
             <Box component="div">
               <Typography component="h1" variant="h1" className={styles.title}>
                 {name}

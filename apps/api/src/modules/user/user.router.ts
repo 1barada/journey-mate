@@ -30,10 +30,10 @@ export const userRouter = router({
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
-      const { token } = await service.login(input);
+      const { user, token } = await service.login(input);
 
       ctx.res.setCookie('access-token', token, { signed: true });
-      return;
+      return user;
     }),
   changeDescription: publicProcedure
     .input(ChangeDescriptionInputSchema)

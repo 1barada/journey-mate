@@ -24,7 +24,18 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     const { milestones: candidateMilestones, category: candidateCategory, ...candidateJourney } = dto;
 
     const journey = await this.db.journey.create({
-      data: candidateJourney,
+      data: {
+        title: candidateJourney.title,
+        description: candidateJourney.description,
+        user: {
+          connect: {
+            id: candidateJourney.userId,
+          },
+        },
+        chat: {
+          create: true,
+        },
+      },
     });
 
     const categories = await this.db.journeyCategory.findMany({

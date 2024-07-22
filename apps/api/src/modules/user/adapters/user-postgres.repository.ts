@@ -24,10 +24,13 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       description: user.description,
       authProvider: user.authProvider,
       passwordHash: user.passwordHash,
       active: user.active,
+      sex: user.sex,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
     };
   }
 
@@ -57,8 +60,11 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       authProvider: user.authProvider,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       description: user.description,
+      sex: user.sex,
     };
   }
 
@@ -70,8 +76,13 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       description: user.description,
       authProvider: user.authProvider,
+      passwordHash: user.passwordHash,
+      active: user.active,
+      sex: user.sex,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
     };
   }
 
@@ -82,5 +93,12 @@ export class UserPostgresRepository implements UserRepositoryPort {
         description: user.description,
       },
     });
+  }
+
+  // https://www.w3resource.com/javascript-exercises/javascript-date-exercise-18.php
+  private calculateAge(dateOfBirth: Date) {
+    const diff_ms = Date.now() - dateOfBirth.getTime();
+    const age_dt = new Date(diff_ms);
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
   }
 }

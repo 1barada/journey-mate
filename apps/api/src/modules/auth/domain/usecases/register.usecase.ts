@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const RegisterWithEmailRequestSchema = z.object({
   email: z.string().email().max(100),
-  password: z.string().min(6).max(20),
+  password: z.string().min(8).max(20),
 });
 
 export type RegisterWithEmailRequest = { baseUrl: string } & z.infer<typeof RegisterWithEmailRequestSchema>;
