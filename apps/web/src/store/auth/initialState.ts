@@ -2,9 +2,8 @@ import type { AuthSlice } from './types';
 
 export const initialState: AuthSlice = {
   user: null,
-  loading: false,
+  isLoading: false,
   error: null,
-  token: '',
   isAuthenticated: false,
   permissions: [],
   statusCode: null,

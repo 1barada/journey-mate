@@ -4,8 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AbilityProvider } from './components/Ability';
 import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
-import { whoamiAsyncThunk } from './store/auth/asyncThunks';
-import { selectUser } from './store/auth/slice';
+import { selectUser, whoami } from './store/auth/slice';
 import { useAppDispatch, useAppSelector } from './types/reduxTypes';
 
 const routes = createRoutes();
@@ -16,7 +15,7 @@ export function App() {
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    dispatch(whoamiAsyncThunk());
+    dispatch(whoami());
   }, [dispatch, user]);
 
   return (

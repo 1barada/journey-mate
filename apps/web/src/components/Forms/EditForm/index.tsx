@@ -15,7 +15,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-import { changeProfileData } from '../../../store/Auth/AuthSlice';
+import { changeProfileData } from '../../../store/auth/slice';
 import { useAppDispatch } from '../../../types/reduxTypes';
 
 import styles from './EditForm.module.scss';

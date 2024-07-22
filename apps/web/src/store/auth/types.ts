@@ -6,6 +6,7 @@ export interface User {
   email: string;
   sex: Sex | null;
   description: string;
+  age: number;
   dateOfBirth: Date | null;
   avatar: string | null;
 }
@@ -14,7 +15,7 @@ export type UserPermission = [PermissionActionKey, PermissionEntityKey[]];
 export type UserAbility = PureAbility<[PermissionActionKey, PermissionEntityKey]>;
 export interface AuthSlice {
   user: User | null;
-  loading: boolean;
+  isLoading: boolean;
   error: null | string;
   isAuthenticated: boolean;
   permissions: UserPermission[];
