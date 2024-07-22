@@ -91,6 +91,10 @@ jobs:
           docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
           docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
 
+      - name: Set execute permissions on deploy script
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        run: chmod +x ./.github/workflows/deployApi.sh
+
       - name: SSH into EC2 and update Docker container
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         run: ./.github/workflows/deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} ${{ secrets.AWS_EC2_SSH_KEY }} ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}} ${{env.AWS_IMAGE_TAG}}
