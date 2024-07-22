@@ -21,7 +21,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
 
   async getNotification(params: GetNotificationParams): Promise<GetNotificationResult> {
     const notification = await this.prisma.notification.findFirst({
-      where: { id: Number(params.notificationId) },
+      where: { id: Number(params.id) },
       select: {
         id: true,
         journeyId: true,

@@ -2,7 +2,7 @@ import { Notification } from '../entities/notification.entity';
 import { NotificationEvent, NotificationEventTypeSchema } from '../entities/notificationEvent.entity';
 
 export type GetNotificationParams = {
-  notificationId: string;
+  id: string;
 };
 
 export type GetNotificationResult = {
