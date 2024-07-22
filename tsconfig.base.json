@@ -16,9 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@project/api/*": ["apps/api/src/*"],
-      "@project/api/database": ["apps/api/src/database.ts"],
       "@project/api/trpc": ["apps/api/src/trpc/router.ts"],
-      "@project/permissions": ["apps/lib/permissions/src/index.ts"]
+      // second path is for "tsc-alias" tool, as it fials to resolve first one correctly
+      "@project/permissions": ["libs/permissions/src/index.ts", "../../libs/permissions/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
