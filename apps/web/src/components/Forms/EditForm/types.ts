@@ -1,4 +1,4 @@
-import { Sex } from '../../../store/Auth/types';
+import type { Sex } from '../../../store/auth/types';
 
 export interface EditFormProps {
   name: string;

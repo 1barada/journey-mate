@@ -1,4 +1,4 @@
-import { PermissionAction, PermissionEntity, Role } from '../enums/permissions.enums';
+import { PermissionAction, PermissionEntity, Role } from '@project/permissions';
 
 export type permissionTableType = {
   [key in PermissionAction]?: PermissionEntity[];

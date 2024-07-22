@@ -3,10 +3,12 @@ import CreateIcon from '@mui/icons-material/Create';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Avatar, Box, Button, Container, Tab, Typography } from '@mui/material';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 
 import defaultImg from '../../../public/img/defaultImg.webp';
 import { useModal } from '../../hooks/useModal';
-import { editDescription, selectUser } from '../../store/Auth/AuthSlice';
+import { editDescription, selectUser } from '../../store/auth/slice';
+import { User } from '../../store/auth/types';
 import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 import { CardDescription } from '../CardDescription';
 import { EditAvatar } from '../Forms/EditAvatar';
@@ -20,11 +22,12 @@ export const Profile = () => {
   const [value, setValue] = useState('1');
   const [isOpen, toggle] = useModal({});
   const [isEdited, setIsEdited] = useState(false);
-  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser);
+  const { dateOfBirth, avatar, description, email, name, sex } = useAppSelector(selectUser) ?? ({} as User);
 
   const dispatch = useAppDispatch();
 
   const doubleStyle = clsx(styles.button, styles.editBtn);
+  const age = dayjs().diff(dateOfBirth, 'years');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -51,7 +54,7 @@ export const Profile = () => {
               )}
               {dateOfBirth && (
                 <Typography component="p" className={styles.text}>
-                  Age: <span>{dateOfBirth}</span>
+                  Age: <span>{age}</span>
                 </Typography>
               )}
               <Typography component="p" className={styles.text}>

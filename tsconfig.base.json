@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@project/api/*": ["apps/api/src/*"],
-      "@project/api/database": ["apps/api/src/database.ts"],
-      "@project/api/trpc": ["apps/api/src/trpc/router.ts"]
+      "@project/api/trpc": ["apps/api/src/trpc/router.ts"],
+      "@project/permissions": ["libs/permissions/src/index.ts", "../../libs/permissions/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

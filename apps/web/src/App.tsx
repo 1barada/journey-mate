@@ -1,14 +1,26 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { AbilityProvider } from './components/Ability';
+import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
-import { selectIsAuthenticated } from './store/Auth/AuthSlice';
+import { selectUser, whoami } from './store/auth/slice';
+import { useAppDispatch, useAppSelector } from './types/reduxTypes';
+
+const routes = createRoutes();
+const router = createBrowserRouter(routes);
 
 export function App() {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
-  const routes = createRoutes(isAuthenticated);
-  const router = createBrowserRouter(routes);
+  useEffect(() => {
+    dispatch(whoami());
+  }, [dispatch, user]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AbilityProvider>
+      <RouterProvider router={router} fallbackElement={<AppLoader />} future={{ v7_startTransition: true }} />
+    </AbilityProvider>
+  );
 }

@@ -12,7 +12,7 @@ const Notifications = lazy(() => import('../pages/Notifications/Notifications'))
 const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 
-export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
+export const createRoutes = (): RouteObject[] => [
   {
     path: '/',
     element: <Layout />,

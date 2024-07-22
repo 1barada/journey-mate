@@ -2,7 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Link, Typography } from '@mui/material';
 
-import { loginUser, selectIsAuthLoading } from '../../../store/Auth/AuthSlice';
+import { loginUser, selectIsAuthLoading } from '../../../store/auth/slice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormTypes } from '../../AuthForm/types';
 import { AuthFormInput } from '../../common/AuthFormInput';

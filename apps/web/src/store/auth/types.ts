@@ -1,19 +1,25 @@
+import { PureAbility } from '@casl/ability';
+import { PermissionActionKey, PermissionEntityKey } from '@project/permissions';
 import { z } from 'zod';
-
 export interface User {
   name: string;
   email: string;
   sex: Sex | null;
   description: string;
+  age: number;
   dateOfBirth: Date | null;
   avatar: string | null;
 }
 
-export interface IAuthSlice {
-  user: User;
+export type UserPermission = [PermissionActionKey, PermissionEntityKey[]];
+export type UserAbility = PureAbility<[PermissionActionKey, PermissionEntityKey]>;
+export interface AuthSlice {
+  user: User | null;
   isLoading: boolean;
   error: null | string;
   isAuthenticated: boolean;
+  permissions: UserPermission[];
+  statusCode: number | null;
 }
 
 export interface ProfileDataPayload {
