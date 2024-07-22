@@ -4,7 +4,7 @@ import { InvalidTokenError } from '../errors/invalid-token.error';
 
 export const authenticateMiddleware = t.middleware(async ({ ctx, next }) => {
   const authenticationService = createAuthenticationService();
-  const accessToken = ctx.req.cookies['access-token'];
+  const accessToken = ctx.validatedCookies?.accessToken;
   if (!accessToken) {
     return next();
   }

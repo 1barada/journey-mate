@@ -1,4 +1,4 @@
-import { PermissionAction, PermissionEntity } from '../../../domain/enums/permissions.enums';
+import { PermissionAction, PermissionEntity } from '@project/permissions';
 
 export interface authorizationMiddlewareProps {
   requiredEntity: PermissionEntity;

@@ -1,4 +1,13 @@
-import type { cookieValidationParams } from './types';
+import { RequestCookies, RequestCookieSchema } from '../schemas/cookieSchema';
 
-export const cookiesValidation = ({ cookieObj, cookiesValidationSchema }: cookieValidationParams) =>
-  cookiesValidationSchema.safeParse(cookieObj);
+interface RawCookies {
+  [cookieName: string]: string | undefined;
+}
+
+export function cookiesValidation(cookies: RawCookies): RequestCookies | null {
+  const validation = RequestCookieSchema.safeParse({
+    accessToken: cookies['access-token'],
+  });
+
+  return validation.success ? validation.data : null;
+}

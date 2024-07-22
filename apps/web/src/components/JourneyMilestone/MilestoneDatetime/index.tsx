@@ -10,7 +10,7 @@ const defaultDateFormatter: DateFormatter = (date) => {
 
   if (!parsedDate.isValid()) return '--.--.--';
 
-  return parsedDate.format('DD.MM.YYYY');
+  return parsedDate.format('DD.MM.YY');
 };
 
 export const MilestoneDatetime: React.FC<DatetimeProps> = ({

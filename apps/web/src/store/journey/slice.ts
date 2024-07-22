@@ -1,8 +1,8 @@
 import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
 
-import { joinJourneyAsyncThunk } from './asyncThunk';
+import { createNewJourneyAsyncThunk, joinJourneyAsyncThunk } from './asyncThunk';
 import { initialState } from './initialState';
-import type { JourneySlice } from './types';
+import type { JourneySlice, Milestone } from './types';
 
 const createSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
@@ -15,6 +15,13 @@ const journeySlice = createSlice({
   initialState,
   reducers: (creator) => ({
     joinJourney: joinJourneyAsyncThunk(creator),
+    createNewJourney: createNewJourneyAsyncThunk(creator),
+    setEditUnsavedMilestone: creator.reducer<{ milestone: Milestone }>((state, { payload }) => {
+      state.editUnsavedMilestone = payload.milestone;
+    }),
+    clearEditUnsavedMilestone: creator.reducer((state) => {
+      state.editUnsavedMilestone = null;
+    }),
   }),
   selectors: {
     selectJourney: createDraftSafeSelector(selectRoot, (state) => state.journey),
@@ -23,6 +30,7 @@ const journeySlice = createSlice({
       isError: Boolean(state.error),
       error: state.error,
     })),
+    selectEditUnsavedMilestone: createDraftSafeSelector(selectRoot, (state) => state.editUnsavedMilestone),
   },
 });
 

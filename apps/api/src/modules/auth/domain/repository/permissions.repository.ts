@@ -1,30 +1,30 @@
-import { PermissionAction, PermissionEntity, Role } from '../enums/permissions.enums';
+import { PermissionAction, PermissionEntity, Role } from '@project/permissions';
 
 export type permissionTableType = {
   [key in PermissionAction]?: PermissionEntity[];
 };
 
 export const permissionTable: Record<Role, permissionTableType> = {
-  Admin: {
-    [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event],
-    [PermissionAction.Create]: [PermissionEntity.Event],
+  admin: {
+    [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event, PermissionEntity.Chat],
+    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat],
     [PermissionAction.Join]: [PermissionEntity.Event],
     [PermissionAction.Update]: [PermissionEntity.User, PermissionEntity.Event],
     [PermissionAction.Delete]: [PermissionEntity.User, PermissionEntity.Event],
     [PermissionAction.Suspend]: [PermissionEntity.User, PermissionEntity.Event],
   },
-  Viewer: {
-    [PermissionAction.Read]: [PermissionEntity.Event, PermissionEntity.User],
-    [PermissionAction.Create]: [PermissionEntity.Event],
+  viewer: {
+    [PermissionAction.Read]: [PermissionEntity.Event, PermissionEntity.User, PermissionEntity.Chat],
+    [PermissionAction.Create]: [PermissionEntity.Event, PermissionEntity.Chat],
     [PermissionAction.Join]: [PermissionEntity.Event],
     [PermissionAction.Update]: [PermissionEntity.Event, PermissionEntity.User],
     [PermissionAction.Delete]: [PermissionEntity.Event, PermissionEntity.User],
   },
-  Guest: {
-    [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event],
+  guest: {
+    [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event, PermissionEntity.Chat],
     [PermissionAction.Create]: [PermissionEntity.User],
   },
-  SuspendedViewer: {
+  suspendedViewer: {
     [PermissionAction.Read]: [PermissionEntity.User, PermissionEntity.Event],
   },
 };

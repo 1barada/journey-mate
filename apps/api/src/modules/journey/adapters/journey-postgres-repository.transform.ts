@@ -57,9 +57,17 @@ interface DatabaseMilestonesToDtoParams {
 }
 
 export const databaseMilestonesToMilestones = ({ milestones }: DatabaseMilestonesToDtoParams): Milestone[] => {
-  return milestones.map(({ lat, lng, startDate, endDate, ...milestone }) => ({
-    ...milestone,
-    coords: { lat, lng },
-    dates: [startDate, endDate],
-  }));
+  return milestones.map(({ lat, lng, startDate, endDate, ...milestone }) => {
+    const dates = [startDate];
+
+    if (endDate) {
+      dates.push(endDate);
+    }
+
+    return {
+      ...milestone,
+      dates,
+      coords: { lat, lng },
+    };
+  });
 };

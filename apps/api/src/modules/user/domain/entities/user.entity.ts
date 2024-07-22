@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-export const UserRoleSchema = z.enum(['admin', 'viewer']);
+export const UserRoleSchema = z.enum(['admin', 'viewer', 'guest', 'suspendedViewer']);
 export const AuthProviderSchema = z.enum(['password', 'socials']);
+export const SexSchema = z.enum(['male', 'female']);
 export type UserRole = z.infer<typeof UserRoleSchema>;
 
 export const UserSchema = z.object({
@@ -9,6 +10,10 @@ export const UserSchema = z.object({
   email: z.string().email(),
   name: z.string().nullable(),
   role: UserRoleSchema,
+  avatarUrl: z.string().url().nullable(),
+  sex: SexSchema.nullable(),
+  age: z.number().min(0).max(200).nullable(),
+  description: z.string().nullable(),
   authProvider: AuthProviderSchema,
 });
 export type User = z.infer<typeof UserSchema>;

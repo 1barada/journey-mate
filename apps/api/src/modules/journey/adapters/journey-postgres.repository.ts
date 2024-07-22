@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import type { JourneyCategory } from '../domain/entities/journey-category.entity';
 import type {
   CreateJourneyParams,
   CreateJourneyResult,
@@ -15,11 +16,26 @@ import {
 export class JourneyPostgresRepository implements JourneyRepositoryPort {
   constructor(private db: PrismaClient) {}
 
+  async getCategories(): Promise<JourneyCategory[]> {
+    return await this.db.journeyCategory.findMany({ select: { id: true, title: true, value: true } });
+  }
+
   async createJourney({ journey: dto }: CreateJourneyParams): Promise<CreateJourneyResult> {
     const { milestones: candidateMilestones, category: candidateCategory, ...candidateJourney } = dto;
 
     const journey = await this.db.journey.create({
-      data: candidateJourney,
+      data: {
+        title: candidateJourney.title,
+        description: candidateJourney.description,
+        user: {
+          connect: {
+            id: candidateJourney.userId,
+          },
+        },
+        chat: {
+          create: true,
+        },
+      },
     });
 
     const categories = await this.db.journeyCategory.findMany({

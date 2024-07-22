@@ -10,11 +10,12 @@ export enum PermissionAction {
 export enum PermissionEntity {
   Event = 'event',
   User = 'user',
+  Chat = 'chat',
 }
 
 export enum Role {
-  Admin = 'Admin',
-  Guest = 'Guest',
-  Viewer = 'Viewer',
-  SuspendedViewer = 'SuspendedViewer',
+  Admin = 'admin',
+  Guest = 'guest',
+  Viewer = 'viewer',
+  SuspendedViewer = 'suspendedViewer',
 }

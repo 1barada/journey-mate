@@ -1,6 +1,6 @@
 import { config } from '@project/api/config';
 
-import { publicProcedure, router } from '../../trpc/trpc';
+import { authenticateProcedure, publicProcedure, router } from '../../trpc/trpc';
 import { LoginRequestSchema, LoginRouterResponseSchema } from '../auth/domain/usecases/login.usecase';
 import {
   ConfirmEmailRequestSchema,
@@ -8,8 +8,17 @@ import {
   RegisterWithEmailRequestSchema,
   RegisterWithEmailResponseSchema,
 } from '../auth/domain/usecases/register.usecase';
+import { WhoAmIResponseSchema } from '../auth/domain/usecases/whoami.usecase';
 import { createLoginService } from '../auth/service/login/login.factory';
 import { createRegisterService } from '../auth/service/register/register.factory';
+import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
+
+import {
+  ChangeDescriptionInputSchema,
+  ChangeDescriptionResponseSchema,
+  createChangeDescriptionUsecase,
+} from './domain/usecases/changeDescription.usecase';
+import { ChangeProfileRequestSchema, ChangeProfileResponseSchema } from './domain/usecases/changeUserProfile.usecase';
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
@@ -21,10 +30,45 @@ export const userRouter = router({
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
-      const { token } = await service.login(input);
+      const { user, token } = await service.login(input);
 
       ctx.res.setCookie('access-token', token, { signed: true });
-      return;
+      return user;
+    }),
+  changeDescription: publicProcedure
+    .input(ChangeDescriptionInputSchema)
+    .output(ChangeDescriptionResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usecase = createChangeDescriptionUsecase(ctx.db);
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const result = await usecase.changeDescription({
+            id: ctx.userTokenData.userId.toString(),
+            description: input.description,
+          });
+          return result;
+        } catch (error) {
+          console.error('Error in usecase.changeDescription:', error);
+          throw new Error('Failed to change description');
+        }
+      }
+
+      throw new Error('User ID not found in token data');
+    }),
+  // changeProfileData: publicProcedure
+  //   .input(ChangeProfileRequestSchema)
+  //   .output(ChangeProfileResponseSchema)
+  //   .mutation(async ({ input, ctx }) => {
+  //     console.log(input);
+  //     console.log(ctx);
+
+  //     return input;
+  //   }),
+  changeAvatar: publicProcedure
+    // .input()
+    // .output()
+    .mutation(async ({ input }) => {
+      console.log(input);
     }),
   registerWithEmail: publicProcedure
     .input(RegisterWithEmailRequestSchema)
@@ -47,5 +91,13 @@ export const userRouter = router({
     await service.confirm(query);
 
     return ctx.res.redirect(303, `${config.get('frontendUrl')}/auth/confirm`);
+  }),
+  whoami: authenticateProcedure.output(WhoAmIResponseSchema).query(async ({ ctx }) => {
+    const service = createWhoamiService(ctx.db);
+
+    const email = ctx.userTokenData.userEmail;
+    const role = ctx.userTokenData.userRole;
+
+    return await service.whoami({ email, role });
   }),
 });

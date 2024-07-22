@@ -10,9 +10,11 @@ const HomePage = lazy(() => import('../pages/HomePage/HomePage'));
 const JourneysPage = lazy(() => import('../pages/JourneysPage/JourneysPage'));
 const Notifications = lazy(() => import('../pages/Notifications/Notifications'));
 const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
+const CreateJourneyPage = lazy(() => import('../pages/CreateJourneyPage/CreateJourneyPage'));
+
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
 
-export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
+export const createRoutes = (): RouteObject[] => [
   {
     path: '/',
     element: <Layout />,
@@ -58,6 +60,16 @@ export const createRoutes = (isAuthenticated: boolean): RouteObject[] => [
           {
             path: routes.AUTH_CONFIRM,
             element: <AccountConfirmedPage />,
+          },
+        ],
+      },
+      {
+        path: '/journey/new',
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: '',
+            element: <CreateJourneyPage />,
           },
         ],
       },

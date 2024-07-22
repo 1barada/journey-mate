@@ -1,0 +1,11 @@
+@import '../../../style/variables.scss';
+
+.datetimeTuple {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  & * {
+    color: $grey-200;
+  }
+}
