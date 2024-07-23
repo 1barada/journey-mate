@@ -1,4 +1,7 @@
-FROM node:18-alpine
+FROM node:18.19.0-alpine
+
+# Install dos2unix
+RUN apk update && apk add dos2unix
 
 WORKDIR /app
 
@@ -13,6 +16,11 @@ RUN nx --version
 COPY . .
 
 COPY entrypoint.sh ./
+
+# Convert line endings of entrypoint.sh to Unix style
+
+RUN dos2unix entrypoint.sh
+
 RUN chmod +x entrypoint.sh
 
 CMD ["./entrypoint.sh"]
