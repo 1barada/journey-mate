@@ -39,6 +39,10 @@ model Journey {
   chat         Chat                    @relation(fields: [chatId], references: [id], onDelete: Cascade)
   user         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
   category     JourneyToCategory[]
+<<<<<<< HEAD
+=======
+  notification  Notification[]
+>>>>>>> 9ec762a (remove chatMention)
   journeyUsers JourneyUsersMilestone[]
   milestones   Milestone[]
 }
@@ -217,7 +221,6 @@ model NotificationEvent {
 enum NotificationType {
   joinRequest
   chatMessage
-  chatMessageMention
 }
 =======
 >>>>>>> ddc4d07 (Update prisma schema)

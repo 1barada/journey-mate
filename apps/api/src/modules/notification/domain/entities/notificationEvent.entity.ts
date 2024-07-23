@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const NotificationEventTypeSchema = z.enum(['joinRequest', 'chatMessage', 'chatMessageMention']);
+export const NotificationEventTypeSchema = z.enum(['joinRequest', 'chatMessage']);
 
 export const NotificationEventSchema = z.object({
   id: z.number(),
