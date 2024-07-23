@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';

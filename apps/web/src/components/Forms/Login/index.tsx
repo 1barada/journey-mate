@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormTypes } from '../../AuthForm/types';
 import { AuthFormInput } from '../../common/AuthFormInput';
 import { TextInputRegisterTypes, TextInputTypes } from '../../common/AuthFormInput/types';
+import { GoogleButton } from '../../GoogleButton';
+import { FormTypes } from '../../GoogleButton/GoogleButton.types';
 import sharedStyles from '../shared.module.scss';
 
 import { loginSchema } from './schemas';
@@ -101,6 +103,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             <Typography className={sharedStyles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Log in'}</Typography>
           </Button>
         </Box>
+        <GoogleButton formType={FormTypes.signIn} toggleModal={toggleModal} />
       </Box>
     </Box>
   );
