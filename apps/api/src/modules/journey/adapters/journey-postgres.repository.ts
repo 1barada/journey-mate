@@ -105,7 +105,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
     }));
 
-    if (category) {
+    if (category && category !== 'all') {
       result = result.filter((journey) => journey.category[0].title === category);
     }
 
