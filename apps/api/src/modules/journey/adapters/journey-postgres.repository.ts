@@ -5,7 +5,7 @@ import type {
   CreateJourneyParams,
   CreateJourneyResult,
   getAllJourneysResult,
-  GetJourneysResult,
+  GetJourneysParams,
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
 
@@ -74,9 +74,12 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     return result;
   }
 
-  async getJourneys(params: GetJourneysResult): Promise<getAllJourneysResult> {
-    const { searchQuery, category, date } = params;
+  async getJourneys(params: GetJourneysParams): Promise<getAllJourneysResult> {
+    const { searchQuery, category, date, page } = params;
     const whereClause: any = {};
+    const pageSize = 12;
+    const currentPage = page || 1;
+    let totalPages = 1;
 
     if (searchQuery) {
       whereClause.OR = [
@@ -115,6 +118,9 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
 
     result.sort((a, b) => a.milestones[0].dates[0].getTime() - b.milestones[0].dates[0].getTime());
 
-    return result;
+    totalPages = Math.ceil(result.length / pageSize);
+    result = result.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    return { journeys: result, totalPages: totalPages };
   }
 }
