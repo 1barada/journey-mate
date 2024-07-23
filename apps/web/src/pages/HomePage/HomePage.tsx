@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  FormControl,
-  Grid,
-  Input,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
+import { FilterBar } from '../../components/common/FilterBar';
 import { JourneyCard } from '../../components/common/JourneyCard/index';
 import { JourneyCardProps, Status } from '../../components/common/JourneyCard/JourneyCard.types';
 import { trpcClient } from '../../services/trpc';
@@ -25,16 +16,9 @@ import styles from './HomePage.module.scss';
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [category, setCategory] = useState('');
+  const [date, setDate] = useState<string>(new Date().toString());
   const navigate = useNavigate();
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleFilterChange = (event: SelectChangeEvent<string>) => {
-    setFilterType(event.target.value);
-  };
 
   const handleCreateNewJourney = () => {
     navigate('/journey/new');
@@ -43,8 +27,13 @@ const HomePage = () => {
   const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
   useEffect(() => {
     const fetchJourneys = async () => {
-      const fetchedJourneys = await trpcClient.journey.getJourneys.query();
+      const fetchedJourneys = await trpcClient.journey.getJourneys.query({
+        searchQuery: searchQuery,
+        category: category,
+        date: date,
+      });
       const transformedJourneys: JourneyCardProps[] = fetchedJourneys.map((journey) => ({
+        id: journey.id,
         description: journey.description,
         header: journey.title,
         startDate: journey.milestones[0].dates[0], // Assuming the first milestone's start date as the journey date
@@ -59,7 +48,19 @@ const HomePage = () => {
     };
 
     fetchJourneys();
-  }, []);
+  }, [searchQuery, category, date]);
+
+  const handleSearchQueryChange = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
+
+  const handleDateChange = (date: string) => {
+    setDate(date);
+  };
 
   return (
     <Container>
@@ -82,39 +83,16 @@ const HomePage = () => {
         </Button>
       </Box>
 
-      <Box className={styles.searchContainer}>
-        <Box className={styles.searchInput}>
-          <FormControl fullWidth>
-            <Input
-              placeholder="Шукай свою подорож"
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              }
-              disableUnderline
-              className={styles.inputField}
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </FormControl>
-        </Box>
-        <FormControl fullWidth>
-          <InputLabel>Тип події</InputLabel>
-          <Select value={filterType} onChange={handleFilterChange} displayEmpty disableUnderline>
-            <MenuItem value="guided-group-trip">Guided Group Trip</MenuItem>
-            <MenuItem value="photography-trip">Photography Trip</MenuItem>
-            <MenuItem value="fitness-training-trip">Fitness and Training Trip</MenuItem>
-            <MenuItem value="family-friendly-trip">Family-Friendly Trip</MenuItem>
-            <MenuItem value="adventure-extreme-trip">Adventure and Extreme Trip</MenuItem>
-            <MenuItem value="accessible-inclusive-trip">Accessible and Inclusive Trip</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+      <FilterBar
+        onSearchQueryChangeHandler={handleSearchQueryChange}
+        onCategoryChangeHandler={handleCategoryChange}
+        onDateChangeHandler={handleDateChange}
+        sinceDate={new Date()}
+      />
 
       <Box className={styles.gallery}>
-        {journeys.map((journey, index) => (
-          <JourneyCard key={index} {...journey} />
+        {journeys.map((journey) => (
+          <JourneyCard key={journey.id} {...journey} />
         ))}
       </Box>
     </Container>

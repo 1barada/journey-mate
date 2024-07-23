@@ -5,6 +5,7 @@ import type {
   CreateJourneyParams,
   CreateJourneyResult,
   getAllJourneysResult,
+  GetJourneysResult,
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
 
@@ -73,8 +74,19 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     return result;
   }
 
-  async getJourneys(): Promise<getAllJourneysResult> {
+  async getJourneys(params: GetJourneysResult): Promise<getAllJourneysResult> {
+    const { searchQuery, category, date } = params;
+    const whereClause: any = {};
+
+    if (searchQuery) {
+      whereClause.OR = [
+        { title: { contains: searchQuery, mode: 'insensitive' } },
+        { description: { contains: searchQuery, mode: 'insensitive' } },
+      ];
+    }
+
     const journeys = await this.db.journey.findMany({
+      where: whereClause,
       include: {
         journeyUsers: true,
         milestones: true,
@@ -86,12 +98,22 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       },
     });
 
-    const result = journeys.map((journey) => ({
+    let result = journeys.map((journey) => ({
       ...journey,
       milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
       category: [journey.category[0].category],
       participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
     }));
+
+    if (category) {
+      result = result.filter((journey) => journey.category[0].title === category);
+    }
+
+    if (date) {
+      result = result.filter((journey) => journey.milestones[0].dates[0].getTime() >= Date.parse(date));
+    }
+
+    result.sort((a, b) => a.milestones[0].dates[0].getTime() - b.milestones[0].dates[0].getTime());
 
     return result;
   }
