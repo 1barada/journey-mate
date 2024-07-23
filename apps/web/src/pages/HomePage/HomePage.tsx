@@ -17,7 +17,7 @@ import styles from './HomePage.module.scss';
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('');
-  const [date, setDate] = useState<string>(new Date().toString());
+  const [date, setDate] = useState<string>(new Date().toDateString());
   const navigate = useNavigate();
 
   const handleCreateNewJourney = () => {
