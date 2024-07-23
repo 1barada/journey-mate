@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { config } from '@project/api/config';
-import { verifyGoogleToken } from '@project/api/trpc/utils/verifyGoogleToken';
+
 import jwt from 'jsonwebtoken';
+import { verifyGoogleToken } from '../../utils/verifyGoogleToken';
 
 export class GoogleAuthService {
   constructor(private prisma: PrismaClient) {}
