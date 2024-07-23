@@ -1,26 +1,24 @@
 name: Validate, build and deploy
 
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
+  push:
+    branches:
+      - main
+      - master
 
 permissions:
   actions: read
   contents: read
 
 jobs:
-  # validate:
-  #   name: Format, lint and typecheck
-  #   uses: ./.github/workflows/pull-request.yml
+  validate:
+    name: Format, lint and typecheck
+    uses: ./.github/workflows/pull-request.yml
 
   build_and_deploy:
     name: Build project and push to S3
-    # needs:
-    #   - validate
+    needs:
+      - validate
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -50,12 +48,12 @@ jobs:
       - name: Build apps
         id: run-affected
         run: |
-          npx cross-env NODE_ENV=production nx run-many --target=build --all
+          npx cross-env NODE_ENV=production nx affected -t build
           affected_projects=$(npx nx show projects --affected)
           echo "::set-output name=affected_projects::$affected_projects"
 
       - name: Deploy landing to AWS S3
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
 
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -68,7 +66,7 @@ jobs:
           SOURCE_DIR: ./dist/apps/web
 
       - name: Invalidate landing AWS Cloudfront
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
 
         uses: chetan/invalidate-cloudfront-action@v2
         env:
@@ -79,16 +77,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Set up Docker Buildx
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         uses: docker/setup-buildx-action@v1
 
       - name: Log in to Amazon ECR
         id: login-ecr
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push Docker image to Amazon ECR
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
         run: |
           docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
           docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
