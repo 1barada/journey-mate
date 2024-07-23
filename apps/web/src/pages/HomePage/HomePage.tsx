@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -7,6 +7,7 @@ import {
   Container,
   Divider,
   FormControl,
+  Grid,
   Input,
   InputAdornment,
   InputLabel,
@@ -15,6 +16,10 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
+
+import { JourneyCard } from '../../components/common/JourneyCard/index';
+import { JourneyCardProps, Status } from '../../components/common/JourneyCard/JourneyCard.types';
+import { trpcClient } from '../../services/trpc';
 
 import styles from './HomePage.module.scss';
 
@@ -34,6 +39,27 @@ const HomePage = () => {
   const handleCreateNewJourney = () => {
     navigate('/journey/new');
   };
+
+  const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
+  useEffect(() => {
+    const fetchJourneys = async () => {
+      const fetchedJourneys = await trpcClient.journey.getJourneys.query();
+      const transformedJourneys: JourneyCardProps[] = fetchedJourneys.map((journey) => ({
+        description: journey.description,
+        header: journey.title,
+        startDate: journey.milestones[0].dates[0], // Assuming the first milestone's start date as the journey date
+        endDate: journey.milestones[journey.milestones.length - 1].dates[1] || '', // Assuming the last milestone's end date as the journey
+        personCount: journey.participantsNumber,
+        journeyType: journey.category[0].title,
+        onClickHandler: () => console.log('Journey clicked'),
+        coordinates: journey.milestones.map((milestone) => milestone.coords),
+      }));
+
+      setJourneys(transformedJourneys);
+    };
+
+    fetchJourneys();
+  }, []);
 
   return (
     <Container>
@@ -87,7 +113,9 @@ const HomePage = () => {
       </Box>
 
       <Box className={styles.gallery}>
-        <Typography variant="body1">Gallery will be displayed here.</Typography>
+        {journeys.map((journey, index) => (
+          <JourneyCard key={index} {...journey} />
+        ))}
       </Box>
     </Container>
   );

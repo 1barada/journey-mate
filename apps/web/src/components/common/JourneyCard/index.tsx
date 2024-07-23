@@ -1,14 +1,15 @@
-import DirectionsBike from '@mui/icons-material/DirectionsBike';
-import DownhillSkiing from '@mui/icons-material/DownhillSkiing';
-import HelpOutline from '@mui/icons-material/HelpOutline';
-import Landscape from '@mui/icons-material/Landscape';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import People from '@mui/icons-material/People';
+import TerrainIcon from '@mui/icons-material/Terrain';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
@@ -21,18 +22,24 @@ import { MapWrapper } from '../MapWrapper';
 import styles from './JourneyCard.module.scss';
 import { JourneyCardProps, Status } from './JourneyCard.types';
 
-const getJourneyIcon = (journeyType: string) => {
+function getJourneyIcon(journeyType: string) {
   switch (journeyType) {
-    case 'mountainTrip':
-      return <Landscape />;
-    case 'bicycleTrip':
-      return <DirectionsBike />;
-    case 'skiing':
-      return <DownhillSkiing />;
+    case 'Bike':
+      return <DirectionsBikeIcon />;
+    case 'Cultural':
+      return <TravelExploreIcon />;
+    case 'Foot walk':
+      return <DirectionsWalkIcon />;
+    case 'Long distance':
+      return <FlightTakeoffIcon />;
+    case 'Mountain':
+      return <TerrainIcon />;
+    case 'Wilderness':
+      return <LocalFloristIcon />;
     default:
-      return <HelpOutline />;
+      return null; // Return null or a default icon if journey type is unknown
   }
-};
+}
 
 const getStatusColor = (status: Status) => {
   switch (status) {
@@ -51,19 +58,26 @@ const formatDate = (date: string) => dayjs.utc(date).local().format('DD.MM.YY');
 
 export const JourneyCard: React.FC<JourneyCardProps> = ({
   description,
-  imageUrl,
   header,
-  date, // Expecting date to be a string in UTC format
+  startDate, // Expecting date to be a string in UTC format
+  endDate, // Expecting date to be a string in UTC format
   personCount,
   journeyType,
   onClickHandler,
-  status,
   coordinates,
 }) => {
+  const currentUtcTime = dayjs.utc().format('YYYY-MM-DD HH:mm:ss');
+  let status = Status.NotStarted;
+  if (startDate < currentUtcTime && currentUtcTime < endDate) {
+    status = Status.InProgress;
+  } else if (currentUtcTime > endDate) {
+    status = Status.Completed;
+  }
+
   return (
     <Card className={styles.card}>
       <MapWrapper>
-        <Map width="100%" height="25vh" coordinates={coordinates} />
+        <Map width="100%" height="58%" coordinates={coordinates} />
       </MapWrapper>
       <CardContent>
         <Box className={styles.flexCenterBetween}>
@@ -74,7 +88,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
             {getJourneyIcon(journeyType)}
           </Box>
           <Typography variant="subtitle1" color="text.secondary">
-            {formatDate(date)}
+            {formatDate(startDate)}
           </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary" className={styles.description}>

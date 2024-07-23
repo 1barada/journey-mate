@@ -1,9 +1,14 @@
 import { PermissionAction, PermissionEntity } from '@project/permissions';
 
-import { authorizedProcedure, router } from '../../trpc/trpc';
+import { authorizedProcedure, publicProcedure, router } from '../../trpc/trpc';
 
 import type { CreateJourneyWithUserId } from './domain/entities/journey.entity';
-import { CreateJourneySchema, JourneySchema } from './domain/entities/journey.entity';
+import {
+  CreateJourneySchema,
+  CreateJourneyWithUserIdSchema,
+  JourneySchema,
+  JourneysSchema,
+} from './domain/entities/journey.entity';
 import { JourneyCategoryListSchema } from './domain/entities/journey-category.entity';
 import { createJourneyService } from './service/journey/journey.factory';
 
@@ -32,4 +37,9 @@ export const journeyRouter = router({
 
       return await service.createJourney({ journey });
     }),
+  getJourneys: publicProcedure.output(JourneysSchema).query(async ({ ctx }) => {
+    const service = createJourneyService(ctx.db);
+
+    return await service.getJourneys();
+  }),
 });
