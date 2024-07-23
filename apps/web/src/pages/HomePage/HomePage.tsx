@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { FilterBar } from '../../components/common/FilterBar';
-import { JourneyCard } from '../../components/common/JourneyCard/index';
-import { JourneyCardProps, Status } from '../../components/common/JourneyCard/JourneyCard.types';
-import { trpcClient } from '../../services/trpc';
+import { JourneyCardList } from '../../components/common/JourneyCardList';
 
 import styles from './HomePage.module.scss';
 
@@ -23,32 +20,6 @@ const HomePage = () => {
   const handleCreateNewJourney = () => {
     navigate('/journey/new');
   };
-
-  const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
-  useEffect(() => {
-    const fetchJourneys = async () => {
-      const fetchedJourneys = await trpcClient.journey.getJourneys.query({
-        searchQuery: searchQuery,
-        category: category,
-        date: date,
-      });
-      const transformedJourneys: JourneyCardProps[] = fetchedJourneys.map((journey) => ({
-        id: journey.id,
-        description: journey.description,
-        header: journey.title,
-        startDate: journey.milestones[0].dates[0], // Assuming the first milestone's start date as the journey date
-        endDate: journey.milestones[journey.milestones.length - 1].dates[1] || '', // Assuming the last milestone's end date as the journey
-        personCount: journey.participantsNumber,
-        journeyType: journey.category[0].title,
-        onClickHandler: () => console.log('Journey clicked'),
-        coordinates: journey.milestones.map((milestone) => milestone.coords),
-      }));
-
-      setJourneys(transformedJourneys);
-    };
-
-    fetchJourneys();
-  }, [searchQuery, category, date]);
 
   const handleSearchQueryChange = (searchQuery: string) => {
     setSearchQuery(searchQuery);
@@ -90,11 +61,7 @@ const HomePage = () => {
         sinceDate={new Date()}
       />
 
-      <Box className={styles.gallery}>
-        {journeys.map((journey) => (
-          <JourneyCard key={journey.id} {...journey} />
-        ))}
-      </Box>
+      <JourneyCardList searchQuery={searchQuery} category={category} date={date} />
     </Container>
   );
 };

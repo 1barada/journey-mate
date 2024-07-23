@@ -5,10 +5,10 @@ import type { CreateJourneyWithUserId, GetJourneys, Journey, Journeys } from './
 export type CreateJourneyParams = { journey: CreateJourneyWithUserId };
 export type CreateJourneyResult = Journey;
 export type getAllJourneysResult = Journeys;
-export type GetJourneysResult = GetJourneys;
+export type GetJourneysParams = GetJourneys;
 
 export interface JourneyRepositoryPort {
   createJourney(params: CreateJourneyParams): Promise<CreateJourneyResult>;
   getCategories(): Promise<JourneyCategory[]>;
-  getJourneys(params: GetJourneysResult): Promise<getAllJourneysResult>;
+  getJourneys(params: GetJourneysParams): Promise<getAllJourneysResult>;
 }
