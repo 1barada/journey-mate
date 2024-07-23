@@ -174,3 +174,36 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       },
     }
   );
+
+export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async (response: CredentialResponse, { rejectWithValue }) => {
+      const token = response.credential;
+      if (token) {
+        try {
+          const backendResponse = await trpcClient.user.googleAuth.mutate({ token });
+          return backendResponse;
+        } catch (error) {
+          return rejectWithValue((error as Error).message);
+        }
+      } else {
+        return rejectWithValue('No credential received from Google');
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success('Google OAuth success!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
