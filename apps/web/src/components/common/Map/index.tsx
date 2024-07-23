@@ -1,34 +1,34 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { GoogleMap, OverlayView, Polyline } from '@react-google-maps/api';
+import { update } from 'lodash';
 
 import styles from './Map.module.scss';
 import { MapProps } from './Map.types';
 
 export const Map: React.FC<MapProps> = ({ width, height, coordinates }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+
   const onLoad = useCallback((map: google.maps.Map) => {
-    updateMap(map);
-    setIsLoaded(true);
+    setMap(map);
+
+    const idleListener = google.maps.event.addListener(map, 'idle', () => {
+      setIsLoaded(true);
+      google.maps.event.removeListener(idleListener);
+    });
   }, []);
 
-  const updateMap = (map: google.maps.Map | null) => {
-    if (map) {
-      const bounds = new window.google.maps.LatLngBounds();
-      coordinates.map((marker) => {
-        bounds.extend({
-          lat: marker.lat,
-          lng: marker.lng,
-        });
+  useEffect(() => {
+    if (isLoaded && map && coordinates.length > 1) {
+      const bounds = new google.maps.LatLngBounds();
+      coordinates.forEach((coord) => {
+        bounds.extend(new google.maps.LatLng(coord.lat, coord.lng));
       });
-      map.fitBounds(bounds);
 
-      const zoomChangeBoundsListener = google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
-        const currentZoom = (map.getZoom() || 0) + 0.4;
-        map.setZoom(Math.min(40, currentZoom));
-      });
-      setTimeout(() => google.maps.event.removeListener(zoomChangeBoundsListener), 2000);
+      map.fitBounds(bounds);
+      map.fitBounds(bounds, { top: 10, right: 10, bottom: 10, left: 10 });
     }
-  };
+  }, [map, coordinates, isLoaded]);
 
   const mapOptions = {
     disableDefaultUI: true,
@@ -58,7 +58,7 @@ export const Map: React.FC<MapProps> = ({ width, height, coordinates }) => {
             <CustomCircle num={index + 1} />
           </OverlayView>
         ))}
-      <Polyline path={coordinates} options={lineOptions} />
+      {isLoaded && <Polyline path={coordinates} options={lineOptions} />}
     </GoogleMap>
   );
 };

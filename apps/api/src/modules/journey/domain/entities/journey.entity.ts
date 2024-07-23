@@ -10,6 +10,12 @@ export const CreateJourneySchema = z.object({
   category: z.array(CreateJourneyCategorySchema).min(1),
 });
 
+export const GetJourneysSchema = z.object({
+  searchQuery: z.string().optional(),
+  category: z.string().optional(),
+  date: z.string().optional(),
+});
+
 export const JourneySchema = CreateJourneySchema.omit({ category: true }).extend({
   category: z.array(JourneyCategorySchema),
   id: z.number(),
@@ -23,3 +29,4 @@ export type Journey = z.infer<typeof JourneySchema>;
 export type Journeys = z.infer<typeof JourneysSchema>;
 export type CreateJourney = z.infer<typeof CreateJourneySchema>;
 export type CreateJourneyWithUserId = z.infer<typeof CreateJourneyWithUserIdSchema>;
+export type GetJourneys = z.infer<typeof GetJourneysSchema>;

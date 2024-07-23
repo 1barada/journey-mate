@@ -54,7 +54,7 @@ const getStatusColor = (status: Status) => {
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-const formatDate = (date: string) => dayjs.utc(date).local().format('DD.MM.YY');
+const formatDate = (date: string) => dayjs.utc(date).local().format('MM/DD/YY');
 
 export const JourneyCard: React.FC<JourneyCardProps> = ({
   description,

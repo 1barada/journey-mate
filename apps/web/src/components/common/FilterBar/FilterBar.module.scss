@@ -1,0 +1,15 @@
+@import '../../../style/variables.scss';
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.searchInput {
+  min-width: 60%;
+}
+
+.datePicker {
+  min-width: 20%;
+}

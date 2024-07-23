@@ -59,9 +59,8 @@
 
 .gallery {
   margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 0.2fr));
   gap: 20px;
+  justify-content: center;
 }
