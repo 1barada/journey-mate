@@ -50,6 +50,14 @@ const config = convict({
     default: '',
     env: 'EMAIL_PASSWORD',
   },
+  googleClientId: {
+    default: '99151334654-bof4m5hcn481j30a1v9tm811tsa3753m.apps.googleusercontent.com',
+    env: 'GOOGLE_CLIENT_ID',
+  },
+  googleClientSecret: {
+    default: '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',
+    env: 'GOOGLE_CLIENT_SECRET',
+  },
 });
 
 const configPath = config.get('configUrl');
