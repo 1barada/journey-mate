@@ -30,6 +30,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       active: user.active,
       sex: user.sex,
       dateOfBirth: user.dateOfBirth,
+      avatar: user.avatar,
     };
   }
 
@@ -62,6 +63,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       authProvider: user.authProvider,
       description: user.description,
       sex: user.sex,
+      avatar: user.avatar,
       dateOfBirth: user.dateOfBirth,
     };
   }
@@ -77,6 +79,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       description: user.description,
       authProvider: user.authProvider,
       sex: user.sex,
+      avatar: user.avatar,
       dateOfBirth: user.dateOfBirth,
     };
   }
@@ -86,6 +89,27 @@ export class UserPostgresRepository implements UserRepositoryPort {
       where: { id: user.id },
       data: {
         description: user.description,
+      },
+    });
+  }
+
+  async updateUserData(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name: user.name,
+        email: user.email,
+        dateOfBirth: user.dateOfBirth,
+        sex: user.sex,
+      },
+    });
+  }
+
+  async updateAvatar(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        avatar: user.avatar,
       },
     });
   }

@@ -83,7 +83,11 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
       fulfilled: (state, action) => {
         state.isLoading = false;
         state.error = null;
-        console.log(state.user);
+
+        if (!state.user) {
+          state.user = {} as User;
+        }
+
         state.user = {
           dateOfBirth: action.payload.dateOfBirth ? new Date(action.payload.dateOfBirth) : null,
           email: action.payload.email,
@@ -106,7 +110,6 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
 export const changeDescriptionAsyncThunk = (creator: ReducerCreators<AuthSlice>) => {
   return creator.asyncThunk(
     async (description: string, { rejectWithValue }) => {
-      console.log(description);
       try {
         const newD = await trpcClient.user.changeDescription.mutate({ description });
         return newD;

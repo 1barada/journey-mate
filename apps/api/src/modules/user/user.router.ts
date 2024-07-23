@@ -20,7 +20,6 @@ import {
 } from './domain/usecases/changeDescription.usecase';
 import {
   ChangeProfileRequestInput,
-  ChangeProfileRequestSchema,
   ChangeProfileResponseSchema,
   createChangeUserProfileUsecase,
 } from './domain/usecases/changeUserProfile.usecase';
@@ -45,19 +44,19 @@ export const userRouter = router({
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeDescriptionUsecase(ctx.db);
-      if (ctx.userTokenData && ctx.userTokenData.userId) {
-        try {
-          const result = await usecase.changeDescription({
-            id: ctx.userTokenData.userId.toString(),
-            description: input.description,
-          });
-          return result;
-        } catch (error) {
-          throw new Error('Failed to change description');
-        }
+      // if (ctx.userTokenData && ctx.userTokenData.userId) {
+      try {
+        const result = await usecase.changeDescription({
+          id: 1,
+          description: input.description,
+        });
+        return result;
+      } catch (error) {
+        throw new Error('Failed to change description');
       }
+      // }
 
-      throw new Error('User ID not found in token data');
+      // throw new Error('User ID not found in token data');
     }),
   changeProfileData: publicProcedure
     .input(ChangeProfileRequestInput)
@@ -68,7 +67,7 @@ export const userRouter = router({
       // if (ctx.userTokenData && ctx.userTokenData.userId) {
       try {
         const result = await usecase.changeProfileData({
-          id: 2,
+          id: 1,
           dateOfBirth: input.dateOfBirth,
           email: input.email,
           name: input.name,
@@ -76,7 +75,7 @@ export const userRouter = router({
         });
         return result;
       } catch (error) {
-        throw new Error('Failed to change description');
+        throw new Error('Failed to change data');
       }
       // }
 

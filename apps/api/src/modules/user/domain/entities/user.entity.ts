@@ -13,6 +13,7 @@ export const UserSchema = z.object({
   authProvider: AuthProviderSchema,
   dateOfBirth: z.date().nullable().default(null),
   sex: z.enum(['female', 'male']).nullable().default(null),
+  avatar: z.string().nullable().default(null),
 });
 export type User = z.infer<typeof UserSchema>;
 
@@ -20,4 +21,5 @@ export const UserWithPasswordSchema = UserSchema.extend({
   active: z.boolean(),
   passwordHash: z.string().nullable(),
 });
+
 export type UserWithPassword = z.infer<typeof UserWithPasswordSchema>;

@@ -26,3 +26,4 @@ ADD COLUMN     "startDate" TIMESTAMP(3) NOT NULL;
 
 -- AlterTable
 ALTER TABLE "User" DROP COLUMN "password";
+

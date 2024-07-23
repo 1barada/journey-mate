@@ -51,12 +51,12 @@ export class ChangeProfileDataServece implements ChangeProfileDataUsecase {
     if (!user) {
       throw new UserNotFoundError();
     }
-
+    console.log('user:', user);
     user.email = request.email;
     user.name = request.name;
     user.dateOfBirth = request.dateOfBirth ?? user.dateOfBirth;
     user.sex = request.sex ?? user.sex;
-    await this.userRepository.updateUser(user);
+    await this.userRepository.updateUserData(user);
 
     return { email: user.email, name: user.name, sex: user.sex, dateOfBirth: user.dateOfBirth };
   }

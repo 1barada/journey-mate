@@ -31,4 +31,5 @@ export interface UserRepositoryPort {
   updateUser(user: User): Promise<void>;
   confirmUserAccount(params: ConfirmUserAccountParams): Promise<ConfirmUserAccountResult>;
   createUserWithEmail(params: CreateUserWithEmailParams): Promise<CreateUserWithEmailResult>;
+  updateUserData(params: User): Promise<void>;
 }

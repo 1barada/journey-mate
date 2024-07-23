@@ -18,7 +18,7 @@ export const ChangeDescriptionResponseSchema = z.object({
 export type ChangeDescriptionResponse = z.infer<typeof ChangeDescriptionResponseSchema>;
 
 export interface ChangeDescriptionRequest {
-  id: string;
+  id: number;
   description: string;
 }
 
