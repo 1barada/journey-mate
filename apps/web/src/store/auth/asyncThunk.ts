@@ -5,7 +5,7 @@ import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import type { AuthSlice, DataTypes, User } from './types';
+import { type AuthSlice, type DataTypes, Sex, type User } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -68,8 +68,9 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
   return creator.asyncThunk(
     async (data: DataTypes, { rejectWithValue }) => {
       try {
-        // return await trpcClient.user.changeProfileData.mutate(data);
-        return;
+        const newDate = await trpcClient.user.changeProfileData.mutate(data);
+
+        return newDate;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -79,9 +80,18 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
         state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state) => {
+      fulfilled: (state, action) => {
         state.isLoading = false;
         state.error = null;
+        console.log(state.user);
+        state.user = {
+          dateOfBirth: action.payload.dateOfBirth ? new Date(action.payload.dateOfBirth) : null,
+          email: action.payload.email,
+          name: action.payload.name,
+          sex: action.payload.sex === 'male' ? Sex.Male : action.payload.sex === 'female' ? Sex.Female : null,
+          description: state.user?.description ?? '',
+          avatar: state.user?.avatar ?? null,
+        };
         toast.success("You've successfully changed your profile data!");
       },
       rejected: (state, { payload }) => {

@@ -62,7 +62,6 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
         name="dateOfBirth"
         rules={{ required: true }}
         render={({ field }) => {
-          console.log(field);
           return (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker

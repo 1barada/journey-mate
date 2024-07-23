@@ -11,6 +11,8 @@ export const UserSchema = z.object({
   role: UserRoleSchema,
   description: z.string().nullable().default(null),
   authProvider: AuthProviderSchema,
+  dateOfBirth: z.date().nullable().default(null),
+  sex: z.enum(['female', 'male']).nullable().default(null),
 });
 export type User = z.infer<typeof UserSchema>;
 

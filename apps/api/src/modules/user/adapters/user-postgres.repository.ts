@@ -28,6 +28,8 @@ export class UserPostgresRepository implements UserRepositoryPort {
       authProvider: user.authProvider,
       passwordHash: user.passwordHash,
       active: user.active,
+      sex: user.sex,
+      dateOfBirth: user.dateOfBirth,
     };
   }
 
@@ -59,6 +61,8 @@ export class UserPostgresRepository implements UserRepositoryPort {
       role: user.role,
       authProvider: user.authProvider,
       description: user.description,
+      sex: user.sex,
+      dateOfBirth: user.dateOfBirth,
     };
   }
 
@@ -72,6 +76,8 @@ export class UserPostgresRepository implements UserRepositoryPort {
       role: user.role,
       description: user.description,
       authProvider: user.authProvider,
+      sex: user.sex,
+      dateOfBirth: user.dateOfBirth,
     };
   }
 

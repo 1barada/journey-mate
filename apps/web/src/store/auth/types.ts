@@ -1,12 +1,12 @@
 import { PureAbility } from '@casl/ability';
 import { PermissionActionKey, PermissionEntityKey } from '@project/permissions';
 import { z } from 'zod';
+
 export interface User {
   name: string;
   email: string;
   sex: Sex | null;
   description: string;
-  age: number;
   dateOfBirth: Date | null;
   avatar: string | null;
 }

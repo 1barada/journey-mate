@@ -18,7 +18,12 @@ import {
   ChangeDescriptionResponseSchema,
   createChangeDescriptionUsecase,
 } from './domain/usecases/changeDescription.usecase';
-import { ChangeProfileRequestSchema, ChangeProfileResponseSchema } from './domain/usecases/changeUserProfile.usecase';
+import {
+  ChangeProfileRequestInput,
+  ChangeProfileRequestSchema,
+  ChangeProfileResponseSchema,
+  createChangeUserProfileUsecase,
+} from './domain/usecases/changeUserProfile.usecase';
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
@@ -48,22 +53,35 @@ export const userRouter = router({
           });
           return result;
         } catch (error) {
-          console.error('Error in usecase.changeDescription:', error);
           throw new Error('Failed to change description');
         }
       }
 
       throw new Error('User ID not found in token data');
     }),
-  // changeProfileData: publicProcedure
-  //   .input(ChangeProfileRequestSchema)
-  //   .output(ChangeProfileResponseSchema)
-  //   .mutation(async ({ input, ctx }) => {
-  //     console.log(input);
-  //     console.log(ctx);
+  changeProfileData: publicProcedure
+    .input(ChangeProfileRequestInput)
+    .output(ChangeProfileResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usecase = createChangeUserProfileUsecase(ctx.db);
 
-  //     return input;
-  //   }),
+      // if (ctx.userTokenData && ctx.userTokenData.userId) {
+      try {
+        const result = await usecase.changeProfileData({
+          id: 2,
+          dateOfBirth: input.dateOfBirth,
+          email: input.email,
+          name: input.name,
+          sex: input.sex,
+        });
+        return result;
+      } catch (error) {
+        throw new Error('Failed to change description');
+      }
+      // }
+
+      throw new Error('User ID not found in token data');
+    }),
   changeAvatar: publicProcedure
     // .input()
     // .output()
