@@ -1,4 +1,4 @@
-import type { Journey, Journeys } from '../../domain/entities/journey.entity';
+import type { GetJourneys, Journey, Journeys } from '../../domain/entities/journey.entity';
 import { JourneyCategory } from '../../domain/entities/journey-category.entity';
 import type { JourneyRepositoryPort } from '../../domain/repository/journey.repository';
 import type { CreateJourneyParams, JourneyUsecase } from '../../domain/usecase/journey.usecase';
@@ -14,7 +14,7 @@ export class JourneyService implements JourneyUsecase {
     return await this.db.createJourney({ journey: params.journey });
   }
 
-  async getJourneys(): Promise<Journeys> {
-    return await this.db.getJourneys();
+  async getJourneys(params: GetJourneys): Promise<Journeys> {
+    return await this.db.getJourneys({ ...params });
   }
 }

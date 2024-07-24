@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';
@@ -54,7 +55,7 @@ export const registerAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
-        toast.success("You've successfully registered!");
+        toast.success("You've successfully registered! Please proceed to your email to activate your account.");
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
@@ -184,6 +185,39 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         }
 
         state.isLoading = false;
+      },
+    }
+  );
+
+export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async (response: CredentialResponse, { rejectWithValue }) => {
+      const token = response.credential;
+      if (token) {
+        try {
+          const backendResponse = await trpcClient.user.googleAuth.mutate({ token });
+          return backendResponse;
+        } catch (error) {
+          return rejectWithValue((error as Error).message);
+        }
+      } else {
+        return rejectWithValue('No credential received from Google');
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success('Google OAuth success!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
       },
     }
   );

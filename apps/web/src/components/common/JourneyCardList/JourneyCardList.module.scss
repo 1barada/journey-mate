@@ -1,0 +1,9 @@
+@import '../../../style/variables.scss';
+
+.gallery {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 0.2fr));
+  gap: 20px;
+  justify-content: center;
+}

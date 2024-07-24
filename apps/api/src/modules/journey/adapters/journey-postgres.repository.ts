@@ -5,6 +5,7 @@ import type {
   CreateJourneyParams,
   CreateJourneyResult,
   getAllJourneysResult,
+  GetJourneysParams,
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
 
@@ -73,8 +74,22 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     return result;
   }
 
-  async getJourneys(): Promise<getAllJourneysResult> {
+  async getJourneys(params: GetJourneysParams): Promise<getAllJourneysResult> {
+    const { searchQuery, category, date, page } = params;
+    const whereClause: any = {};
+    const pageSize = 12;
+    const currentPage = page || 1;
+    let totalPages = 1;
+
+    if (searchQuery) {
+      whereClause.OR = [
+        { title: { contains: searchQuery, mode: 'insensitive' } },
+        { description: { contains: searchQuery, mode: 'insensitive' } },
+      ];
+    }
+
     const journeys = await this.db.journey.findMany({
+      where: whereClause,
       include: {
         journeyUsers: true,
         milestones: true,
@@ -86,13 +101,26 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       },
     });
 
-    const result = journeys.map((journey) => ({
+    let result = journeys.map((journey) => ({
       ...journey,
       milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
       category: [journey.category[0].category],
       participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
     }));
 
-    return result;
+    if (category && category !== 'all') {
+      result = result.filter((journey) => journey.category[0].title === category);
+    }
+
+    if (date) {
+      result = result.filter((journey) => journey.milestones[0].dates[0].getTime() >= Date.parse(date));
+    }
+
+    result.sort((a, b) => a.milestones[0].dates[0].getTime() - b.milestones[0].dates[0].getTime());
+
+    totalPages = Math.ceil(result.length / pageSize);
+    result = result.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    return { journeys: result, totalPages: totalPages };
   }
 }

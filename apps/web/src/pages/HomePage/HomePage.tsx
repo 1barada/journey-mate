@@ -1,65 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  FormControl,
-  Grid,
-  Input,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
-import { JourneyCard } from '../../components/common/JourneyCard/index';
-import { JourneyCardProps, Status } from '../../components/common/JourneyCard/JourneyCard.types';
-import { trpcClient } from '../../services/trpc';
+import { FilterBar } from '../../components/common/FilterBar';
+import { JourneyCardList } from '../../components/common/JourneyCardList';
 
 import styles from './HomePage.module.scss';
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [category, setCategory] = useState('');
+  const [date, setDate] = useState<string>(new Date().toDateString());
   const navigate = useNavigate();
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleFilterChange = (event: SelectChangeEvent<string>) => {
-    setFilterType(event.target.value);
-  };
 
   const handleCreateNewJourney = () => {
     navigate('/journey/new');
   };
 
-  const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
-  useEffect(() => {
-    const fetchJourneys = async () => {
-      const fetchedJourneys = await trpcClient.journey.getJourneys.query();
-      const transformedJourneys: JourneyCardProps[] = fetchedJourneys.map((journey) => ({
-        description: journey.description,
-        header: journey.title,
-        startDate: journey.milestones[0].dates[0], // Assuming the first milestone's start date as the journey date
-        endDate: journey.milestones[journey.milestones.length - 1].dates[1] || '', // Assuming the last milestone's end date as the journey
-        personCount: journey.participantsNumber,
-        journeyType: journey.category[0].title,
-        onClickHandler: () => console.log('Journey clicked'),
-        coordinates: journey.milestones.map((milestone) => milestone.coords),
-      }));
+  const handleSearchQueryChange = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+  };
 
-      setJourneys(transformedJourneys);
-    };
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
 
-    fetchJourneys();
-  }, []);
+  const handleDateChange = (date: string) => {
+    setDate(date);
+  };
 
   return (
     <Container>
@@ -82,41 +54,14 @@ const HomePage = () => {
         </Button>
       </Box>
 
-      <Box className={styles.searchContainer}>
-        <Box className={styles.searchInput}>
-          <FormControl fullWidth>
-            <Input
-              placeholder="Шукай свою подорож"
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              }
-              disableUnderline
-              className={styles.inputField}
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </FormControl>
-        </Box>
-        <FormControl fullWidth>
-          <InputLabel>Тип події</InputLabel>
-          <Select value={filterType} onChange={handleFilterChange} displayEmpty disableUnderline>
-            <MenuItem value="guided-group-trip">Guided Group Trip</MenuItem>
-            <MenuItem value="photography-trip">Photography Trip</MenuItem>
-            <MenuItem value="fitness-training-trip">Fitness and Training Trip</MenuItem>
-            <MenuItem value="family-friendly-trip">Family-Friendly Trip</MenuItem>
-            <MenuItem value="adventure-extreme-trip">Adventure and Extreme Trip</MenuItem>
-            <MenuItem value="accessible-inclusive-trip">Accessible and Inclusive Trip</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+      <FilterBar
+        onSearchQueryChangeHandler={handleSearchQueryChange}
+        onCategoryChangeHandler={handleCategoryChange}
+        onDateChangeHandler={handleDateChange}
+        sinceDate={new Date()}
+      />
 
-      <Box className={styles.gallery}>
-        {journeys.map((journey, index) => (
-          <JourneyCard key={index} {...journey} />
-        ))}
-      </Box>
+      <JourneyCardList searchQuery={searchQuery} category={category} date={date} />
     </Container>
   );
 };

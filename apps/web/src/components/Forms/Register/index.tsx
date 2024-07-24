@@ -6,6 +6,8 @@ import { registerUser, selectIsAuthLoading } from '../../../store/auth/slice';
 import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 import { AuthFormInput } from '../../common/AuthFormInput';
 import { TextInputRegisterTypes, TextInputTypes } from '../../common/AuthFormInput/types';
+import { GoogleButton } from '../../GoogleButton';
+import { FormTypes } from '../../GoogleButton/GoogleButton.types';
 import sharedStyles from '../shared.module.scss';
 
 import { registerSchema } from './schemas';
@@ -82,6 +84,7 @@ const Register: React.FC<RegisterProps> = ({ toggleModal }) => {
             <Typography className={sharedStyles.formSubmitBtnText}>{isLoading ? 'Loading...' : 'Sign up'}</Typography>
           </Button>
         </Box>
+        <GoogleButton formType={FormTypes.signUp} toggleModal={toggleModal} />
       </Box>
     </Box>
   );

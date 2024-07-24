@@ -6,6 +6,7 @@ import type { CreateJourneyWithUserId } from './domain/entities/journey.entity';
 import {
   CreateJourneySchema,
   CreateJourneyWithUserIdSchema,
+  GetJourneysSchema,
   JourneySchema,
   JourneysSchema,
 } from './domain/entities/journey.entity';
@@ -37,9 +38,12 @@ export const journeyRouter = router({
 
       return await service.createJourney({ journey });
     }),
-  getJourneys: publicProcedure.output(JourneysSchema).query(async ({ ctx }) => {
-    const service = createJourneyService(ctx.db);
+  getJourneys: publicProcedure
+    .input(GetJourneysSchema)
+    .output(JourneysSchema)
+    .query(async ({ input, ctx }) => {
+      const service = createJourneyService(ctx.db);
 
-    return await service.getJourneys();
-  }),
+      return await service.getJourneys(input);
+    }),
 });

@@ -1,6 +1,7 @@
 import { config } from '@project/api/config';
 
 import { authenticateProcedure, publicProcedure, router } from '../../trpc/trpc';
+import { GoogleAuthRequestSchema, GoogleAuthResponseSchema } from '../auth/domain/usecases/googleAuth.usecase';
 import { LoginRequestSchema, LoginRouterResponseSchema } from '../auth/domain/usecases/login.usecase';
 import {
   ConfirmEmailRequestSchema,
@@ -9,6 +10,7 @@ import {
   RegisterWithEmailResponseSchema,
 } from '../auth/domain/usecases/register.usecase';
 import { WhoAmIResponseSchema } from '../auth/domain/usecases/whoami.usecase';
+import { createGoogleAuthService } from '../auth/service/googleAuth/googleAuth.factory';
 import { createLoginService } from '../auth/service/login/login.factory';
 import { createRegisterService } from '../auth/service/register/register.factory';
 import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
@@ -117,4 +119,14 @@ export const userRouter = router({
 
     return await service.whoami({ email, role });
   }),
+  googleAuth: publicProcedure
+    .input(GoogleAuthRequestSchema)
+    .output(GoogleAuthResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const service = createGoogleAuthService(ctx.db);
+      const { user, token } = await service.googleAuth(input.token);
+
+      ctx.res.setCookie('access-token', token, { signed: true });
+      return user;
+    }),
 });

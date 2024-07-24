@@ -91,15 +91,11 @@ jobs:
           docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
           docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
 
-      - name: Set execute permissions on deploy script
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
-        run: chmod +x ./.github/workflows/deployApi.sh
-
       - name: SSH into EC2 and update Docker container
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
-        env:
-          AWS_EC2_SSH_KEY: ${{ secrets.AWS_EC2_SSH_KEY }}
-        run: |
-          echo "$AWS_EC2_SSH_KEY" > /tmp/aws_ec2_ssh_key
-          chmod 600 /tmp/aws_ec2_ssh_key
-          ./.github/workflows/deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} /tmp/aws_ec2_ssh_key ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}} ${{env.AWS_IMAGE_TAG}}
+        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.AWS_EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          script: ./deploy.sh

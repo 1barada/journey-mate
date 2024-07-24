@@ -33,11 +33,11 @@ const config = convict({
   },
   frontendUrl: {
     format: (value) => FrontendUrlSchema.parse(value),
-    default: 'http://localhost:4200',
+    default: 'https://d1dmhvxf73tuaz.cloudfront.net/ ',
     env: 'FRONTEND_URL',
   },
   cookieSecret: {
-    default: 'dsadsadsadsa',
+    default: 'js;aljsfb;asjkbfabf;akwejfsasjfaksjbfl',
     env: 'COOKIE_SECRET',
   },
   emailUser: {
@@ -49,6 +49,14 @@ const config = convict({
     format: (value) => EmailPasswordSchema.parse(value),
     default: '',
     env: 'EMAIL_PASSWORD',
+  },
+  googleClientId: {
+    default: '99151334654-bof4m5hcn481j30a1v9tm811tsa3753m.apps.googleusercontent.com',
+    env: 'GOOGLE_CLIENT_ID',
+  },
+  googleClientSecret: {
+    default: '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',
+    env: 'GOOGLE_CLIENT_SECRET',
   },
 });
 
