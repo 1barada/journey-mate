@@ -33,7 +33,7 @@ const config = convict({
   },
   frontendUrl: {
     format: (value) => FrontendUrlSchema.parse(value),
-    default: 'http://localhost:4200',
+    default: 'https://d1dmhvxf73tuaz.cloudfront.net/ ',
     env: 'FRONTEND_URL',
   },
   cookieSecret: {
