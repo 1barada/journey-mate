@@ -4,4 +4,5 @@ export interface JourneyCardListProps {
   searchQuery?: string;
   category?: string;
   date?: string;
+  showAll?: boolean;
 }
