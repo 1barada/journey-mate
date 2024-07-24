@@ -1,7 +1,7 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 
 import styles from './styles.module.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 export function GoBackButton() {
   const navigate = useNavigate();

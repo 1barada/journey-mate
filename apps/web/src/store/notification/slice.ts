@@ -1,12 +1,12 @@
 import { asyncThunkCreator, buildCreateSlice, createDraftSafeSelector } from '@reduxjs/toolkit';
 
-import { initialState } from './initialState';
 import {
   acceptJoinRequestAsyncThunk,
   declineJoinRequestAsyncThunk,
   getAllNotificationEventsAsyncThunk,
   getAllNotificationsAsyncThunk,
 } from './asyncThunk';
+import { initialState } from './initialState';
 import { NotificationSlice } from './types';
 
 const createSlice = buildCreateSlice({

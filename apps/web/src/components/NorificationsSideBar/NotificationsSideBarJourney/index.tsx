@@ -1,8 +1,9 @@
-import { CardActionArea, Card, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card, CardActionArea, Typography } from '@mui/material';
+
 import { selectSelectedNotification, setSelectedNotification } from '../../../store/notification/slice';
 import { Notification } from '../../../store/notification/types';
-import { AppDispatch } from 'apps/web/src/store/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store/store';
 
 import styles from './styles.module.scss';
 
@@ -23,7 +24,7 @@ export function NotificationsSideBarJourney(props: NotificationsSideBarJourneyPr
   }
 
   return (
-    <CardActionArea onClick={handleSelect} disableRipple>
+    <CardActionArea onClick={handleSelect} disableRipple title={notification.title}>
       <Card className={`${styles.journeyContainer} ${alreadySelected ? styles.picked : styles.notPicked}`}>
         <Typography className={styles.title}>{notification.title}</Typography>
         <Typography className={styles.total}>

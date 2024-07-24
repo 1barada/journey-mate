@@ -8,16 +8,16 @@ export interface NotificationSlice {
 
 export interface Notification {
   id: number;
-  journeyId: number;
   title: string;
   userId: number;
+  journeyId: number;
   totalEvents: number;
 }
 
 export interface NotificationEvent {
   id: number;
-  userId: number;
-  userName: string;
+  userId: number | null;
+  userName: string | null;
   type: NotificationEventType;
   createdAt: string;
 }

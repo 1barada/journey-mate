@@ -1,7 +1,6 @@
 import { Role } from '@project/permissions';
 import { inferAsyncReturnType } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import cookie from 'cookie';
 
 import '@fastify/cookie';
 
@@ -14,7 +13,7 @@ import { UserTokenDataTypes } from './types';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const log = req.log || server.log;
-  const cookies = req.cookies || cookie.parse(req.headers.cookie || '');
+  const cookies = req.cookies || server.parseCookie(req.headers.cookie || '');
 
   const validatedCookies = cookiesValidation(cookies);
 
