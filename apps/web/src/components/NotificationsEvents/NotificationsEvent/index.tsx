@@ -1,14 +1,17 @@
-import { NotificationEvent, NotificationEventType } from '../../../store/notification/types';
-import styles from './styles.module.scss';
-import { Box, Typography, Button } from '@mui/material';
-import { acceptJoinRequest, declineJoinRequest } from '../../../store/notification/slice';
-import { AppDispatch } from 'apps/web/src/store/store';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+
+import { AppDispatch } from '../../../../src/store/store';
+import { acceptJoinRequest, declineJoinRequest } from '../../../store/notification/slice';
+import { NotificationEvent, NotificationEventType } from '../../../store/notification/types';
+
+import styles from './styles.module.scss';
 
 interface NotificationsEventProps {
   event: NotificationEvent;
   journeyId: number;
+  notificationId: number;
 }
 
 export function NotificationsEvent(props: NotificationsEventProps) {
@@ -26,7 +29,7 @@ export function NotificationsEvent(props: NotificationsEventProps) {
     joinRequest: (
       <>
         User{' '}
-        <Link className={styles.link} to={`/profile?${new URLSearchParams({ id: props.event.userId.toString() })}`}>
+        <Link className={styles.link} to={`/profile?${new URLSearchParams({ id: props.event.userId!.toString() })}`}>
           {props.event.userName}
         </Link>{' '}
         wants to join journey
@@ -41,7 +44,7 @@ export function NotificationsEvent(props: NotificationsEventProps) {
   }
 
   function handleJoinRequestDecline() {
-    dispatch(declineJoinRequest());
+    dispatch(declineJoinRequest({ notificationId: props.notificationId, eventId: props.event.id }));
   }
 
   return (

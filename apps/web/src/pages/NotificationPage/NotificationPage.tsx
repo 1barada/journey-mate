@@ -1,13 +1,14 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Box, Container, Divider, Typography } from '@mui/material';
-import { GoBackButton } from '../../components/common/GoBackButton';
 
-import styles from './styles.module.scss';
+import { GoBackButton } from '../../components/common/GoBackButton';
 import NotificationsSideBar from '../../components/NorificationsSideBar';
 import NotificationsEvents from '../../components/NotificationsEvents';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
-import { useEffect } from 'react';
 import { getAllNotifications } from '../../store/notification/slice';
+import { AppDispatch } from '../../store/store';
+
+import styles from './styles.module.scss';
 
 const NotificationPage = () => {
   const dispatch = useDispatch<AppDispatch>();

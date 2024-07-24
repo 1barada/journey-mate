@@ -1,9 +1,10 @@
+import { useSelector } from 'react-redux';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-import styles from './styles.module.scss';
-import { useSelector } from 'react-redux';
 import { selectAllNotifications, selectNotificationRequestState } from '../../store/notification/slice';
+
 import { NotificationsSideBarJourney } from './NotificationsSideBarJourney';
+import styles from './styles.module.scss';
 
 export default function NotificationsSideBar() {
   const notifications = useSelector(selectAllNotifications);

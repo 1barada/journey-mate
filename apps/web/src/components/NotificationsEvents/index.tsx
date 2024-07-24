@@ -1,16 +1,17 @@
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-import styles from './styles.module.scss';
-import { Notification } from '../../store/notification/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
 import {
   getAllNotificationEvents,
   selectNotificationRequestState,
   selectSelectedNotification,
 } from '../../store/notification/slice';
-import { useEffect, useRef } from 'react';
+import { Notification } from '../../store/notification/types';
+import { AppDispatch } from '../../store/store';
+
 import { NotificationsEvent } from './NotificationsEvent';
+import styles from './styles.module.scss';
 
 export default function NotificationsEvents() {
   const { notification: selectedNotification, events: selectedEvents } = useSelector(selectSelectedNotification);
@@ -19,10 +20,9 @@ export default function NotificationsEvents() {
   const prevState = useRef<Notification | null>(null);
 
   useEffect(() => {
-    console.log(selectedNotification);
     if (selectedNotification === null) return;
     if (prevState.current && prevState.current.id === selectedNotification.id) return;
-    console.log('passed');
+
     prevState.current = selectedNotification;
 
     const abort = dispatch(getAllNotificationEvents({ id: selectedNotification.id })).abort;
@@ -41,7 +41,12 @@ export default function NotificationsEvents() {
           <Typography>There is no messages</Typography>
         ) : (
           selectedEvents.map((event) => (
-            <NotificationsEvent event={event} journeyId={selectedNotification.journeyId} key={event.id} />
+            <NotificationsEvent
+              event={event}
+              journeyId={selectedNotification.journeyId}
+              key={event.id}
+              notificationId={selectedNotification.id}
+            />
           ))
         )
       ) : (

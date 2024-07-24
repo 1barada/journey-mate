@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 
+import { GoBackButton } from '../GoBackButton';
+
 import styles from './AboutPageInfo.module.scss';
 import type { AboutPageInfoProps } from './types';
-import { GoBackButton } from '../GoBackButton';
 
 export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
   return (
