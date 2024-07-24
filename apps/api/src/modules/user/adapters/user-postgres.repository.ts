@@ -31,6 +31,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       active: user.active,
       sex: user.sex,
       age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
+      dateOfBirth: user.dateOfBirth,
     };
   }
 
@@ -65,6 +66,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       description: user.description,
       sex: user.sex,
+      dateOfBirth: user.dateOfBirth,
     };
   }
 
@@ -83,6 +85,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       active: user.active,
       sex: user.sex,
       age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
+      dateOfBirth: user.dateOfBirth,
     };
   }
 
