@@ -4,6 +4,7 @@ import { UserRepositoryPort } from '@project/api/modules/user/domain/repository/
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+import { AccountNotActivatedError } from '../../domain/errors/account-not-activated.error';
 import { InvalidPasswordError } from '../../domain/errors/invalid-password.error';
 import { WrongAuthenticationFlowError } from '../../domain/errors/wrong-authentication-flow.error';
 import { LoginRequest, LoginResponse, LoginUsecase } from '../../domain/usecases/login.usecase';
@@ -25,6 +26,10 @@ export class LoginService implements LoginUsecase {
 
     if (user.authProvider !== 'password') {
       throw new WrongAuthenticationFlowError(`Used wrong authentication flow. Allowed flow: ${user.authProvider}`);
+    }
+
+    if (!user.active) {
+      throw new AccountNotActivatedError(`Account not activated. Please click on link that we sended on your email`);
     }
 
     if (user.passwordHash === null) {

@@ -24,13 +24,14 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       description: user.description,
       authProvider: user.authProvider,
       passwordHash: user.passwordHash,
       active: user.active,
       sex: user.sex,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       dateOfBirth: user.dateOfBirth,
-      avatar: user.avatar,
     };
   }
 
@@ -60,10 +61,11 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       authProvider: user.authProvider,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       description: user.description,
       sex: user.sex,
-      avatar: user.avatar,
       dateOfBirth: user.dateOfBirth,
     };
   }
@@ -76,10 +78,13 @@ export class UserPostgresRepository implements UserRepositoryPort {
       email: user.email,
       name: user.name,
       role: user.role,
+      avatarUrl: user.avatarUrl,
       description: user.description,
       authProvider: user.authProvider,
+      passwordHash: user.passwordHash,
+      active: user.active,
       sex: user.sex,
-      avatar: user.avatar,
+      age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       dateOfBirth: user.dateOfBirth,
     };
   }
@@ -98,19 +103,26 @@ export class UserPostgresRepository implements UserRepositoryPort {
       where: { id: user.id },
       data: {
         name: user.name,
-        email: user.email,
-        dateOfBirth: user.dateOfBirth,
         sex: user.sex,
+        dateOfBirth: user.dateOfBirth,
+        email: user.email,
       },
     });
   }
 
-  async updateAvatar(user: UserWithPassword): Promise<void> {
+  async updateUserAvatar(user: UserWithPassword): Promise<void> {
     await this.prisma.user.update({
       where: { id: user.id },
       data: {
-        avatar: user.avatar,
+        avatarUrl: user.avatarUrl,
       },
     });
+  }
+
+  // https://www.w3resource.com/javascript-exercises/javascript-date-exercise-18.php
+  private calculateAge(dateOfBirth: Date) {
+    const diff_ms = Date.now() - dateOfBirth.getTime();
+    const age_dt = new Date(diff_ms);
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
   }
 }

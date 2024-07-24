@@ -1,5 +1,6 @@
 import { fastifyCookie, FastifyCookieOptions } from '@fastify/cookie';
 import cors from '@fastify/cors';
+import ws from '@fastify/websocket';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 
 import 'dotenv/config';
@@ -24,16 +25,19 @@ server.register(fastifyCookie, {
   algorithm: 'sha256',
   parseOptions: {
     httpOnly: true,
-    secure: true,
+    secure: config.get('nodeEnv') !== 'development',
     path: '/',
     sameSite: true,
     maxAge: 60_4800,
   },
 } as FastifyCookieOptions);
 
+server.register(ws);
+
 server.register(fastifyTRPCPlugin, {
   prefix: '/trpc',
   trpcOptions: { router: appRouter, createContext },
+  useWSS: true,
 });
 
 server.listen({ port, host }, (err) => {

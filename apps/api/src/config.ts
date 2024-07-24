@@ -6,11 +6,17 @@ import 'dotenv/config'; // remove after config.json shape is getting from ECR
 const FrontendUrlSchema = z.string().url();
 const EmailUserSchema = z.string().email().endsWith('gmail.com');
 const EmailPasswordSchema = z.string().length(16);
+const NodeEnvSchema = z.enum(['development', 'production', 'test']);
 
 const config = convict({
   configUrl: {
     default: '',
     env: 'SERVER_CONFIG_FILE_PATH',
+  },
+  nodeEnv: {
+    format: (value) => NodeEnvSchema.parse(value),
+    default: 'development',
+    env: 'NODE_ENV',
   },
   port: {
     format: 'port',
@@ -27,7 +33,7 @@ const config = convict({
   },
   frontendUrl: {
     format: (value) => FrontendUrlSchema.parse(value),
-    default: 'http://localhost:5050',
+    default: 'http://localhost:4200',
     env: 'FRONTEND_URL',
   },
   cookieSecret: {

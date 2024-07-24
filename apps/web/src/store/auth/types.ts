@@ -3,12 +3,13 @@ import { PermissionActionKey, PermissionEntityKey } from '@project/permissions';
 import { z } from 'zod';
 
 export interface User {
-  name: string;
+  id: number;
+  name: string | null;
   email: string;
   sex: Sex | null;
   description: string;
   dateOfBirth: Date | null;
-  avatar: string | null;
+  avatarUrl: string | null;
 }
 
 export type UserPermission = [PermissionActionKey, PermissionEntityKey[]];
@@ -36,7 +37,7 @@ export enum Sex {
 
 export const EditProfileSchema = z.object({
   email: z.string().email({ message: 'Email is required' }).trim(),
-  name: z.string(),
+  name: z.string().nullable(),
   sex: z.enum(['female', 'male']).nullable(),
   dateOfBirth: z.date().nullable(),
 });

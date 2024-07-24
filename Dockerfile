@@ -3,6 +3,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+
+WORKDIR /app/apps/api
+RUN npx prisma generate
+
+WORKDIR /app
 RUN npm run build api
 
 FROM node:18.19.0

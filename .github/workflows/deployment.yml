@@ -28,8 +28,8 @@ jobs:
       AWS_DEFAULT_REGION: eu-central-1
       AWS_REGION: eu-central-1
       AWS_EC2_METADATA_DISABLED: true
-      AWS_ECR_REGISTRY: ${{vars.AWS_ECR_REGISTRY}}
-      AWS_ECR_REPOSITORY: ${{vars.AWS_ECR_REPOSITORY}}
+      AWS_ECR_REGISTRY: ${{ vars.AWS_ECR_REGISTRY }}
+      AWS_ECR_REPOSITORY: ${{ vars.AWS_ECR_REPOSITORY }}
       AWS_IMAGE_TAG: latest
       AWS_JOURNEY: journey
 
@@ -91,6 +91,15 @@ jobs:
           docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
           docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
 
+      - name: Set execute permissions on deploy script
+        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        run: chmod +x ./.github/workflows/deployApi.sh
+
       - name: SSH into EC2 and update Docker container
         if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
-        run: ./.github/workflows/deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} ${{ secrets.AWS_EC2_SSH_KEY }} ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}} ${{env.AWS_IMAGE_TAG}}
+        env:
+          AWS_EC2_SSH_KEY: ${{ secrets.AWS_EC2_SSH_KEY }}
+        run: |
+          echo "$AWS_EC2_SSH_KEY" > /tmp/aws_ec2_ssh_key
+          chmod 600 /tmp/aws_ec2_ssh_key
+          ./.github/workflows/deployApi.sh ${{ vars.AWS_EC2_HOST }} ${{ vars.AWS_EC2_USER }} /tmp/aws_ec2_ssh_key ${{env.AWS_ECR_REGISTRY}} ${{env.AWS_ECR_REPOSITORY}} ${{env.AWS_IMAGE_TAG}}

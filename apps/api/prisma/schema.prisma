@@ -12,6 +12,7 @@ model User {
   email        String                  @unique @db.VarChar(255)
   name         String?                 @db.VarChar(255)
   role         Role                    @default(viewer)
+  avatarUrl    String?
   description  String?
   sex          Sex?
   dateOfBirth  DateTime?
@@ -22,6 +23,7 @@ model User {
   updatedAt    DateTime                @updatedAt
   journey      Journey[]
   journeyUsers JourneyUsersMilestone[]
+  messages     Message[]
 }
 
 enum Role {
@@ -50,6 +52,8 @@ model Journey {
   milestones   Milestone[]
   journeyUsers JourneyUsersMilestone[]
   category     JourneyToCategory[]
+  chat         Chat                    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId       Int                     @unique
 }
 
 model JourneyCategory {
@@ -104,3 +108,20 @@ model JourneyUsersMilestone {
 //   1       2     2
 //   1       2     4
 //   1       2     5
+
+model Chat {
+  id       Int       @id @default(autoincrement())
+  journey  Journey?
+  messages Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.VarChar(400)
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
