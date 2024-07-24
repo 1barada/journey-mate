@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Avatar, Box, Button, FormControl, Input, TextField } from '@mui/material';
 
+import { uploadImage } from '../../../infrastructure/cloudinaryService';
 import { trpcClient } from '../../../services/trpc';
 
 import styles from './EditAvatar.module.scss';
@@ -27,11 +28,11 @@ export const EditAvatar = () => {
   };
 
   const onSubmit = async (data: EditAvatarProps) => {
-    console.log(data.file);
-    // // dispatch(editProfile({ name, age: Number(age), email, sex }));
-    // await trpcClient.user.changeAvatar.mutate({ avatar: data.file });
-    // await trpcClient.user.changeAvatar.mutate({});
-    // await trpcClient.user.changeProfileData.mutate({ name, email, sex, age, avatar: data.file });
+    // await trpcClient.user.changeAvatar.mutate({ avatarUrl: data.file });
+    if (data.file) {
+      const result = await uploadImage(data.file);
+      console.log(result);
+    }
   };
 
   return (

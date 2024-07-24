@@ -4,11 +4,9 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#BDD9F9',
-      hoverColor: '#A5C4F0',
     },
     secondary: {
       main: '#E0DEDE',
-      hoverColor: '#D1D1D1',
     },
     info: { main: '#FDFBD8' },
     error: { main: '#f44336' },

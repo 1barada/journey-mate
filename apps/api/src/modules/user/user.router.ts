@@ -18,13 +18,14 @@ import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
 import {
   ChangeDescriptionInputSchema,
   ChangeDescriptionResponseSchema,
-  createChangeDescriptionUsecase,
-} from './domain/usecases/changeDescription.usecase';
-import {
   ChangeProfileRequestInput,
   ChangeProfileResponseSchema,
-  createChangeUserProfileUsecase,
-} from './domain/usecases/changeUserProfile.usecase';
+  UpdateUserAvatarRequestInput,
+  UpdateUserAvatarResponseSchema,
+} from './domain/entities/userUpdate.entity';
+import { createChangeDescriptionUsecase } from './service/changeDescription/changeDescription.factory';
+import { createChangeUserProfileUsecase } from './service/changeUserProfile/changeUserProfile.factory';
+import { createUpdateAvatarUseCase } from './service/updateAvatar/updateAvatar.factory';
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
@@ -84,10 +85,26 @@ export const userRouter = router({
       throw new Error('User ID not found in token data');
     }),
   changeAvatar: publicProcedure
-    // .input()
-    // .output()
-    .mutation(async ({ input }) => {
-      console.log(input);
+    .input(UpdateUserAvatarRequestInput)
+    .output(UpdateUserAvatarResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usecase = createUpdateAvatarUseCase(ctx.db);
+      console.log(input.avatarUrl);
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          // const avatarFromCloud = uploadImage();
+
+          const result = await usecase.updateUserAvatar({
+            id: 1,
+            avatarUrl: input.avatarUrl,
+          });
+
+          return result;
+        } catch (error) {
+          throw new Error('Failed to change data');
+        }
+      }
+      throw new Error('User ID not found in token data');
     }),
   registerWithEmail: publicProcedure
     .input(RegisterWithEmailRequestSchema)

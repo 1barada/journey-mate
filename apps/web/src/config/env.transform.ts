@@ -7,6 +7,9 @@ interface NormalizedWebAppEnvConfig {
   previewServerHost: WebAppEnvConfigSchema['APP_PREVIEW_SERVER_HOST'];
   apiUrl: WebAppEnvConfigSchema['APP_API_URL'];
   googleMapsApiKey: WebAppEnvConfigSchema['APP_GOOGLE_MAPS_API_KEY'];
+  cloudinaryName: WebAppEnvConfigSchema['APP_CLOUDINARY_NAME'];
+  cloudinaryKey: WebAppEnvConfigSchema['APP_CLOUDINARY_API_KEY'];
+  cloudinarySecret: WebAppEnvConfigSchema['APP_CLOUDINARY_API_SECRET'];
 }
 export const normalizeWebAppEnvConfig = (env: WebAppEnvConfigSchema): NormalizedWebAppEnvConfig => ({
   serverPort: env.APP_SERVER_PORT,
@@ -15,4 +18,7 @@ export const normalizeWebAppEnvConfig = (env: WebAppEnvConfigSchema): Normalized
   previewServerHost: env.APP_PREVIEW_SERVER_HOST,
   apiUrl: env.APP_API_URL,
   googleMapsApiKey: env.APP_GOOGLE_MAPS_API_KEY,
+  cloudinaryName: env.APP_CLOUDINARY_NAME,
+  cloudinaryKey: env.APP_CLOUDINARY_API_KEY,
+  cloudinarySecret: env.APP_CLOUDINARY_API_SECRET,
 });
