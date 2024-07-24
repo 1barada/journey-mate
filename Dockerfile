@@ -1,26 +1,34 @@
-FROM node:18.19.0 AS builder
+FROM node:18.19.0 AS dependencies
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
+
+# install permission lib dependency
+COPY ./libs/permissions ./permissions
+WORKDIR /app/permissions
+RUN npm install
+
+FROM node:18.19.0 AS build
+WORKDIR /app
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-WORKDIR /app/apps/api
 RUN npx prisma generate
-
-WORKDIR /app
 RUN npm run build api
 RUN npm run build permissions
 
-FROM node:18.19.0
+FROM node:18.19.0 AS deploy
 WORKDIR /app
-COPY --from=builder /app/dist/apps/api/package*.json ./
-RUN npm ci
-COPY --from=builder /app/dist/apps/api ./
-COPY --from=builder /app/dist/libs/ /libs
 
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist/apps/api ./
 
-WORKDIR /libs/permissions
-RUN npm install
+WORKDIR /
+COPY --from=build /app/dist/libs/ ./libs
+COPY --from=dependencies /app/permissions/node_modules ./node_modules
+
+# for simplicity of debugging
+RUN apt-get update && apt-get install -y nano
 
 WORKDIR /app
 EXPOSE 5000
