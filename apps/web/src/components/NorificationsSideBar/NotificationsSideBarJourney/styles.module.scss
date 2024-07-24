@@ -1,0 +1,41 @@
+@import '../../../style/variables.scss';
+
+.picked {
+  background-color: $background-notification-journey-selected;
+}
+
+.notPicked {
+  background-color: $background-notification-journey;
+}
+
+.journeyContainer {
+  padding: 14px 11px;
+  border: 1px solid $black;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  transition: $transition;
+
+  .title {
+    flex: 0 0 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #4B4141;
+  }
+
+  .total {
+    flex: 0 0 20%;
+    font-size: 15px;
+    line-height: 17.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7E7676;
+  }
+}

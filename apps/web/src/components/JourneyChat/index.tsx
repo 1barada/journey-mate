@@ -25,7 +25,7 @@ function JourneyChat(props: JourneyChatProps) {
 
   useEffect(() => {
     const getMessagesSubscription = trpcClient.chat.getMessages.subscribe(
-      { chatId: props.chatId, take: 100, skip: 0 },
+      { chatId: props.chatId },
       {
         onStarted: () => {
           setMessages([]);

@@ -1,15 +1,11 @@
 import { FC } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 
 import styles from './AboutPageInfo.module.scss';
 import type { AboutPageInfoProps } from './types';
+import { GoBackButton } from '../GoBackButton';
 
 export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
-  const location = useLocation();
-
-  const goback = location?.state?.from ?? '/';
-
   return (
     <Box component="section" className={styles.section}>
       <Container>
@@ -17,9 +13,7 @@ export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info }) => {
           <Typography component="h1" className={styles.title}>
             {info}
           </Typography>
-          <NavLink to={goback} className={styles.link}>
-            Back
-          </NavLink>
+          <GoBackButton />
         </Box>
       </Container>
     </Box>

@@ -15,11 +15,15 @@ $info-main: #fdfbd8;
 $error-main: #f44336;
 $success-main: #4caf50;
 $success-secondary: #0cda0c;
+$accept-button: #AAE784; 
+$decline-button: #F5A4A4; 
 $warning-main: #ffc107;
 $background-default: #ffffff;
 $background-paper: #ebf2f9;
 $background-milestone: #fef4d1;
 $background-chat: rgba(#ebf2f9, 0.5);
+$background-notification-journey: #F2F2F2;
+$background-notification-journey-selected: rgba(#666666, 0.35);
 $text-primary: #000000;
 $text-secondary: #666666;
 $text-placeholder: #b7b7b7;
@@ -30,6 +34,7 @@ $border-primary: #000000;
 $border-primary-color: #333333;
 $chat-message-border-color: #1daeef;
 $chat-border-color: #45a6ff;
+$notification-sidebar-border-color: #2E2E2E;
 
 // modal clr
 $modal-header: #333333;
