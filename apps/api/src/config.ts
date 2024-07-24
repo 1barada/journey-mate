@@ -24,7 +24,7 @@ const config = convict({
     env: 'PORT',
   },
   host: {
-    default: 'localhost',
+    default: 'http://3.121.74.201/',
     env: 'AWS_EC2_HOST',
   },
   jwtSecret: {
