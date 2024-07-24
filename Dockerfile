@@ -16,4 +16,4 @@ COPY --from=builder /app/dist/apps/api/package*.json ./
 RUN npm ci
 COPY --from=builder /app/dist/apps/api ./
 EXPOSE 5000
-ENTRYPOINT [ "node", "main.js" ]
+ENTRYPOINT [ "node", "--experimental-specifier-resolution=node", "--no-warnings", "main.js" ];
