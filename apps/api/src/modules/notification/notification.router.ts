@@ -60,9 +60,8 @@ export const notificationRouter = router({
         throw new UserIdRequiredError('User ID required to get notifications');
       }
 
-      const notifications = await service.getAllNotifications({ userId: userTokenId });
-
-      if (notifications[0]?.userId.toString() !== userTokenId) {
+      const notifications = await service.getAllNotifications({ userId: Number(userTokenId) });
+      if (notifications.length !== 0 && notifications[0].userId !== Number(userTokenId)) {
         throw new UserNotAllow('Access denied. Not allowed to get different user notifications');
       }
 
@@ -112,7 +111,11 @@ export const notificationRouter = router({
 
       const notification = await service.getNotification({ id: notificationId });
 
-      if (notification?.userId !== Number(userTokenId)) {
+      if (!notification) {
+        throw new NotificationNotExists('Notification with this notificationId does not exist.');
+      }
+
+      if (notification.userId !== Number(userTokenId)) {
         throw new UserNotAllow('Access denied. Not allowed to delete different user notifications event');
       }
 
@@ -170,7 +173,7 @@ export const notificationRouter = router({
         throw new UserIdRequiredError('User ID required to get notifications events');
       }
 
-      if (userId !== userTokenId && type === NotificationEventTypeSchema.Values.joinRequest) {
+      if (userId !== Number(userTokenId) && type === NotificationEventTypeSchema.Values.joinRequest) {
         throw new UserNotAllow(
           'Access denied. Not allowed to create joinRequest notificationEvent for different user.'
         );

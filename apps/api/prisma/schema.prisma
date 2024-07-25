@@ -8,24 +8,24 @@ datasource db {
 }
 
 model User {
-  id           Int                     @id @default(autoincrement())
-  email        String                  @unique @db.VarChar(255)
-  name         String?                 @db.VarChar(255)
-  role         Role                    @default(viewer)
-  description  String?
-  sex          Sex?
-  dateOfBirth  DateTime?
-  createdAt    DateTime                @default(now())
-  updatedAt    DateTime                @updatedAt
-  active       Boolean                 @default(false)
-  authProvider AuthProvider
-  passwordHash String?                 @db.VarChar(72)
-  avatarUrl    String?
-  journey      Journey[]
-  journeyUsers JourneyUsersMilestone[]
-  messages     Message[]
-  notification  Notification[]
-  notificationEvent  NotificationEvent[]
+  id                Int                     @id @default(autoincrement())
+  email             String                  @unique @db.VarChar(255)
+  name              String?                 @db.VarChar(255)
+  role              Role                    @default(viewer)
+  description       String?
+  sex               Sex?
+  dateOfBirth       DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  active            Boolean                 @default(false)
+  authProvider      AuthProvider
+  passwordHash      String?                 @db.VarChar(72)
+  avatarUrl         String?
+  journey           Journey[]
+  journeyUsers      JourneyUsersMilestone[]
+  messages          Message[]
+  notification      Notification[]
+  notificationEvent NotificationEvent[]
 }
 
 enum Role {
@@ -50,13 +50,12 @@ model Journey {
   createdAt    DateTime                @default(now())
   updatedAt    DateTime                @updatedAt
   userId       Int
-  chatId       Int                     @unique
-  chat         Chat                    @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chat         Chat?
   user         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
   category     JourneyToCategory[]
   journeyUsers JourneyUsersMilestone[]
-  milestones    Milestone[]
-  notification  Notification[]
+  milestones   Milestone[]
+  notification Notification[]
 }
 
 model JourneyCategory {
@@ -101,9 +100,10 @@ model JourneyUsersMilestone {
 }
 
 model Chat {
-  id       Int       @id @default(autoincrement())
-  journey  Journey?
-  messages Message[]
+  id        Int       @id @default(autoincrement())
+  journey   Journey   @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  journeyId Int       @unique
+  messages  Message[]
 }
 
 model Message {
@@ -113,30 +113,32 @@ model Message {
   chatId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  sender    User     @relation(fields: [senderId], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model Notification {
-  id            Int          @id @default(autoincrement())
-  userId        Int
-  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  journeyId     Int
-  journey       Journey      @relation(fields: [journeyId], references: [id], onDelete: Cascade)
-  events NotificationEvent[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id        Int                 @id @default(autoincrement())
+  userId    Int
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  journeyId Int
+  journey   Journey             @relation(fields: [journeyId], references: [id], onDelete: Cascade)
+  events    NotificationEvent[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
   @@unique([userId, journeyId])
 }
 
 model NotificationEvent {
-  id             Int          @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   notificationId Int
-  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
-  userId         Int?         //userId is essential for joinRequest, but we dont need it for any other Type of NotificationEvent  
-  user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notification   Notification     @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  userId         Int? //userId is essential for joinRequest, but we dont need it for any other Type of NotificationEvent  
+  user           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
   type           NotificationType
-  createdAt      DateTime     @default(now())
+  createdAt      DateTime         @default(now())
+
   @@unique([notificationId, userId])
 }
 

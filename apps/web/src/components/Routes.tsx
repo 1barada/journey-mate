@@ -8,7 +8,7 @@ import { PrivateRoute } from './PrivateRoute';
 
 const HomePage = lazy(() => import('../pages/HomePage/HomePage'));
 const JourneysPage = lazy(() => import('../pages/JourneysPage/JourneysPage'));
-const Notifications = lazy(() => import('../pages/Notifications/Notifications'));
+const NotificationPage = lazy(() => import('../pages/NotificationPage/NotificationPage'));
 const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
 const CreateJourneyPage = lazy(() => import('../pages/CreateJourneyPage/CreateJourneyPage'));
 
@@ -40,7 +40,7 @@ export const createRoutes = (): RouteObject[] => [
         children: [
           {
             path: '',
-            element: <Notifications />,
+            element: <NotificationPage />,
           },
         ],
       },

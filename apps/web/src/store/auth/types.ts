@@ -7,8 +7,9 @@ export interface User {
   name: string | null;
   email: string;
   sex: Sex | null;
-  description: string;
   dateOfBirth: Date | null;
+  description: string | null;
+  age: number | null;
   avatarUrl: string | null;
 }
 

@@ -35,7 +35,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
           },
         },
         chat: {
-          create: true,
+          create: {},
         },
       },
     });
@@ -75,7 +75,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
   }
 
   async getJourneys(params: GetJourneysParams): Promise<getAllJourneysResult> {
-    const { searchQuery, category, date, page } = params;
+    const { searchQuery, category, date, page, user_id } = params;
     const whereClause: any = {};
     const pageSize = 12;
     const currentPage = page || 1;
@@ -86,6 +86,10 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
         { title: { contains: searchQuery, mode: 'insensitive' } },
         { description: { contains: searchQuery, mode: 'insensitive' } },
       ];
+    }
+
+    if (user_id) {
+      whereClause.userId = user_id;
     }
 
     const journeys = await this.db.journey.findMany({

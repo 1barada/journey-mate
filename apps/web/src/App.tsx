@@ -12,7 +12,6 @@ const router = createBrowserRouter(routes);
 
 export function App() {
   const dispatch = useAppDispatch();
-  // const user = useAppSelector(selectUser);
 
   useEffect(() => {
     dispatch(whoami());

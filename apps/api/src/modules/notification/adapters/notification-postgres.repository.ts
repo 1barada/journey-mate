@@ -21,7 +21,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
 
   async getNotification(params: GetNotificationParams): Promise<GetNotificationResult> {
     const notification = await this.prisma.notification.findFirst({
-      where: { id: Number(params.id) },
+      where: { id: params.id },
       select: {
         id: true,
         journeyId: true,
@@ -45,7 +45,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
 
   async getAllNotifications(params: GetAllNotificationByUserIdParams): Promise<GetAllNotificationsResult> {
     const notifications = await this.prisma.notification.findMany({
-      where: { userId: Number(params.id) },
+      where: { userId: params.id },
       select: {
         id: true,
         journeyId: true,
@@ -62,7 +62,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     params: GetNotificationEventsByNotificationIdParams
   ): Promise<GetNotificationEventsResult> {
     const events = await this.prisma.notificationEvent.findMany({
-      where: { notificationId: Number(params.notificationId) },
+      where: { notificationId: params.notificationId },
       select: {
         id: true,
         notificationId: true,
@@ -77,12 +77,15 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
   }
 
   async deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult> {
-    return await this.prisma.notificationEvent.delete({ where: { id: Number(params.id) } });
+    return await this.prisma.notificationEvent.delete({ where: { id: params.id } });
   }
 
   async createNotification(params: CreateNotificationWithIdsParams): Promise<CreateNotificationResult> {
     const newNotification = await this.prisma.notification.create({
-      data: { journeyId: Number(params.journeyId), userId: Number(params.userId) },
+      data: {
+        journey: { connect: { id: params.journeyId } },
+        user: { connect: { id: params.userId } },
+      },
     });
 
     return newNotification;
@@ -92,8 +95,14 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     const newNotificationEvent = await this.prisma.notificationEvent.create({
       data: {
         type: params.type,
-        notificationId: Number(params.notificationId),
-        userId: Number(params.userId),
+        notification: {
+          connect: { id: params.notificationId },
+        },
+        user: params.userId
+          ? {
+              connect: { id: params.userId },
+            }
+          : undefined,
       },
     });
 

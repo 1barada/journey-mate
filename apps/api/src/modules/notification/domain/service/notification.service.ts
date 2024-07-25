@@ -76,7 +76,7 @@ export class NotificationService implements NotificationUsecase {
         id: n.id,
         notificationId: n.notificationId,
         type: n.type,
-        user: n.user?.name ?? null,
+        userName: n.user?.name ?? null,
         userId: n.userId ?? null,
         createdAt: n.createdAt,
       };

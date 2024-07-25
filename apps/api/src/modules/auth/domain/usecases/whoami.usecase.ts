@@ -1,3 +1,4 @@
+import { UserSchema } from '@project/api/modules/user/domain/entities/user.entity';
 import { PermissionAction, PermissionEntity, Role } from '@project/permissions';
 import { z } from 'zod';
 
@@ -16,7 +17,7 @@ const UserPermissionSchema = z
 export const UserPermissionsSchema = z.array(UserPermissionSchema);
 
 export const WhoAmIResponseSchema = z.object({
-  user: z.any(),
+  user: UserSchema.nullable(),
   permissions: UserPermissionsSchema,
 });
 

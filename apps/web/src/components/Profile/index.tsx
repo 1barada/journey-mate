@@ -73,7 +73,7 @@ export const Profile = () => {
           Edit Description
         </Button>
         <CardDescription
-          description={description}
+          description={description || ''}
           isEdited={isEdited}
           setIsEdited={setIsEdited}
           title="About myself"
@@ -90,7 +90,12 @@ export const Profile = () => {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                  <EditForm dateOfBirth={dateOfBirth} email={email} name={name} sex={sex} />
+                  <EditForm
+                    dateOfBirth={dateOfBirth ? new Date(dateOfBirth) : null}
+                    email={email}
+                    name={name}
+                    sex={sex}
+                  />
                 </TabPanel>
                 <TabPanel value="2">
                   <EditAvatar />

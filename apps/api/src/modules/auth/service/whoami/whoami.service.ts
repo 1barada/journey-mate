@@ -26,6 +26,6 @@ export class WhoamiService implements WhoAmIUsecase {
       permissionEntity,
     ]) as UserPermission[];
 
-    return Promise.resolve({ permissions, user });
+    return { permissions, user };
   }
 }

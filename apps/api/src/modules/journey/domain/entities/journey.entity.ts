@@ -14,6 +14,7 @@ export const GetJourneysSchema = z.object({
   searchQuery: z.string().optional(),
   category: z.string().optional(),
   date: z.string().optional(),
+  user_id: z.number().optional(),
   page: z.number().optional(),
 });
 
