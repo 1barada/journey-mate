@@ -6,9 +6,9 @@ export interface User {
   name: string | null;
   email: string;
   sex: Sex | null;
-  description: string;
-  age: number;
-  dateOfBirth: Date | null;
+  description: string | null;
+  age: number | null;
+  dateOfBirth: string | null;
   avatarUrl: string | null;
 }
 

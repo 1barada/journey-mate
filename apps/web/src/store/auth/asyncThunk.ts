@@ -6,7 +6,7 @@ import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import type { AuthSlice, DataTypes, User } from './types';
+import { Sex, UserPermission, type AuthSlice, type DataTypes, type User } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -136,7 +136,17 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
     async (_, { rejectWithValue, signal }) => {
       try {
         const res = await trpcClient.user.whoami.query(undefined, { signal });
-        return res;
+
+        const user: User | null = res.user
+          ? {
+              ...res.user,
+              sex: Sex[res.user.sex as keyof typeof Sex],
+            }
+          : null;
+
+        const permissions: UserPermission[] = [...res.permissions];
+
+        return { user, permissions };
       } catch (error) {
         const payload = {
           message: (error as Error)?.message || '',
@@ -160,6 +170,7 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.isLoading = false;
         state.user = payload.user;
         state.permissions = payload.permissions;
+        state.isAuthenticated = payload.user !== null;
       },
       rejected: (state, { payload }) => {
         if (isWhoamiError(payload)) {

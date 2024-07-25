@@ -35,7 +35,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
           },
         },
         chat: {
-          create: true,
+          create: {},
         },
       },
     });
