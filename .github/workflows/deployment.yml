@@ -52,7 +52,7 @@ jobs:
         run: |
           npx cross-env NODE_ENV=production nx affected -t build
           affected_projects=$(npx nx show projects --affected)
-          echo "affected_projects=$affected_projects" >> $GITHUB_ENV
+          echo "affected_projects=$(echo $affected_projects | tr -d '\n')" >> $GITHUB_ENV
 
           if [[ "$affected_projects" == *"web"* ]]; then
             echo "isWebAffected=true" >> $GITHUB_ENV
