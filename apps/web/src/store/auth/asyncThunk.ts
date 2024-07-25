@@ -6,7 +6,7 @@ import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { Sex, UserPermission, type AuthSlice, type DataTypes, type User } from './types';
+import { type AuthSlice, type DataTypes, Sex, type User,UserPermission } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
