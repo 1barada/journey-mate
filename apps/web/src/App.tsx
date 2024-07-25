@@ -15,7 +15,7 @@ export function App() {
 
   useEffect(() => {
     dispatch(whoami());
-  }, []);
+  }, [dispatch]);
 
   return (
     <AbilityProvider>
