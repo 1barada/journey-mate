@@ -2,7 +2,7 @@ import { Notification } from '../entities/notification.entity';
 import { NotificationEvent, NotificationEventTypeSchema } from '../entities/notificationEvent.entity';
 
 export type GetNotificationParams = {
-  id: string;
+  id: number;
 };
 
 export type GetNotificationResult = {
@@ -17,7 +17,7 @@ export type GetNotificationResult = {
 } | null;
 
 export type GetAllNotificationByUserIdParams = {
-  id: string;
+  id: number;
 };
 
 export type NotificationSummary = {
@@ -35,7 +35,7 @@ export type NotificationSummary = {
 export type GetAllNotificationsResult = NotificationSummary[] | null;
 
 export type GetNotificationEventsByNotificationIdParams = {
-  notificationId: string;
+  notificationId: number;
 };
 
 export type NotificationEventSummary = {
@@ -49,21 +49,21 @@ export type NotificationEventSummary = {
 
 export type GetNotificationEventsResult = NotificationEventSummary[] | null;
 
-export type DeleteNotificationEventByIdParams = { id: string };
+export type DeleteNotificationEventByIdParams = { id: number };
 
 export type DeleteNotificationEventResult = NotificationEvent | null;
 
 export type CreateNotificationWithIdsParams = {
-  journeyId: string;
-  userId: string;
+  journeyId: number;
+  userId: number;
 };
 
 export type CreateNotificationResult = Notification | null;
 
 export type CreateNotificationEventWithTypeParams = {
   type: keyof typeof NotificationEventTypeSchema.Values;
-  notificationId: string;
-  userId: string | null;
+  notificationId: number;
+  userId: number | null;
 };
 
 export type CreateNotificationEventResult = NotificationEvent | null;

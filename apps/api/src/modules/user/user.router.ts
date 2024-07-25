@@ -34,7 +34,7 @@ export const userRouter = router({
 
       const { user, token } = await service.login(input);
 
-      ctx.res.setCookie('access-token', token, { signed: true });
+      ctx.res.setCookie('access-token', token);
       return user;
     }),
   changeDescription: publicProcedure

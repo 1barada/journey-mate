@@ -1,0 +1,70 @@
+@import '../../../style/variables.scss';
+
+.event {
+  display: flex;
+  justify-content: space-between;
+  background-color: $background-default;
+  border: 2px solid $chat-message-border-color;
+  border-radius: $chat-border-radius;
+  padding: 12px 24px;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .createdAt {
+      color: $grey-200;
+      font-size: 15px;
+      line-height: 17.5px;
+      font-weight: 400;
+    }
+
+    .message {
+      color: $black;
+      font-size: 16px;
+      line-height: 18.75px;
+      font-weight: 400;
+
+      .link {
+        color: $chat-message-border-color;
+
+        &:hover {
+          color: #1d52b4;
+          border-radius: $chat-border-radius;
+        }
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    .base {
+      border-radius: $border-radius;
+      font-size: 11px;
+      line-height: 13px;
+      font-weight: 800;
+      color: $black;
+      padding: 0;
+      border-width: 1px;
+      border-style: solid;
+      height: 27px;
+      width: 87px;
+
+      &:hover {
+        border-width: 2px;
+      }
+    }
+
+    .accept {
+      border-color: $accept-button;
+    }
+
+    .decline {
+      border-color: $decline-button;
+    }
+  }
+}

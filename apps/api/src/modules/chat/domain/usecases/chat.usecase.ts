@@ -4,7 +4,7 @@ import { MessageSchema } from '../entities/chat.entity';
 
 export const GetMessagesRequestSchema = z.object({
   chatId: z.number().int().min(0),
-  take: z.number().min(1).max(Infinity).default(Infinity), // FIX: if want to implement pagination or load on scroll change Infinity to some number
+  take: z.number().min(1).max(Infinity).default(100),
   skip: z.number().min(0).default(0),
 });
 
