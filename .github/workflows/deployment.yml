@@ -1,10 +1,12 @@
 name: Validate, build and deploy
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 
 permissions:
   actions: read
@@ -50,10 +52,28 @@ jobs:
         run: |
           npx cross-env NODE_ENV=production nx affected -t build
           affected_projects=$(npx nx show projects --affected)
-          echo "::set-output name=affected_projects::$affected_projects"
+          echo "affected_projects=$affected_projects" >> $GITHUB_ENV
+
+          if [[ "$affected_projects" == *"web"* ]]; then
+            echo "isWebAffected=true" >> $GITHUB_ENV
+          else
+            echo "isWebAffected=false" >> $GITHUB_ENV
+          fi
+
+          if [[ "$affected_projects" == *"api"* ]]; then
+            echo "isApiAffected=true" >> $GITHUB_ENV
+          else
+            echo "isApiAffected=false" >> $GITHUB_ENV
+          fi
+
+      - name: Temp output of affected projects and conditions
+        run: |
+          echo "Affected projects: ${{ env.affected_projects }}"
+          echo "isWebAffected: ${{ env.isWebAffected }}"
+          echo "isApiAffected: ${{ env.isApiAffected }}"
 
       - name: Deploy landing to AWS S3
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+        if: ${{ env.isWebAffected == 'true' }}
 
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -66,7 +86,7 @@ jobs:
           SOURCE_DIR: ./dist/apps/web
 
       - name: Invalidate landing AWS Cloudfront
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'web')}}
+        if: ${{ env.isWebAffected == 'true' }}
 
         uses: chetan/invalidate-cloudfront-action@v2
         env:
@@ -77,22 +97,22 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Set up Docker Buildx
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ env.isApiAffected == 'true' }}
         uses: docker/setup-buildx-action@v1
 
       - name: Log in to Amazon ECR
         id: login-ecr
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ env.isApiAffected == 'true' }}
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, and push Docker image to Amazon ECR
-        if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ env.isApiAffected == 'true' }}
         run: |
           docker build -t ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}} .
           docker push ${{env.AWS_ECR_REGISTRY}}/${{env.AWS_ECR_REPOSITORY}}:${{env.AWS_IMAGE_TAG}}
 
       - name: SSH into EC2 and update Docker container
-        # if: ${{ contains(steps.run-affected.outputs.affected_projects, 'api')}}
+        if: ${{ env.isApiAffected == 'true' }}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.AWS_EC2_HOST }}
