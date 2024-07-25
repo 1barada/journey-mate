@@ -68,8 +68,13 @@ export const registerAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
 export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>) => {
   return creator.asyncThunk(
     async (data: DataTypes, { rejectWithValue }) => {
+      const newData = {
+        ...data,
+        name: data.name || '',
+      };
+
       try {
-        const newDate = await trpcClient.user.changeProfileData.mutate(data);
+        const newDate = await trpcClient.user.changeProfileData.mutate(newData);
 
         return newDate;
       } catch (error) {
@@ -214,6 +219,53 @@ export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.isLoading = false;
         state.error = null;
         toast.success('Google OAuth success!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+interface D {
+  formData: FormData;
+}
+
+export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ formData }: D, { rejectWithValue }) => {
+      try {
+        const response = await fetch('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const { public_id } = await response.json();
+
+        await trpcClient.user.changeAvatar.mutate({ avatarUrl: public_id });
+
+        return public_id;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+
+        if (!state.user) {
+          state.user = {} as User;
+        }
+
+        state.user.avatarUrl = action.payload;
+
+        toast.success('Avatar uploaded!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;

@@ -14,7 +14,7 @@ export class UpdateUserAvatarService implements UpdateUserAvatarUsecase {
     }
 
     user.avatarUrl = request.avatarUrl;
-    await this.userRepository.updateUser(user);
+    await this.userRepository.updateUserAvatar(user);
 
     return { avatarUrl: user.avatarUrl };
   }

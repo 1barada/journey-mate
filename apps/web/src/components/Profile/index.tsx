@@ -37,26 +37,27 @@ export const Profile = () => {
     dispatch(editDescription(newDescription));
   };
 
+  const imagePath = 'https://res.cloudinary.com/dyttdvqkh/image/upload/v1721908459/';
+
   return (
     <Box component="section" className={styles.section}>
       <Container>
         <Box component="div" className={styles.profileWrapper}>
           <Box component="div" className={styles.infoWrapper}>
-            <Avatar src={avatarUrl ? avatarUrl : defaultImg} className={styles.avatarUrl} />
+            <Avatar src={avatarUrl ? imagePath + avatarUrl : defaultImg} className={styles.avatar} />
             <Box component="div">
               <Typography component="h1" variant="h1" className={styles.title}>
-                {name}
+                Name: <span>{name ? name : 'Anonimus'}</span>
               </Typography>
-              {sex && (
-                <Typography component="p" className={styles.text}>
-                  Sex: <span>{sex}</span>
-                </Typography>
-              )}
-              {dateOfBirth && (
-                <Typography component="p" className={styles.text}>
-                  Age: <span>{age}</span>
-                </Typography>
-              )}
+
+              <Typography component="p" className={styles.text}>
+                Sex: <span>{sex ? sex : '-'}</span>
+              </Typography>
+
+              <Typography component="p" className={styles.text}>
+                Age: <span>{dateOfBirth ? age : '-'}</span>
+              </Typography>
+
               <Typography component="p" className={styles.text}>
                 Email: <span>{email}</span>
               </Typography>

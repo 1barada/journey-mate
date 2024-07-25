@@ -6,6 +6,7 @@ import {
   googleAuthAsyncThunk,
   loginAsyncThunk,
   registerAsyncThunk,
+  updateAvatarAsyncThunk,
   whoamiAsyncThunk,
 } from './asyncThunk';
 import { initialState } from './initialState';
@@ -27,6 +28,7 @@ const authSlice = createSlice({
     registerUser: registerAsyncThunk(creator),
     whoami: whoamiAsyncThunk(creator),
     googleAuth: googleAuthAsyncThunk(creator),
+    updateAvatar: updateAvatarAsyncThunk(creator),
   }),
   selectors: {
     selectIsAuthenticated: createDraftSafeSelector(
@@ -44,6 +46,7 @@ const authSlice = createSlice({
 
 export const authReducer = authSlice.reducer;
 
-export const { loginUser, registerUser, editDescription, changeProfileData, whoami, googleAuth } = authSlice.actions;
+export const { loginUser, registerUser, editDescription, changeProfileData, whoami, googleAuth, updateAvatar } =
+  authSlice.actions;
 
 export const { selectIsAuthenticated, selectUser, selectIsAuthLoading, selectUserPermissions } = authSlice.selectors;

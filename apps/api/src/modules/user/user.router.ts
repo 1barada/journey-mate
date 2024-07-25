@@ -23,6 +23,7 @@ import {
   UpdateUserAvatarRequestInput,
   UpdateUserAvatarResponseSchema,
 } from './domain/entities/userUpdate.entity';
+import { UserNotFoundError } from './domain/errors/user-not-found.error';
 import { createChangeDescriptionUsecase } from './service/changeDescription/changeDescription.factory';
 import { createChangeUserProfileUsecase } from './service/changeUserProfile/changeUserProfile.factory';
 import { createUpdateAvatarUseCase } from './service/updateAvatar/updateAvatar.factory';
@@ -33,78 +34,76 @@ export const userRouter = router({
   }),
   login: publicProcedure
     .input(LoginRequestSchema)
-    .output(LoginRouterResponseSchema)
+    // .output(LoginRouterResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
       const { user, token } = await service.login(input);
 
-      ctx.res.setCookie('access-token', token, { signed: true });
+      ctx.res.setCookie('access-token', token);
       return user;
     }),
-  changeDescription: publicProcedure
+  changeDescription: authenticateProcedure
     .input(ChangeDescriptionInputSchema)
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeDescriptionUsecase(ctx.db);
-      // if (ctx.userTokenData && ctx.userTokenData.userId) {
-      try {
-        const result = await usecase.changeDescription({
-          id: 1,
-          description: input.description,
-        });
-        return result;
-      } catch (error) {
-        throw new Error('Failed to change description');
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const result = await usecase.changeDescription({
+            id: Number(ctx.userTokenData.userId),
+            description: input.description,
+          });
+          return result;
+        } catch (error) {
+          throw UserNotFoundError;
+        }
       }
-      // }
 
-      // throw new Error('User ID not found in token data');
+      throw UserNotFoundError;
     }),
-  changeProfileData: publicProcedure
+  changeProfileData: authenticateProcedure
     .input(ChangeProfileRequestInput)
     .output(ChangeProfileResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createChangeUserProfileUsecase(ctx.db);
 
-      // if (ctx.userTokenData && ctx.userTokenData.userId) {
-      try {
-        const result = await usecase.changeProfileData({
-          id: 1,
-          dateOfBirth: input.dateOfBirth,
-          email: input.email,
-          name: input.name,
-          sex: input.sex,
-        });
-        return result;
-      } catch (error) {
-        throw new Error('Failed to change data');
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const result = await usecase.changeProfileData({
+            id: Number(ctx.userTokenData.userId),
+            dateOfBirth: input.dateOfBirth,
+            email: input.email,
+            name: input.name,
+            sex: input.sex,
+          });
+          return result;
+        } catch (error) {
+          throw UserNotFoundError;
+        }
       }
-      // }
 
-      throw new Error('User ID not found in token data');
+      throw UserNotFoundError;
     }),
-  changeAvatar: publicProcedure
+  changeAvatar: authenticateProcedure
     .input(UpdateUserAvatarRequestInput)
     .output(UpdateUserAvatarResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const usecase = createUpdateAvatarUseCase(ctx.db);
-      console.log(input.avatarUrl);
+
       if (ctx.userTokenData && ctx.userTokenData.userId) {
         try {
-          // const avatarFromCloud = uploadImage();
-
-          const result = await usecase.updateUserAvatar({
-            id: 1,
+          const updatedUser = await usecase.updateUserAvatar({
+            id: Number(ctx.userTokenData.userId),
             avatarUrl: input.avatarUrl,
           });
 
-          return result;
+          return updatedUser;
         } catch (error) {
-          throw new Error('Failed to change data');
+          throw UserNotFoundError;
         }
       }
-      throw new Error('User ID not found in token data');
+      throw UserNotFoundError;
     }),
   registerWithEmail: publicProcedure
     .input(RegisterWithEmailRequestSchema)
