@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://journey_mate_db_user:@journey-db.c3auk2w8u25j.eu-central-1.rds.amazonaws.com:5432/journey_mate_db?schema=public"
 }
 
 model User {
