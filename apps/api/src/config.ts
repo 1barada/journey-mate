@@ -1,7 +1,7 @@
 import convict from 'convict';
 import z from 'zod';
 
-import 'dotenv/config'; // remove after config.json shape is getting from ECR
+import 'dotenv/config'; // remove after config.json shape is getting from ECRr
 
 const FrontendUrlSchema = z.string().url();
 const EmailUserSchema = z.string().email().endsWith('gmail.com');
