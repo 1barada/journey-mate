@@ -1,10 +1,11 @@
 import { FC } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
+
+import { GoBackButton } from '../GoBackButton';
 
 import styles from './AboutPageInfo.module.scss';
 import type { AboutPageInfoProps } from './types';
-import { GoBackButton } from '../GoBackButton';
-import { NavLink } from 'react-router-dom';
 
 export const AboutPageInfo: FC<AboutPageInfoProps> = ({ info, buttons }) => {
   return (
