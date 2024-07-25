@@ -95,14 +95,12 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
         }
 
         state.user = {
-          id: state.user.id,
+          ...state.user,
           age: state.user.age,
           dateOfBirth: action.payload.dateOfBirth ? new Date(action.payload.dateOfBirth) : null,
           email: action.payload.email,
           name: action.payload.name,
           sex: action.payload.sex === 'male' ? Sex.Male : action.payload.sex === 'female' ? Sex.Female : null,
-          description: state.user?.description ?? '',
-          avatarUrl: state.user?.avatarUrl ?? null,
         };
         toast.success("You've successfully changed your profile data!");
       },

@@ -38,7 +38,7 @@ export const Profile = () => {
   };
 
   const imagePath = 'https://res.cloudinary.com/dyttdvqkh/image/upload/v1721908459/';
-
+  console.log(sex);
   return (
     <Box component="section" className={styles.section}>
       <Container>
