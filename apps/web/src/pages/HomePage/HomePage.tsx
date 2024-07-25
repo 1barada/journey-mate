@@ -61,7 +61,7 @@ const HomePage = () => {
         sinceDate={new Date()}
       />
 
-      <JourneyCardList searchQuery={searchQuery} category={category} date={date} />
+      <JourneyCardList searchQuery={searchQuery} category={category} date={date} showAll={true} />
     </Container>
   );
 };
