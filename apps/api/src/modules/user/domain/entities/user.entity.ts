@@ -13,14 +13,16 @@ export const UserSchema = z.object({
   avatarUrl: z.string().url().nullable(),
   sex: SexSchema.nullable(),
   age: z.number().min(0).max(200).nullable(),
-  dateOfBirth: z.date().nullable(),
   description: z.string().nullable(),
   authProvider: AuthProviderSchema,
+  dateOfBirth: z.date().nullable().default(null),
 });
+
 export type User = z.infer<typeof UserSchema>;
 
 export const UserWithPasswordSchema = UserSchema.extend({
   active: z.boolean(),
   passwordHash: z.string().nullable(),
 });
+
 export type UserWithPassword = z.infer<typeof UserWithPasswordSchema>;

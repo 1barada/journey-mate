@@ -4,8 +4,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AbilityProvider } from './components/Ability';
 import { AppLoader } from './components/AppLoader';
 import { createRoutes } from './components/Routes';
-import { selectUser, whoami } from './store/auth/slice';
-import { useAppDispatch, useAppSelector } from './types/reduxTypes';
+import { whoami } from './store/auth/slice';
+import { useAppDispatch } from './types/reduxTypes';
 
 const routes = createRoutes();
 const router = createBrowserRouter(routes);

@@ -18,9 +18,15 @@ import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
 import {
   ChangeDescriptionInputSchema,
   ChangeDescriptionResponseSchema,
-  createChangeDescriptionUsecase,
-} from './domain/usecases/changeDescription.usecase';
-import { ChangeProfileRequestSchema, ChangeProfileResponseSchema } from './domain/usecases/changeUserProfile.usecase';
+  ChangeProfileRequestInput,
+  ChangeProfileResponseSchema,
+  UpdateUserAvatarRequestInput,
+  UpdateUserAvatarResponseSchema,
+} from './domain/entities/userUpdate.entity';
+import { UserNotFoundError } from './domain/errors/user-not-found.error';
+import { createChangeDescriptionUsecase } from './service/changeDescription/changeDescription.factory';
+import { createChangeUserProfileUsecase } from './service/changeUserProfile/changeUserProfile.factory';
+import { createUpdateAvatarUseCase } from './service/updateAvatar/updateAvatar.factory';
 
 export const userRouter = router({
   getUsers: publicProcedure.query(async () => {
@@ -28,7 +34,7 @@ export const userRouter = router({
   }),
   login: publicProcedure
     .input(LoginRequestSchema)
-    .output(LoginRouterResponseSchema)
+    // .output(LoginRouterResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
@@ -37,7 +43,7 @@ export const userRouter = router({
       ctx.res.setCookie('access-token', token);
       return user;
     }),
-  changeDescription: publicProcedure
+  changeDescription: authenticateProcedure
     .input(ChangeDescriptionInputSchema)
     .output(ChangeDescriptionResponseSchema)
     .mutation(async ({ input, ctx }) => {
@@ -45,32 +51,59 @@ export const userRouter = router({
       if (ctx.userTokenData && ctx.userTokenData.userId) {
         try {
           const result = await usecase.changeDescription({
-            id: ctx.userTokenData.userId.toString(),
+            id: Number(ctx.userTokenData.userId),
             description: input.description,
           });
           return result;
         } catch (error) {
-          console.error('Error in usecase.changeDescription:', error);
-          throw new Error('Failed to change description');
+          throw UserNotFoundError;
         }
       }
 
-      throw new Error('User ID not found in token data');
+      throw UserNotFoundError;
     }),
-  // changeProfileData: publicProcedure
-  //   .input(ChangeProfileRequestSchema)
-  //   .output(ChangeProfileResponseSchema)
-  //   .mutation(async ({ input, ctx }) => {
-  //     console.log(input);
-  //     console.log(ctx);
+  changeProfileData: authenticateProcedure
+    .input(ChangeProfileRequestInput)
+    .output(ChangeProfileResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usecase = createChangeUserProfileUsecase(ctx.db);
 
-  //     return input;
-  //   }),
-  changeAvatar: publicProcedure
-    // .input()
-    // .output()
-    .mutation(async ({ input }) => {
-      console.log(input);
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const result = await usecase.changeProfileData({
+            id: Number(ctx.userTokenData.userId),
+            dateOfBirth: input.dateOfBirth,
+            email: input.email,
+            name: input.name,
+            sex: input.sex,
+          });
+          return result;
+        } catch (error) {
+          throw UserNotFoundError;
+        }
+      }
+
+      throw UserNotFoundError;
+    }),
+  changeAvatar: authenticateProcedure
+    .input(UpdateUserAvatarRequestInput)
+    .output(UpdateUserAvatarResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usecase = createUpdateAvatarUseCase(ctx.db);
+
+      if (ctx.userTokenData && ctx.userTokenData.userId) {
+        try {
+          const updatedUser = await usecase.updateUserAvatar({
+            id: Number(ctx.userTokenData.userId),
+            avatarUrl: input.avatarUrl,
+          });
+
+          return updatedUser;
+        } catch (error) {
+          throw UserNotFoundError;
+        }
+      }
+      throw UserNotFoundError;
     }),
   registerWithEmail: publicProcedure
     .input(RegisterWithEmailRequestSchema)

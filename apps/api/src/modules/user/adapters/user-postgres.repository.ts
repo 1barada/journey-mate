@@ -98,6 +98,27 @@ export class UserPostgresRepository implements UserRepositoryPort {
     });
   }
 
+  async updateUserData(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name: user.name,
+        sex: user.sex,
+        dateOfBirth: user.dateOfBirth,
+        email: user.email,
+      },
+    });
+  }
+
+  async updateUserAvatar(user: UserWithPassword): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        avatarUrl: user.avatarUrl,
+      },
+    });
+  }
+
   // https://www.w3resource.com/javascript-exercises/javascript-date-exercise-18.php
   private calculateAge(dateOfBirth: Date) {
     const diff_ms = Date.now() - dateOfBirth.getTime();

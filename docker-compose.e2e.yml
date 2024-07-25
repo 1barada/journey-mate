@@ -1,9 +1,9 @@
 services:
   backendtests:
-    build: 
+    build:
       dockerfile: Dockerfile.e2e
     ports:
-      - "5000:5000"
+      - '5000:5000'
     depends_on:
       - db
     restart: always
@@ -22,4 +22,4 @@ services:
       - POSTGRES_PASSWORD=1111
       - DATABASE_URL=postgresql://postgres:1111@db:5432/jmate
     ports:
-      - "5432:5432"
+      - '5432:5432'

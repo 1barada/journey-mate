@@ -6,7 +6,7 @@ import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { type AuthSlice, type DataTypes, Sex, type User,UserPermission } from './types';
+import { type AuthSlice, type DataTypes, Sex, type User, UserPermission } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -68,9 +68,15 @@ export const registerAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
 export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>) => {
   return creator.asyncThunk(
     async (data: DataTypes, { rejectWithValue }) => {
+      const newData = {
+        ...data,
+        name: data.name || '',
+      };
+
       try {
-        // return await trpcClient.user.changeProfileData.mutate(data);
-        return;
+        const newDate = await trpcClient.user.changeProfileData.mutate(newData);
+
+        return newDate;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -80,9 +86,22 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
         state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state) => {
+      fulfilled: (state, action) => {
         state.isLoading = false;
         state.error = null;
+
+        if (!state.user) {
+          state.user = {} as User;
+        }
+
+        state.user = {
+          ...state.user,
+          age: state.user.age,
+          dateOfBirth: action.payload.dateOfBirth ? new Date(action.payload.dateOfBirth) : null,
+          email: action.payload.email,
+          name: action.payload.name,
+          sex: action.payload.sex === 'male' ? Sex.Male : action.payload.sex === 'female' ? Sex.Female : null,
+        };
         toast.success("You've successfully changed your profile data!");
       },
       rejected: (state, { payload }) => {
@@ -97,7 +116,6 @@ export const changeProfileDataAsyncThunk = (creator: ReducerCreators<AuthSlice>)
 export const changeDescriptionAsyncThunk = (creator: ReducerCreators<AuthSlice>) => {
   return creator.asyncThunk(
     async (description: string, { rejectWithValue }) => {
-      console.log(description);
       try {
         const newD = await trpcClient.user.changeDescription.mutate({ description });
         return newD;
@@ -141,6 +159,7 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
           ? {
               ...res.user,
               sex: Sex[res.user.sex as keyof typeof Sex],
+              dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
             }
           : null;
 
@@ -211,6 +230,53 @@ export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.isLoading = false;
         state.error = null;
         toast.success('Google OAuth success!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+interface D {
+  formData: FormData;
+}
+
+export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ formData }: D, { rejectWithValue }) => {
+      try {
+        const response = await fetch('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const { public_id } = await response.json();
+
+        await trpcClient.user.changeAvatar.mutate({ avatarUrl: public_id });
+
+        return public_id;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+
+        if (!state.user) {
+          state.user = {} as User;
+        }
+
+        state.user.avatarUrl = action.payload;
+
+        toast.success('Avatar uploaded!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Avatar, Box, Button, FormControl, Input, TextField } from '@mui/material';
 
-import { trpcClient } from '../../../services/trpc';
+import { updateAvatar } from '../../../store/auth/slice';
+import { useAppDispatch } from '../../../types/reduxTypes';
 
 import styles from './EditAvatar.module.scss';
 import { EditAvatarProps } from './types';
@@ -14,7 +15,10 @@ export const EditAvatar = () => {
       file: null,
     },
   });
+
   const file = watch('file');
+
+  const dispatch = useAppDispatch();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
@@ -27,11 +31,12 @@ export const EditAvatar = () => {
   };
 
   const onSubmit = async (data: EditAvatarProps) => {
-    console.log(data.file);
-    // // dispatch(editProfile({ name, age: Number(age), email, sex }));
-    // await trpcClient.user.changeAvatar.mutate({ avatar: data.file });
-    // await trpcClient.user.changeAvatar.mutate({});
-    // await trpcClient.user.changeProfileData.mutate({ name, email, sex, age, avatar: data.file });
+    const formData = new FormData();
+    if (data.file) {
+      formData.append('file', data.file);
+      formData.append('upload_preset', 'journey');
+      dispatch(updateAvatar({ formData }));
+    }
   };
 
   return (

@@ -64,14 +64,14 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
               onChange={(e) => setEditedDescription(e.target.value)}
             />
             <Typography component="p" className={styles.limit}>
-              <Typography component="span" className={`${editedDescription.length >= 1000 && styles.overLimit} `}>
-                {editedDescription.length}
+              <Typography component="span" className={`${editedDescription?.length >= 1000 && styles.overLimit} `}>
+                {editedDescription?.length}
               </Typography>
               /1000
             </Typography>
             <Button
               onClick={handleEditChangeClick}
-              disabled={editedDescription.length > 1000}
+              disabled={editedDescription?.length > 1000}
               className={styles.editBtn}
             >
               Edit
