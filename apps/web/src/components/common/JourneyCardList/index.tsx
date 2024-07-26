@@ -8,11 +8,13 @@ import { Pagination } from '../Pagination';
 
 import styles from './JourneyCardList.module.scss';
 import { JourneyCardListProps } from './JourneyCardList.types';
+import { useNavigate } from 'react-router-dom';
 
 export const JourneyCardList: React.FC<JourneyCardListProps> = ({ searchQuery, category, date, showAll = false }) => {
   const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
@@ -38,7 +40,9 @@ export const JourneyCardList: React.FC<JourneyCardListProps> = ({ searchQuery, c
         endDate: journey.milestones[journey.milestones.length - 1].dates[1] || '', // Assuming the last milestone's end date as the journey
         personCount: journey.participantsNumber,
         journeyType: journey.category[0].title,
-        onClickHandler: () => console.log('Journey clicked'),
+        onClickHandler: () => {
+          navigate(`/journeys/${journey.id}`);
+        },
         coordinates: journey.milestones.map((milestone) => milestone.coords),
       }));
 
