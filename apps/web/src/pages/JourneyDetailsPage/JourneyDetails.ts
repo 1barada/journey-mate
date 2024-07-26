@@ -1,10 +1,5 @@
-import { Milestone } from '../../store/journey/types';
-
-interface Category {
-  id: number;
-  title: string;
-  value: string;
-}
+import type { Category } from '../../components/CategoriesTagList/CategoriesTagList.types';
+import type { Milestone } from '../../store/journey/types';
 
 export interface JourneyDetails {
   id: number;

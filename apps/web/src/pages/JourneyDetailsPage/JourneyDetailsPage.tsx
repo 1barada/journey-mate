@@ -5,15 +5,16 @@ import Container from '@mui/material/Container';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { CardDescription } from '../../components/CardDescription';
+import CategoriesTagList from '../../components/CategoriesTagList';
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import { Map } from '../../components/common/Map';
 import { MapWrapper } from '../../components/common/MapWrapper';
 import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { trpcClient } from '../../services/trpc';
-import { Milestone } from '../../store/journey/types';
+import type { Milestone } from '../../store/journey/types';
 
-import { Coordinates, JourneyDetails } from './JourneyDetails';
+import type { Coordinates, JourneyDetails } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
@@ -61,6 +62,7 @@ const JourneyPage = () => {
         <>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
+            <CategoriesTagList categories={journey.categories} />
             <Box className={styles.jorneyInfoWrapper}>
               <Box className={styles.jorneyMainInfo}>
                 <JourneyMilestoneList milestones={journey.milestones} />
