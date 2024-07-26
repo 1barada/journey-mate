@@ -10,9 +10,12 @@ import CategoriesTagList from '../../components/CategoriesTagList';
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import { Map } from '../../components/common/Map';
 import { MapWrapper } from '../../components/common/MapWrapper';
+import { Modal } from '../../components/common/Modal';
+import { JoinJourneyModal } from '../../components/JoinJourneyModal';
 import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { JourneyOrganizerInfo } from '../../components/JourneyOrganizerInfo';
+import { useModal } from '../../hooks/useModal';
 import { trpcClient } from '../../services/trpc';
 import { selectUser } from '../../store/auth/slice';
 import type { Milestone } from '../../store/journey/types';
@@ -37,9 +40,12 @@ const JourneyPage = () => {
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
   const chatId = 1;
 
+  const [isOpen, toggle] = useModal({ isLoading: false });
+
   useEffect(() => {
     const fetchJourneys = async () => {
       const fetchJourney = await trpcClient.journey.getJourneyById.query({ id: Number(journeyId) });
+      console.log(fetchJourney);
       const categories = await trpcClient.journey.getCategories.query();
       const JourneyCategory = await trpcClient.journey.getCategoriesByJourneyId.query({
         id: Number(fetchJourney.id),
@@ -70,10 +76,6 @@ const JourneyPage = () => {
     fetchJourneys();
   }, []);
 
-  const handleJoinToJourney = () => {
-    console.log('handleJoinToJourney');
-  };
-
   return (
     <>
       {journey && organizer && (
@@ -83,12 +85,7 @@ const JourneyPage = () => {
             <Box className={styles.journeyHeader}>
               <CategoriesTagList categories={journey.categories} />
               {user?.id !== organizer.id && (
-                <Button
-                  onClick={handleJoinToJourney}
-                  variant="contained"
-                  color="primary"
-                  className={styles.joinJourneyButton}
-                >
+                <Button onClick={toggle} variant="contained" color="primary" className={styles.joinJourneyButton}>
                   Join
                 </Button>
               )}
@@ -104,11 +101,12 @@ const JourneyPage = () => {
                 <Map width="100%" height="50vh" coordinates={coordinates} />
               </MapWrapper>
             </Box>
-            <JourneyChat chatId={chatId} />
             <CardDescription description={journey.description || ''} title="Опис" />
+            <JourneyChat chatId={chatId} />
           </Container>
         </>
       )}
+      {isOpen && <JoinJourneyModal toggleModal={toggle} milestones={journey?.milestones || []} />}
     </>
   );
 };
