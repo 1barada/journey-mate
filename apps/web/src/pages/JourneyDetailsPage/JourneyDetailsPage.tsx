@@ -14,12 +14,12 @@ import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { JourneyOrganizerInfo } from '../../components/JourneyOrganizerInfo';
 import { trpcClient } from '../../services/trpc';
+import { selectUser } from '../../store/auth/slice';
 import type { Milestone } from '../../store/journey/types';
+import { useAppSelector } from '../../types/reduxTypes';
 
 import type { Coordinates, JourneyDetails, Organizer } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
-import { useAppSelector } from '../../types/reduxTypes';
-import { selectUser } from '../../store/auth/slice';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
   return dates.map((dateStr) => dayjs(dateStr));

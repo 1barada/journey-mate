@@ -142,10 +142,10 @@ export const userRouter = router({
       const service = createGoogleAuthService(ctx.db);
       const { user, token } = await service.googleAuth(input.token);
 
-      ctx.res.setCookie('access-token', token, { signed: true });
+      ctx.res.setCookie('access-token', token);
+
       return user;
     }),
-
   getUser: publicProcedure
     .input(GetUserResponceSchema)
     .output(GetUserRequestSchema)
