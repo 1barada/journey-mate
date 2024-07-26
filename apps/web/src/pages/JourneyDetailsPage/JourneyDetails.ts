@@ -14,3 +14,9 @@ export interface Coordinates {
   lat: number;
   lng: number;
 }
+
+export interface Organizer {
+  id: number;
+  name: string | null;
+  avatarUrl: string | null;
+}

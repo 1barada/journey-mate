@@ -14,8 +14,9 @@ import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { trpcClient } from '../../services/trpc';
 import type { Milestone } from '../../store/journey/types';
 
-import type { Coordinates, JourneyDetails } from './JourneyDetails';
+import type { Coordinates, JourneyDetails, Organizer } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
+import { JourneyOrganizerInfo } from '../../components/JourneyOrganizerInfo';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
   return dates.map((dateStr) => dayjs(dateStr));
@@ -29,6 +30,7 @@ const JourneyPage = () => {
   const { journeyId } = useParams<{ journeyId: string }>();
   const [journey, setJourney] = useState<JourneyDetails | null>(null);
   const [coordinates, setCoordinates] = useState<Coordinates[]>([]);
+  const [organizer, setOrganizer] = useState<Organizer | null>(null);
   const chatId = 1;
 
   useEffect(() => {
@@ -39,6 +41,13 @@ const JourneyPage = () => {
         id: Number(fetchJourney.id),
         categories,
       });
+      const fetchOrganizer = await trpcClient.user.getUser.query({ id: Number(fetchJourney.userId) });
+
+      const organizerInfo = {
+        id: fetchJourney.id,
+        name: fetchOrganizer.name,
+        avatarUrl: fetchOrganizer.avatarUrl,
+      };
 
       const journeyData = {
         ...fetchJourney,
@@ -50,6 +59,7 @@ const JourneyPage = () => {
       };
 
       setJourney(journeyData);
+      setOrganizer(organizerInfo);
       setCoordinates(extractCoordinates(journeyData.milestones));
     };
 
@@ -58,14 +68,17 @@ const JourneyPage = () => {
 
   return (
     <>
-      {journey && (
+      {journey && organizer && (
         <>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
             <CategoriesTagList categories={journey.categories} />
             <Box className={styles.jorneyInfoWrapper}>
               <Box className={styles.jorneyMainInfo}>
-                <JourneyMilestoneList milestones={journey.milestones} />
+                <JourneyOrganizerInfo organaizer={organizer} />
+                <Box className={styles.milestonesList}>
+                  <JourneyMilestoneList milestones={journey.milestones} />
+                </Box>
               </Box>
               <MapWrapper>
                 <Map width="100%" height="50vh" coordinates={coordinates} />

@@ -12,5 +12,12 @@
 }
 
 .jorneyMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
   width: 100%;
+}
+
+.milestonesList {
+  padding-left: 4px;
 }
