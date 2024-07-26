@@ -14,8 +14,6 @@ const host = config.get('host');
 const port = config.get('port');
 const origin = config.get('frontendUrl');
 
-const origin = config.get('frontendUrl');
-
 // server.register(cors, {
 //   origin: [origin],
 //   credentials: true,
