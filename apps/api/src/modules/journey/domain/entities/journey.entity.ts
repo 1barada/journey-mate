@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { CreateJourneyCategorySchema, JourneyCategorySchema } from './journey-category.entity';
-import { CreateMilestoneSchema } from './milestone.entity';
+import { CreateMilestoneSchema, MilestoneSchema } from './milestone.entity';
 
 export const CreateJourneySchema = z.object({
   title: z.string().min(1).max(255),
@@ -41,7 +41,7 @@ export const GetJourneyByIdResponseSchema = z.object({
   userId: z.number().int().positive(),
   title: z.string().min(1).max(255),
   description: z.string().min(1).max(500),
-  milestones: z.array(CreateMilestoneSchema).min(1),
+  milestones: z.array(MilestoneSchema).min(1),
 });
 
 export const GetCategoriesByJourneyIdSchema = z.object({

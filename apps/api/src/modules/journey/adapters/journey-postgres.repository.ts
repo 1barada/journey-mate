@@ -143,12 +143,27 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       return null;
     }
 
+    const transformedMilestones = journey.milestones.map((milestone) => {
+      const startDate = milestone.startDate ? new Date(milestone.startDate) : undefined;
+      const endDate = milestone.endDate ? new Date(milestone.endDate) : undefined;
+
+      return {
+        id: milestone.id,
+        title: milestone.title,
+        coords: {
+          lat: milestone.lat,
+          lng: milestone.lng,
+        },
+        dates: [startDate, endDate].filter((date) => date !== undefined) as Date[],
+      };
+    });
+
     return {
       id: journey.id,
       userId: journey.userId,
       title: journey.title,
       description: journey.description,
-      milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
+      milestones: transformedMilestones,
     };
   }
 

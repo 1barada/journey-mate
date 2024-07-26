@@ -2,14 +2,20 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { CardDescription } from '../../components/CardDescription';
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import JourneyChat from '../../components/JourneyChat';
+import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { trpcClient } from '../../services/trpc';
 
 import { JourneyDetails } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
+
+const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
+  return dates.map((dateStr) => dayjs(dateStr));
+};
 
 const JourneyPage = () => {
   const { journeyId } = useParams<{ journeyId: string }>();
@@ -25,13 +31,16 @@ const JourneyPage = () => {
         categories,
       });
 
-      const updatedMilestones = fetchJourney.milestones.map((milestone) => ({
-        ...milestone,
-        dates: milestone.dates,
-      }));
-
-      setJourney({ ...fetchJourney, ...JourneyCategory, milestones: updatedMilestones });
+      setJourney({
+        ...fetchJourney,
+        milestones: fetchJourney.milestones.map((milestone) => ({
+          ...milestone,
+          dates: convertDatesToDayjs(milestone.dates),
+        })),
+        ...JourneyCategory,
+      });
     };
+
     fetchJourneys();
   }, []);
 
@@ -41,7 +50,9 @@ const JourneyPage = () => {
         <>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
-            <Box>{/* <JourneyMilestoneList milestones={journey.milestones} /> */}</Box>
+            <Box>
+              <JourneyMilestoneList milestones={journey.milestones} />
+            </Box>
             <JourneyChat chatId={chatId} />
             <CardDescription description={journey.description || ''} title="Опис" />
           </Container>
