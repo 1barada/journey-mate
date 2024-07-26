@@ -1,11 +1,14 @@
 import React from 'react';
-import { JourneyOrganizerInfoProps } from './JourneyOrganizerInfo.types';
+import { Link, useLocation } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import defaultImg from '../../../public/img/defaultImg.webp';
-import styles from './JourneyOrganizerInfo.module.scss';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Link, useLocation } from 'react-router-dom';
+
+import defaultImg from '../../../public/img/defaultImg.webp';
+
+import styles from './JourneyOrganizerInfo.module.scss';
+import { JourneyOrganizerInfoProps } from './JourneyOrganizerInfo.types';
+
 const imagePath = 'https://res.cloudinary.com/dyttdvqkh/image/upload/v1721908459/';
 
 export const JourneyOrganizerInfo: React.FC<JourneyOrganizerInfoProps> = ({ organaizer }) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import dayjs, { Dayjs } from 'dayjs';
@@ -11,12 +12,12 @@ import { Map } from '../../components/common/Map';
 import { MapWrapper } from '../../components/common/MapWrapper';
 import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
+import { JourneyOrganizerInfo } from '../../components/JourneyOrganizerInfo';
 import { trpcClient } from '../../services/trpc';
 import type { Milestone } from '../../store/journey/types';
 
 import type { Coordinates, JourneyDetails, Organizer } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
-import { JourneyOrganizerInfo } from '../../components/JourneyOrganizerInfo';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
   return dates.map((dateStr) => dayjs(dateStr));
@@ -66,13 +67,27 @@ const JourneyPage = () => {
     fetchJourneys();
   }, []);
 
+  const handleJoinToJourney = () => {
+    console.log('handleJoinToJourney');
+  };
+
   return (
     <>
       {journey && organizer && (
         <>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
-            <CategoriesTagList categories={journey.categories} />
+            <Box className={styles.journeyHeader}>
+              <CategoriesTagList categories={journey.categories} />
+              <Button
+                onClick={handleJoinToJourney}
+                variant="contained"
+                color="primary"
+                className={styles.joinJourneyButton}
+              >
+                Join
+              </Button>
+            </Box>
             <Box className={styles.jorneyInfoWrapper}>
               <Box className={styles.jorneyMainInfo}>
                 <JourneyOrganizerInfo organaizer={organizer} />
