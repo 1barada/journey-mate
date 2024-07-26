@@ -6,8 +6,8 @@ import styles from './CardDescription.module.scss';
 
 interface CardDescriptionProps {
   description: string;
-  isEdited: boolean;
-  setIsEdited: (args: boolean) => void;
+  isEdited?: boolean;
+  setIsEdited?: (args: boolean) => void;
   title: string;
   handleEditDescription?: (description: string) => void;
 }
@@ -42,6 +42,12 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   const handleEditChangeClick = () => {
     if (handleEditDescription) {
       handleEditDescription(editedDescription);
+      if (setIsEdited) setIsEdited(false);
+    }
+  };
+
+  const editModeClose = () => {
+    if (setIsEdited) {
       setIsEdited(false);
     }
   };
@@ -54,7 +60,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
       <Box className={styles.contentWrapper}>
         {isEdited ? (
           <>
-            <IconButton onClick={() => setIsEdited(false)} className={styles.closeBtn}>
+            <IconButton onClick={editModeClose} className={styles.closeBtn}>
               <CloseIcon />
             </IconButton>
             <TextField
