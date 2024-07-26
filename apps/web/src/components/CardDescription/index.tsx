@@ -5,18 +5,18 @@ import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import styles from './CardDescription.module.scss';
 
 interface CardDescriptionProps {
+  title: string;
   description: string;
   isEdited?: boolean;
   setIsEdited?: (args: boolean) => void;
-  title: string;
   handleEditDescription?: (description: string) => void;
 }
 
 export const CardDescription: React.FC<CardDescriptionProps> = ({
+  title,
   description,
   isEdited,
   setIsEdited,
-  title,
   handleEditDescription,
 }) => {
   const [isEllipsis, setIsEllipsis] = useState<boolean>(false);
