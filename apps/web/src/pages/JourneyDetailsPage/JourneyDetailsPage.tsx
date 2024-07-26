@@ -18,6 +18,8 @@ import type { Milestone } from '../../store/journey/types';
 
 import type { Coordinates, JourneyDetails, Organizer } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
+import { useAppSelector } from '../../types/reduxTypes';
+import { selectUser } from '../../store/auth/slice';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
   return dates.map((dateStr) => dayjs(dateStr));
@@ -28,6 +30,7 @@ const extractCoordinates = (milestones: Milestone[]): Coordinates[] => {
 };
 
 const JourneyPage = () => {
+  const user = useAppSelector(selectUser);
   const { journeyId } = useParams<{ journeyId: string }>();
   const [journey, setJourney] = useState<JourneyDetails | null>(null);
   const [coordinates, setCoordinates] = useState<Coordinates[]>([]);
@@ -79,14 +82,16 @@ const JourneyPage = () => {
           <Container className={styles.journeyWrapper}>
             <Box className={styles.journeyHeader}>
               <CategoriesTagList categories={journey.categories} />
-              <Button
-                onClick={handleJoinToJourney}
-                variant="contained"
-                color="primary"
-                className={styles.joinJourneyButton}
-              >
-                Join
-              </Button>
+              {user?.id !== organizer.id && (
+                <Button
+                  onClick={handleJoinToJourney}
+                  variant="contained"
+                  color="primary"
+                  className={styles.joinJourneyButton}
+                >
+                  Join
+                </Button>
+              )}
             </Box>
             <Box className={styles.jorneyInfoWrapper}>
               <Box className={styles.jorneyMainInfo}>
