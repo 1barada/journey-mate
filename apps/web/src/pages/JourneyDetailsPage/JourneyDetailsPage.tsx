@@ -1,33 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { AboutPageInfo } from '../../components/common/AboutPageInfo';
-import Container from '@mui/material/Container';
-import { Box } from '@mui/material';
-import JourneyChat from '../../components/JourneyChat';
-import { CardDescription } from '../../components/CardDescription';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../types/reduxTypes';
-import { journeySelectors } from '../../store/journey/slice';
-import { trpcClient } from '../../services/trpc';
-import { JourneyCardProps } from '../../components/common/JourneyCard/JourneyCard.types';
 
-const JourneyDetailsPage = () => {
+import { AboutPageInfo } from '../../components/common/AboutPageInfo';
+import { trpcClient } from '../../services/trpc';
+import { JourneyDetails } from './JourneyDetails';
+
+const JourneyPage = () => {
   const { journeyId } = useParams<{ journeyId: string }>();
-  const [journey, setJourney] = useState<JourneyCardProps | null>(null);
+  const [journey, setJourney] = useState<JourneyDetails | null>(null);
 
   useEffect(() => {
     const fetchJourneys = async () => {
-      const fetchedJourney = await trpcClient.journey.getJourneyById.query({ id: Number(journeyId) });
-      console.log(fetchedJourney, 'SINGLE');
-    };
+      const fetchJourney = await trpcClient.journey.getJourneyById.query({ id: Number(journeyId) });
+      const categories = await trpcClient.journey.getCategories.query();
+      const JourneyCategory = await trpcClient.journey.getCategoriesByJourneyId.query({
+        id: Number(fetchJourney.id),
+        categories,
+      });
 
+      const updatedMilestones = fetchJourney.milestones.map((milestone) => ({
+        ...milestone,
+        dates: milestone.dates.map((date) => new Date(date)),
+      }));
+
+      setJourney({ ...fetchJourney, ...JourneyCategory, milestones: updatedMilestones });
+    };
     fetchJourneys();
   }, []);
 
-  return (
-    <>
-      <h1>jORNEY</h1>
-    </>
-  );
+  return <div>{journey && <AboutPageInfo info={journey.title} />}</div>;
 };
 
-export default JourneyDetailsPage;
+export default JourneyPage;

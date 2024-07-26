@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 import { trpcClient } from '../../../services/trpc';
 import { JourneyCard } from '../JourneyCard';
-import { JourneyCardProps, Status } from '../JourneyCard/JourneyCard.types';
+import { JourneyCardProps } from '../JourneyCard/JourneyCard.types';
 import { Pagination } from '../Pagination';
 
 import styles from './JourneyCardList.module.scss';

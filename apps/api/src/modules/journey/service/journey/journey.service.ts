@@ -21,4 +21,10 @@ export class JourneyService implements JourneyUsecase {
   async getJourneyById(id: number): Promise<JourneyDetails | null> {
     return await this.db.getJourneyById({ id });
   }
+
+  async getCategoriesByJourneyId(journeyId: number, categories: JourneyCategory[]): Promise<JourneyCategory[]> {
+    const allCategories = await this.db.getCategoriesByJourneyId(journeyId);
+
+    return allCategories.filter((category) => categories.some((cat) => cat.id === category.id));
+  }
 }

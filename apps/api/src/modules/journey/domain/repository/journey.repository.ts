@@ -19,4 +19,5 @@ export interface JourneyRepositoryPort {
   getCategories(): Promise<JourneyCategory[]>;
   getJourneys(params: GetJourneysParams): Promise<getAllJourneysResult>;
   getJourneyById(params: GetJourneyByIdParams): Promise<JourneyDetails | null>;
+  getCategoriesByJourneyId(journeyId: number): Promise<JourneyCategory[]>;
 }

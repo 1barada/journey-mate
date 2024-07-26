@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
+import { GetJourneyByIdParams, JourneyDetails } from '../domain/entities/journey.entity';
 import type { JourneyCategory } from '../domain/entities/journey-category.entity';
 import type {
   CreateJourneyParams,
@@ -14,7 +15,6 @@ import {
   journeyToCategoryToDatabaseModel,
   milestonesToDatabaseModel,
 } from './journey-postgres-repository.transform';
-import { GetJourneyByIdParams, Journey, JourneyDetails } from '../domain/entities/journey.entity';
 
 export class JourneyPostgresRepository implements JourneyRepositoryPort {
   constructor(private db: PrismaClient) {}
@@ -150,5 +150,29 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       description: journey.description,
       milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
     };
+  }
+
+  async getCategoriesByJourneyId(journeyId: number): Promise<JourneyCategory[]> {
+    const journeyToCategories = await this.db.journeyToCategory.findMany({
+      where: { journeyId },
+    });
+
+    if (journeyToCategories.length === 0) {
+      throw new Error('Categories for the journey not found');
+    }
+
+    const categoryIds = journeyToCategories.map((relation) => relation.categoryId);
+
+    const categories = await this.db.journeyCategory.findMany({
+      where: {
+        id: { in: categoryIds },
+      },
+    });
+
+    return categories.map((cat) => ({
+      id: cat.id,
+      title: cat.title,
+      value: cat.value,
+    }));
   }
 }

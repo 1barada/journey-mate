@@ -5,7 +5,8 @@ import { authorizedProcedure, publicProcedure, router } from '../../trpc/trpc';
 import type { CreateJourneyWithUserId } from './domain/entities/journey.entity';
 import {
   CreateJourneySchema,
-  CreateJourneyWithUserIdSchema,
+  GetCategoriesByJourneyIdResponseSchema,
+  GetCategoriesByJourneyIdSchema,
   GetJourneyByIdResponseSchema,
   GetJourneyByIdSchema,
   GetJourneysSchema,
@@ -58,5 +59,13 @@ export const journeyRouter = router({
         throw new Error('Journey not found');
       }
       return journey;
+    }),
+  getCategoriesByJourneyId: publicProcedure
+    .input(GetCategoriesByJourneyIdSchema)
+    .output(GetCategoriesByJourneyIdResponseSchema)
+    .query(async ({ input, ctx }) => {
+      const service = createJourneyService(ctx.db);
+      const categories = await service.getCategoriesByJourneyId(input.id, input.categories);
+      return { categories };
     }),
 });

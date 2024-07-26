@@ -13,8 +13,8 @@ import styles from './styles.module.scss';
 export const GoogleButton: React.FC<GoogleButtonProps> = ({ formType, toggleModal }) => {
   const dispatch = useAppDispatch();
 
-  const handleLoginSuccess = async (response: CredentialResponse) => {
-    const res = await dispatch(googleAuth({ credential: response.credential }))
+  const handleLoginSuccess = (response: CredentialResponse) => {
+    dispatch(googleAuth({ credential: response.credential }))
       .unwrap()
       .then(() => {
         toggleModal();

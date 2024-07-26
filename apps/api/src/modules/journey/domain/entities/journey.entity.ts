@@ -44,6 +44,15 @@ export const GetJourneyByIdResponseSchema = z.object({
   milestones: z.array(CreateMilestoneSchema).min(1),
 });
 
+export const GetCategoriesByJourneyIdSchema = z.object({
+  id: z.number().int().positive(),
+  categories: z.array(JourneyCategorySchema),
+});
+
+export const GetCategoriesByJourneyIdResponseSchema = z.object({
+  categories: z.array(JourneyCategorySchema),
+});
+
 export type Journey = z.infer<typeof JourneySchema>;
 export type Journeys = z.infer<typeof JourneysSchema>;
 export type CreateJourney = z.infer<typeof CreateJourneySchema>;
@@ -51,3 +60,5 @@ export type CreateJourneyWithUserId = z.infer<typeof CreateJourneyWithUserIdSche
 export type GetJourneys = z.infer<typeof GetJourneysSchema>;
 export type GetJourneyByIdParams = z.infer<typeof GetJourneyByIdSchema>;
 export type JourneyDetails = z.infer<typeof GetJourneyByIdResponseSchema>;
+export type GetCategoriesByJourneyId = z.infer<typeof GetCategoriesByJourneyIdSchema>;
+export type JourneyCategories = z.infer<typeof GetCategoriesByJourneyIdResponseSchema>;
