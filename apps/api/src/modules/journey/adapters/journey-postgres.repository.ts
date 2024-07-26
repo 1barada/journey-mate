@@ -14,6 +14,7 @@ import {
   journeyToCategoryToDatabaseModel,
   milestonesToDatabaseModel,
 } from './journey-postgres-repository.transform';
+import { GetJourneyByIdParams, Journey, JourneyDetails } from '../domain/entities/journey.entity';
 
 export class JourneyPostgresRepository implements JourneyRepositoryPort {
   constructor(private db: PrismaClient) {}
@@ -126,5 +127,28 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     result = result.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return { journeys: result, totalPages: totalPages };
+  }
+
+  async getJourneyById({ id }: GetJourneyByIdParams): Promise<JourneyDetails | null> {
+    const journey = await this.db.journey.findUnique({
+      where: { id },
+      include: {
+        milestones: true,
+        category: true,
+        journeyUsers: true,
+      },
+    });
+
+    if (!journey) {
+      return null;
+    }
+
+    return {
+      id: journey.id,
+      userId: journey.userId,
+      title: journey.title,
+      description: journey.description,
+      milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
+    };
   }
 }

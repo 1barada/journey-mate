@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 
 import { trpcClient } from '../../../services/trpc';
@@ -8,7 +9,6 @@ import { Pagination } from '../Pagination';
 
 import styles from './JourneyCardList.module.scss';
 import { JourneyCardListProps } from './JourneyCardList.types';
-import { useNavigate } from 'react-router-dom';
 
 export const JourneyCardList: React.FC<JourneyCardListProps> = ({ searchQuery, category, date, showAll = false }) => {
   const [journeys, setJourneys] = useState<JourneyCardProps[]>([]);
@@ -31,7 +31,7 @@ export const JourneyCardList: React.FC<JourneyCardListProps> = ({ searchQuery, c
         page: currentPage,
         user_id: user?.id,
       });
-
+      console.log(fetchedJourneys);
       const transformedJourneys: JourneyCardProps[] = fetchedJourneys.journeys.map((journey) => ({
         id: journey.id,
         description: journey.description,
