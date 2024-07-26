@@ -1,3 +1,5 @@
+@import '../../style/variables.scss';
+
 .journeyWrapper {
   display: flex;
   flex-direction: column;
@@ -6,10 +8,28 @@
   padding-bottom: 40px;
 }
 
+.journeyHeader {
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 40px;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 .jorneyInfoWrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 40px;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+  }
 }
 
 .jorneyMainInfo {
@@ -32,12 +52,4 @@
   align-items: center;
   font-size: 20px;
   font-weight: 800;
-}
-
-.journeyHeader {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
 }

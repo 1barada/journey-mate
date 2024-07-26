@@ -10,7 +10,6 @@ import CategoriesTagList from '../../components/CategoriesTagList';
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import { Map } from '../../components/common/Map';
 import { MapWrapper } from '../../components/common/MapWrapper';
-import { Modal } from '../../components/common/Modal';
 import { JoinJourneyModal } from '../../components/JoinJourneyModal';
 import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
@@ -38,8 +37,6 @@ const JourneyPage = () => {
   const [journey, setJourney] = useState<JourneyDetails | null>(null);
   const [coordinates, setCoordinates] = useState<Coordinates[]>([]);
   const [organizer, setOrganizer] = useState<Organizer | null>(null);
-  const chatId = 1;
-
   const [isOpen, toggle] = useModal({ isLoading: false });
 
   useEffect(() => {
@@ -79,7 +76,7 @@ const JourneyPage = () => {
   return (
     <>
       {journey && organizer && (
-        <>
+        <Box>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
             <Box className={styles.journeyHeader}>
@@ -98,13 +95,13 @@ const JourneyPage = () => {
                 </Box>
               </Box>
               <MapWrapper>
-                <Map width="100%" height="50vh" coordinates={coordinates} />
+                <Map width="100%" height="460px" coordinates={coordinates} />
               </MapWrapper>
             </Box>
             <CardDescription description={journey.description || ''} title="Опис" />
-            <JourneyChat chatId={chatId} />
+            <JourneyChat chatId={journey.id} />
           </Container>
-        </>
+        </Box>
       )}
       {isOpen && <JoinJourneyModal toggleModal={toggle} milestones={journey?.milestones || []} />}
     </>
