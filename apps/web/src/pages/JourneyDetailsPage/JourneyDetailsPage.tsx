@@ -6,20 +6,28 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { CardDescription } from '../../components/CardDescription';
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
+import { Map } from '../../components/common/Map';
+import { MapWrapper } from '../../components/common/MapWrapper';
 import JourneyChat from '../../components/JourneyChat';
 import { JourneyMilestoneList } from '../../components/JourneyMilestoneList';
 import { trpcClient } from '../../services/trpc';
+import { Milestone } from '../../store/journey/types';
 
-import { JourneyDetails } from './JourneyDetails';
+import { Coordinates, JourneyDetails } from './JourneyDetails';
 import styles from './JourneyDetailsPage.module.scss';
 
 const convertDatesToDayjs = (dates: string[]): Dayjs[] => {
   return dates.map((dateStr) => dayjs(dateStr));
 };
 
+const extractCoordinates = (milestones: Milestone[]): Coordinates[] => {
+  return milestones.map((milestone) => milestone.coords);
+};
+
 const JourneyPage = () => {
   const { journeyId } = useParams<{ journeyId: string }>();
   const [journey, setJourney] = useState<JourneyDetails | null>(null);
+  const [coordinates, setCoordinates] = useState<Coordinates[]>([]);
   const chatId = 1;
 
   useEffect(() => {
@@ -31,14 +39,17 @@ const JourneyPage = () => {
         categories,
       });
 
-      setJourney({
+      const journeyData = {
         ...fetchJourney,
         milestones: fetchJourney.milestones.map((milestone) => ({
           ...milestone,
           dates: convertDatesToDayjs(milestone.dates),
         })),
         ...JourneyCategory,
-      });
+      };
+
+      setJourney(journeyData);
+      setCoordinates(extractCoordinates(journeyData.milestones));
     };
 
     fetchJourneys();
@@ -50,8 +61,13 @@ const JourneyPage = () => {
         <>
           <AboutPageInfo info={journey.title} />
           <Container className={styles.journeyWrapper}>
-            <Box>
-              <JourneyMilestoneList milestones={journey.milestones} />
+            <Box className={styles.jorneyInfoWrapper}>
+              <Box className={styles.jorneyMainInfo}>
+                <JourneyMilestoneList milestones={journey.milestones} />
+              </Box>
+              <MapWrapper>
+                <Map width="100%" height="50vh" coordinates={coordinates} />
+              </MapWrapper>
             </Box>
             <JourneyChat chatId={chatId} />
             <CardDescription description={journey.description || ''} title="Опис" />

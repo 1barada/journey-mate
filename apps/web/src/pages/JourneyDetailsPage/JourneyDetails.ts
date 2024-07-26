@@ -14,3 +14,8 @@ export interface JourneyDetails {
   categories: Category[];
   milestones: Milestone[];
 }
+
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
