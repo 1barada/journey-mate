@@ -6,6 +6,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputLabel,
   Radio,
   RadioGroup,
   TextField,
@@ -42,55 +43,63 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
       <Typography component="h2" variant="h5" gutterBottom>
         Edit Profile
       </Typography>
-      <Controller
-        name="name"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            id="outlined-name"
-            label="Full name"
-            fullWidth
-            margin="normal"
-            onChange={field.onChange}
-            variant="outlined"
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="dateOfBirth"
-        rules={{ required: true }}
-        render={({ field }) => {
-          return (
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label=""
-                {...field}
-                value={dayjs(field.value)}
-                onChange={field.onChange}
-                format={'DD.MM.YYYY'}
-              />
-            </LocalizationProvider>
-          );
-        }}
-      />
-      <Controller
-        name="email"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            id="outlined-email"
-            onChange={field.onChange}
-            label="Email"
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-        )}
-      />
-
+      <InputLabel className={styles.inputLabel}>
+        Full name
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              id="outlined-name"
+              // label="Full name"
+              fullWidth
+              margin="normal"
+              onChange={field.onChange}
+              // variant="outlined"
+            />
+          )}
+        />
+      </InputLabel>
+      <InputLabel className={styles.inputLabel}>
+        Date of birth
+        <Controller
+          control={control}
+          name="dateOfBirth"
+          rules={{ required: true }}
+          render={({ field }) => {
+            return (
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label=""
+                  {...field}
+                  value={dayjs(field.value)}
+                  onChange={field.onChange}
+                  format={'DD.MM.YYYY'}
+                />
+              </LocalizationProvider>
+            );
+          }}
+        />
+      </InputLabel>
+      <InputLabel className={styles.inputLabel}>
+        Email
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              id="outlined-email"
+              onChange={field.onChange}
+              // label="Email"
+              fullWidth
+              margin="normal"
+              // variant="outlined"
+            />
+          )}
+        />
+      </InputLabel>
       <FormControl className={styles.radioWrapper}>
         <FormLabel className={styles.radioLabel} component="legend">
           Sex
