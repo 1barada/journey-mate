@@ -4,15 +4,15 @@ interface Category {
   value: string;
 }
 
+interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
 export interface Milestone {
   coords: Coordinates;
   dates: string[];
   title: string;
-}
-
-interface Coordinates {
-  lat: number;
-  lng: number;
 }
 
 export interface JourneyDetails {

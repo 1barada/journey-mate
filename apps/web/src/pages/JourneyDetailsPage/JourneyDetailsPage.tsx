@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { AboutPageInfo } from '../../components/common/AboutPageInfo';
 import { trpcClient } from '../../services/trpc';
+
 import { JourneyDetails } from './JourneyDetails';
 
 const JourneyPage = () => {
@@ -20,7 +21,7 @@ const JourneyPage = () => {
 
       const updatedMilestones = fetchJourney.milestones.map((milestone) => ({
         ...milestone,
-        dates: milestone.dates.map((date) => new Date(date)),
+        dates: milestone.dates,
       }));
 
       setJourney({ ...fetchJourney, ...JourneyCategory, milestones: updatedMilestones });
