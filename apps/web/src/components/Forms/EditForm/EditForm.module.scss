@@ -2,12 +2,24 @@
   display: none;
 }
 
+.inputLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-bottom: 16px;
+
+  div {
+    margin: 0;
+  }
+}
+
 .radioWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-
+  margin-bottom: 16px;
   gap: 24px;
 }
 
