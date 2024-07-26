@@ -1,7 +1,10 @@
-import { ChangeProfileRequest, ChangeProfileResponse } from '../../domain/entities/userUpdate.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserRepositoryPort } from '../../domain/repository/user.repository';
-import { ChangeProfileDataUsecase } from '../../domain/usecases/changeUserProfile.usecase';
+import {
+  ChangeProfileDataUsecase,
+  ChangeProfileRequest,
+  ChangeProfileResponse,
+} from '../../domain/usecases/changeUserProfile.usecase';
 
 export class ChangeProfileDataServece implements ChangeProfileDataUsecase {
   constructor(private userRepository: UserRepositoryPort) {}

@@ -1,7 +1,10 @@
-import { UpdateUserAvatarRequest, UpdateUserAvatarResponce } from '../../domain/entities/userUpdate.entity';
 import { UserNotFoundError } from '../../domain/errors/user-not-found.error';
 import { UserRepositoryPort } from '../../domain/repository/user.repository';
-import { UpdateUserAvatarUsecase } from '../../domain/usecases/updateAvatar.usecase';
+import {
+  UpdateUserAvatarRequest,
+  UpdateUserAvatarResponce,
+  UpdateUserAvatarUsecase,
+} from '../../domain/usecases/updateAvatar.usecase';
 
 export class UpdateUserAvatarService implements UpdateUserAvatarUsecase {
   constructor(private userRepository: UserRepositoryPort) {}

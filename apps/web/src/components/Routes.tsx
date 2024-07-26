@@ -13,6 +13,7 @@ const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/Ac
 const CreateJourneyPage = lazy(() => import('../pages/CreateJourneyPage/CreateJourneyPage'));
 
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
+const UserPage = lazy(() => import('../pages/UserPage/UserPage'));
 
 export const createRoutes = (): RouteObject[] => [
   {
@@ -33,6 +34,10 @@ export const createRoutes = (): RouteObject[] => [
             element: <ProfilePage />,
           },
         ],
+      },
+      {
+        path: `${routes.PROFILE}/:id`,
+        element: <UserPage />,
       },
       {
         path: routes.NOTIFICATIONS,
