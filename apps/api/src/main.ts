@@ -12,12 +12,13 @@ import { server } from './server';
 
 const host = config.get('host');
 const port = config.get('port');
-const origin = config.get('frontendUrl');
 
-server.register(cors, {
-  origin: [origin],
-  credentials: true,
-});
+if (config.get('nodeEnv') == 'development') {
+  server.register(cors, {
+    origin: ['*'],
+    credentials: true,
+  });
+}
 
 server.register(fastifyCookie, {
   secret: config.get('cookieSecret'),
