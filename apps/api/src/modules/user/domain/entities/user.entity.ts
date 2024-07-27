@@ -16,6 +16,7 @@ export const UserSchema = z.object({
   description: z.string().nullable(),
   authProvider: AuthProviderSchema,
   dateOfBirth: z.date().nullable().default(null),
+  restoreToken: z.string().nullable(),
 });
 
 export type User = z.infer<typeof UserSchema>;
