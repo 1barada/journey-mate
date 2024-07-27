@@ -1,11 +1,11 @@
 export interface SendEmailRestorePasswordUser {
   active: boolean;
-  name: string;
+  name?: string;
 }
 
 export interface SendEmailRestorePasswordParams {
   to: string;
-  confirmationUrl: string;
+  restorePasswordUrl: string;
   user: SendEmailRestorePasswordUser;
 }
 

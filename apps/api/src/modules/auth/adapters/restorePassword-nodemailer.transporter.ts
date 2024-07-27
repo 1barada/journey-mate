@@ -6,11 +6,11 @@ import {
   RestorePasswordTransporterPort,
   SendEmailRestorePasswordParams,
   SendEmailRestorePasswordResult,
-} from '../domain/transporter/resetPassword.transporter';
+} from '../domain/transporter/restorePassword.transporter';
 
 import { CantSendEmailError } from './errors/cant-send-email.error';
 
-export class LoginNodemailerTransporter implements RestorePasswordTransporterPort {
+export class RestorePasswordNodemailerTransporter implements RestorePasswordTransporterPort {
   constructor(private transporter: NodemailerTransporterType) {}
 
   async sendEmailRestorePassword(props: SendEmailRestorePasswordParams): Promise<SendEmailRestorePasswordResult> {
@@ -20,8 +20,10 @@ export class LoginNodemailerTransporter implements RestorePasswordTransporterPor
 
     const emailBody = `
       <div>
-        <p>To restore user ${props.user.name} password please click on the link below</p>
-        <a href="${props.confirmationUrl}">Restore password</a>
+        <p>To restore ${
+          props.user.name ? 'user ' + props.user.name : 'account'
+        } password please click on the link below</p>
+        <a href="${props.restorePasswordUrl}">Restore password</a>
       </div>
     `;
 
