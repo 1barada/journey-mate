@@ -4,7 +4,7 @@ export const RestorePasswordEmailRequestSchema = z.object({
   email: z.string().email(),
 });
 
-export type RestorePasswordEmailRequest = z.infer<typeof RestorePasswordEmailRequestSchema>;
+export type RestorePasswordEmailRequest = { baseUrl: string } & z.infer<typeof RestorePasswordEmailRequestSchema>;
 
 export const RestorePasswordEmailResponseSchema = z.void();
 
