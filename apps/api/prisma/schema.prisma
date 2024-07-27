@@ -20,6 +20,7 @@ model User {
   active            Boolean                 @default(false)
   authProvider      AuthProvider
   passwordHash      String?                 @db.VarChar(72)
+  restoreToken      String?                 @unique @db.VarChar(255)
   avatarUrl         String?
   journey           Journey[]
   journeyUsers      JourneyUsersMilestone[]
