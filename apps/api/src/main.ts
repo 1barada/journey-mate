@@ -21,9 +21,7 @@ if (config.get('nodeEnv') == 'development') {
 }
 
 server.register(fastifyCookie, {
-  secret: config.get('cookieSecret'),
   hook: 'onRequest',
-  algorithm: 'sha256',
   parseOptions: {
     httpOnly: true,
     secure: config.get('nodeEnv') !== 'development',
