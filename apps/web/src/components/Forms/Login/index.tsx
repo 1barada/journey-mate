@@ -14,7 +14,7 @@ import sharedStyles from '../shared.module.scss';
 import { loginSchema } from './schemas';
 import type { FormInputsTypes, LoginProps } from './types';
 
-const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
+const Login: React.FC<LoginProps> = ({ switchForms, toggleModal }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectIsAuthLoading);
   const {
@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
             underline="always"
             onClick={() => {
               if (!isLoading) {
-                switchToRegisterForm(AuthFormTypes.SignUp);
+                switchForms(AuthFormTypes.SignUp);
               }
             }}
           >
@@ -85,7 +85,7 @@ const Login: React.FC<LoginProps> = ({ switchToRegisterForm, toggleModal }) => {
               underline="always"
               onClick={() => {
                 if (!isLoading) {
-                  console.log('Temporary event');
+                  switchForms(AuthFormTypes.RestorePasswordRequest);
                 }
               }}
             >

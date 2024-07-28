@@ -324,9 +324,9 @@ export const restorePasswordRequestAsyncThunk = (creator: ReducerCreators<AuthSl
 
 export const restorePasswordAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async ({ newPassword }: RestorePasswordThunkProps, { rejectWithValue }) => {
+    async ({ newPassword, restoreToken }: RestorePasswordThunkProps, { rejectWithValue }) => {
       try {
-        const response = await trpcClient.user.restorePasswordViaEmail.mutate({ newPassword });
+        const response = await trpcClient.user.restorePasswordViaEmail.mutate({ newPassword, restoreToken });
         return response;
       } catch (error) {
         return rejectWithValue((error as Error).message);

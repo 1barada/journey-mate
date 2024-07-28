@@ -53,6 +53,7 @@ export type RestorePasswordRequestThunkProps = z.infer<typeof RestorePasswordReq
 
 export const RestorePasswordSchema = z.object({
   newPassword: z.string().min(8).trim(),
+  restoreToken: z.string(),
 });
 
 export type RestorePasswordThunkProps = z.infer<typeof RestorePasswordSchema>;
