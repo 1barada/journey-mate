@@ -85,7 +85,7 @@ export class NotificationService implements NotificationUsecase {
     return formattedEvents;
   }
   async deleteNotificationEvent(params: DeleteNotificationEventParams): Promise<DeleteNotificationEventResult> {
-    return await this.db.deleteNotificationEvent({ id: params.id });
+    return await this.db.deleteNotificationEvent({ id: params.id, accept: params.accept });
   }
   async createNotification(params: CreateNotificationParams): Promise<CreateNotificationResult> {
     return await this.db.createNotification({

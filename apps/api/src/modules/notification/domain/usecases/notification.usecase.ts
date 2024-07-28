@@ -45,6 +45,7 @@ export type GetNotificationEventsResult =
 
 export type DeleteNotificationEventParams = {
   id: number;
+  accept?: boolean;
 };
 
 export type DeleteNotificationEventResult = NotificationEvent | null;
