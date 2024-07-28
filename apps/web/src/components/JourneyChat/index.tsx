@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Box, Button, CircularProgress, Input, Typography } from '@mui/material';
 import { z } from 'zod';
 
@@ -9,7 +10,6 @@ import { selectIsAuthenticated, selectUser } from '../../store/auth/slice';
 import MessageComponent from './MessageComponent';
 import styles from './styles.module.scss';
 import { Message } from './types';
-import { toast } from 'react-toastify';
 
 interface JourneyChatProps {
   chatId: number;
