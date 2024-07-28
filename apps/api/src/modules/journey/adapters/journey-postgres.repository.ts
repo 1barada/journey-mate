@@ -40,11 +40,16 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
             id: candidateJourney.userId,
           },
         },
-        chat: {
-          create: {},
-        },
       },
     });
+
+    if (journey) {
+      await this.db.chat.create({
+        data: {
+          journeyId: journey.id,
+        },
+      });
+    }
 
     const categories = await this.db.journeyCategory.findMany({
       where: {
@@ -70,6 +75,16 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
         data: journeyToCategoryToDatabaseModel({ categories, journeyId }),
       }),
     ]);
+
+    const journeyUsersMilestones = milestones.map((milestone) => ({
+      journeyId,
+      userId: candidateJourney.userId,
+      milestoneId: milestone.id,
+      status: JourneyStatus.mainJourneyMilestone,
+    }));
+    await this.db.journeyUsersMilestone.createMany({
+      data: journeyUsersMilestones,
+    });
 
     const result = {
       ...journey,
@@ -123,7 +138,14 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       ...journey,
       milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
       category: [journey.category[0].category],
-      participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
+      participantsNumber: new Set(
+        journey.journeyUsers
+          .filter(
+            (user) =>
+              user.status == JourneyStatus.mainJourneyMilestone || user.status == JourneyStatus.approvedJoinMilestone
+          )
+          .map((user) => user.userId)
+      ).size,
     }));
 
     if (category && category !== 'all') {
@@ -146,6 +168,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     const journey = await this.db.journey.findUnique({
       where: { id },
       include: {
+        chat: true,
         milestones: true,
         category: true,
         journeyUsers: true,
@@ -172,6 +195,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     });
 
     return {
+      chatId: journey.chat ? journey.chat.id : undefined,
       id: journey.id,
       userId: journey.userId,
       title: journey.title,

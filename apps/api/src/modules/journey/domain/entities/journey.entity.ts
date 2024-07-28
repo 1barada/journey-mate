@@ -56,6 +56,7 @@ export const GetJourneyByIdResponseSchema = z.object({
   title: z.string().min(1).max(255),
   description: z.string().min(1).max(500),
   milestones: z.array(MilestoneSchema).min(1),
+  chatId: z.number().optional(),
 });
 
 export const GetCategoriesByJourneyIdSchema = z.object({

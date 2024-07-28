@@ -83,7 +83,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     });
 
     if (notificationEvent && notificationEvent.userId) {
-      const journeyUsersMilestone = await this.prisma.journeyUsersMilestone.findFirst({
+      const journeyUsersMilestones = await this.prisma.journeyUsersMilestone.findMany({
         where: {
           userId: notificationEvent.userId,
           journeyId: notificationEvent.notification.journeyId,
@@ -91,17 +91,23 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
         },
       });
 
-      if (journeyUsersMilestone) {
-        await this.prisma.journeyUsersMilestone.update({
-          where: {
-            journeyId_userId_milestoneId: {
-              journeyId: notificationEvent.notification.journeyId,
-              userId: notificationEvent.userId,
-              milestoneId: journeyUsersMilestone.milestoneId,
-            },
-          },
-          data: { status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone },
-        });
+      if (journeyUsersMilestones) {
+        await Promise.all(
+          journeyUsersMilestones.map((journeyUsersMilestone) =>
+            this.prisma.journeyUsersMilestone.update({
+              where: {
+                journeyId_userId_milestoneId: {
+                  journeyId: notificationEvent.notification.journeyId,
+                  userId: journeyUsersMilestone.userId,
+                  milestoneId: journeyUsersMilestone.milestoneId,
+                },
+              },
+              data: {
+                status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone,
+              },
+            })
+          )
+        );
       }
     }
 
