@@ -1,5 +1,4 @@
 export interface SendEmailRestorePasswordUser {
-  active: boolean;
   name?: string;
 }
 

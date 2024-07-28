@@ -14,10 +14,6 @@ export class RestorePasswordNodemailerTransporter implements RestorePasswordTran
   constructor(private transporter: NodemailerTransporterType) {}
 
   async sendEmailRestorePassword(props: SendEmailRestorePasswordParams): Promise<SendEmailRestorePasswordResult> {
-    if (!props.user.active) {
-      throw new AccountNotActivatedError("To restore password firs activate you're account");
-    }
-
     const emailBody = `
       <div>
         <p>To restore ${
