@@ -44,3 +44,15 @@ export const EditProfileSchema = z.object({
 });
 
 export type DataTypes = z.infer<typeof EditProfileSchema>;
+
+export const RestorePasswordRequestSchema = z.object({
+  email: z.string().email({ message: 'Email is required' }).trim(),
+});
+
+export type RestorePasswordRequestThunkProps = z.infer<typeof RestorePasswordRequestSchema>;
+
+export const RestorePasswordSchema = z.object({
+  newPassword: z.string().min(8).trim(),
+});
+
+export type RestorePasswordThunkProps = z.infer<typeof RestorePasswordSchema>;

@@ -6,7 +6,15 @@ import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { type AuthSlice, type DataTypes, Sex, type User, UserPermission } from './types';
+import {
+  type AuthSlice,
+  type DataTypes,
+  type RestorePasswordRequestThunkProps,
+  RestorePasswordThunkProps,
+  Sex,
+  type User,
+  UserPermission,
+} from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -26,8 +34,8 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
-        toast.success('Welcome back!');
         state.isAuthenticated = true;
+        toast.success('Welcome back!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
@@ -277,6 +285,63 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.user.avatarUrl = action.payload;
 
         toast.success('Avatar uploaded!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+export const restorePasswordRequestAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ email }: RestorePasswordRequestThunkProps, { rejectWithValue }) => {
+      try {
+        await trpcClient.user.restorePasswordViaEmailRequest.mutate({ email });
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success('Password reset email has been sent successfully.');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+export const restorePasswordAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ newPassword }: RestorePasswordThunkProps, { rejectWithValue }) => {
+      try {
+        const response = await trpcClient.user.restorePasswordViaEmail.mutate({ newPassword });
+        return response;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state, action) => {
+        const { email, name = null } = action.payload.user;
+        state.isLoading = false;
+        state.error = null;
+        toast.success(`Password reset for ${name ? name + ' user' : email} successfully.`);
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
