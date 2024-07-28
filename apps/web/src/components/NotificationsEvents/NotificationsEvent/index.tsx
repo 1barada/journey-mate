@@ -40,7 +40,7 @@ export function NotificationsEvent(props: NotificationsEventProps) {
   const Message = messages[props.event.type];
 
   function handleJoinRequestAccept() {
-    dispatch(acceptJoinRequest());
+    dispatch(acceptJoinRequest({ notificationId: props.notificationId, eventId: props.event.id }));
   }
 
   function handleJoinRequestDecline() {

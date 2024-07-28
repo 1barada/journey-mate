@@ -49,7 +49,7 @@ export type NotificationEventSummary = {
 
 export type GetNotificationEventsResult = NotificationEventSummary[] | null;
 
-export type DeleteNotificationEventByIdParams = { id: number };
+export type DeleteNotificationEventByIdParams = { id: number; accept?: boolean };
 
 export type DeleteNotificationEventResult = NotificationEvent | null;
 

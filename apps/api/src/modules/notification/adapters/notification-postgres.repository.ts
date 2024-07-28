@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { JourneyStatus, PrismaClient } from '@prisma/client';
 
 import {
   CreateNotificationEventResult,
@@ -77,6 +77,34 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
   }
 
   async deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult> {
+    const notificationEvent = await this.prisma.notificationEvent.findFirst({
+      where: { id: params.id },
+      include: { notification: true },
+    });
+
+    if (notificationEvent && notificationEvent.userId) {
+      const journeyUsersMilestone = await this.prisma.journeyUsersMilestone.findFirst({
+        where: {
+          userId: notificationEvent.userId,
+          journeyId: notificationEvent.notification.journeyId,
+          status: JourneyStatus.requestedToJoinMilestone,
+        },
+      });
+
+      if (journeyUsersMilestone) {
+        await this.prisma.journeyUsersMilestone.update({
+          where: {
+            journeyId_userId_milestoneId: {
+              journeyId: notificationEvent.notification.journeyId,
+              userId: notificationEvent.userId,
+              milestoneId: journeyUsersMilestone.milestoneId,
+            },
+          },
+          data: { status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone },
+        });
+      }
+    }
+
     return await this.prisma.notificationEvent.delete({ where: { id: params.id } });
   }
 

@@ -1,4 +1,4 @@
-import { JourneyStatus, PrismaClient } from '@prisma/client';
+import { JourneyStatus, NotificationType, PrismaClient } from '@prisma/client';
 import pkg from 'lodash';
 
 import { GetJourneyByIdParams, JourneyDetails } from '../domain/entities/journey.entity';
@@ -94,8 +94,16 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       ];
     }
 
-    if (user_id) {
-      whereClause.userId = user_id;
+    const journeyUsersMilestones = await this.db.journeyUsersMilestone.findMany({
+      where: {
+        userId: user_id,
+      },
+    });
+
+    if (journeyUsersMilestones) {
+      whereClause.id = {
+        in: journeyUsersMilestones.map((journeyUser) => journeyUser.journeyId),
+      };
     }
 
     const journeys = await this.db.journey.findMany({
@@ -205,11 +213,40 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
           in: milestoneIds,
         },
       },
+      include: {
+        journey: true,
+      },
     });
 
     if (!milestones) {
       throw new Error(`Milestone with id ${milestoneIds[0]} not found`);
     }
+
+    // find or  create notification
+    const existingNotification = await this.db.notification.findFirst({
+      where: {
+        userId: milestones[0].journey.userId,
+        journeyId: milestones[0].journeyId,
+      },
+    });
+
+    const notification =
+      existingNotification ||
+      (await this.db.notification.create({
+        data: {
+          userId: milestones[0].journey.userId,
+          journeyId: milestones[0].journeyId,
+        },
+      }));
+
+    // create notification event
+    await this.db.notificationEvent.create({
+      data: {
+        notificationId: notification.id,
+        userId,
+        type: NotificationType.joinRequest,
+      },
+    });
 
     const journeyUsersMilestones = milestoneIds.map((milestoneId) => ({
       journeyId: milestones[0].journeyId,
