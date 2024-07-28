@@ -1,7 +1,7 @@
 import { JourneyStatus, NotificationType, PrismaClient } from '@prisma/client';
 import pkg from 'lodash';
 
-import { GetJourneyByIdParams, JourneyDetails } from '../domain/entities/journey.entity';
+import { GetJourneyByIdParams, JourneyDetails, JourneyParticipantsFromChatId } from '../domain/entities/journey.entity';
 import type { JourneyCategory } from '../domain/entities/journey-category.entity';
 import type {
   CreateJourneyParams,
@@ -320,5 +320,30 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     });
 
     return result;
+  }
+
+  async getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId> {
+    const journey = await this.db.chat.findUniqueOrThrow({
+      where: {
+        id: chatId,
+      },
+      include: {
+        journey: {
+          select: {
+            id: true,
+            journeyUsers: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return {
+      journeyId: journey.journeyId,
+      participantIds: journey.journey.journeyUsers.map((user) => user.userId),
+    };
   }
 }

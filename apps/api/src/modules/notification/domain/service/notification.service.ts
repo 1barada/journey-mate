@@ -9,6 +9,8 @@ import type {
   GetAllNotificationsResult,
   GetNotificationEventsParams,
   GetNotificationEventsResult,
+  GetNotificationFromJourneyIdParams,
+  GetNotificationFromJourneyIdResult,
   GetNotificationParams,
   GetNotificationResult,
   NotificationUsecase,
@@ -99,5 +101,15 @@ export class NotificationService implements NotificationUsecase {
       notificationId: params.notificationId,
       type: params.type,
     });
+  }
+
+  async getNotificationFromJourneyId(
+    params: GetNotificationFromJourneyIdParams
+  ): Promise<GetNotificationFromJourneyIdResult> {
+    const notification = await this.db.getNotificationFromJourneyId({
+      journeyId: params.journeyId,
+      userId: params.userId,
+    });
+    return notification;
   }
 }

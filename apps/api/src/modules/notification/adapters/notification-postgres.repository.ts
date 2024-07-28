@@ -11,6 +11,8 @@ import {
   GetAllNotificationsResult,
   GetNotificationEventsByNotificationIdParams,
   GetNotificationEventsResult,
+  getNotificationFromJourneyIdParams,
+  getNotificationFromJourneyIdResult,
   GetNotificationParams,
   GetNotificationResult,
   NotificationRepositoryPort,
@@ -135,5 +137,25 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     });
 
     return newNotificationEvent;
+  }
+
+  async getNotificationFromJourneyId(
+    params: getNotificationFromJourneyIdParams
+  ): Promise<getNotificationFromJourneyIdResult> {
+    const notification = await this.prisma.notification.findUniqueOrThrow({
+      where: {
+        userId_journeyId: {
+          journeyId: params.journeyId,
+          userId: params.userId,
+        },
+      },
+    });
+
+    return {
+      id: notification.id,
+      userId: notification.userId,
+      journeyId: notification.journeyId,
+      createdAt: notification.createdAt,
+    };
   }
 }

@@ -67,6 +67,11 @@ export const GetCategoriesByJourneyIdResponseSchema = z.object({
   categories: z.array(JourneyCategorySchema),
 });
 
+export const journeyParticipantsFromChatIdSchema = z.object({
+  journeyId: z.number(),
+  participantIds: z.array(z.number()),
+});
+
 export type Journey = z.infer<typeof JourneySchema>;
 export type Journeys = z.infer<typeof JourneysSchema>;
 export type CreateJourney = z.infer<typeof CreateJourneySchema>;
@@ -79,3 +84,4 @@ export type JourneyCategories = z.infer<typeof GetCategoriesByJourneyIdResponseS
 export type JoinJourney = z.infer<typeof JoinJourneySchema>;
 export type JourneyParticipants = z.infer<typeof JourneyParticipantsSchema>;
 export type JourneyParticipant = z.infer<typeof JourneyParticipantSchema>;
+export type JourneyParticipantsFromChatId = z.infer<typeof journeyParticipantsFromChatIdSchema>;

@@ -9,6 +9,7 @@ import type {
   JourneyDetails,
   JourneyParticipant,
   JourneyParticipants,
+  JourneyParticipantsFromChatId,
   Journeys,
 } from './../entities/journey.entity';
 
@@ -28,4 +29,5 @@ export interface JourneyRepositoryPort {
   joinJourney(params: JoinJourneyParams): Promise<JourneyParticipantResult>;
   getJourneyParticipants(journeyId: number): Promise<JourneyParticipantsResult>;
   getCategoriesByJourneyId(journeyId: number): Promise<JourneyCategory[]>;
+  getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId>;
 }
