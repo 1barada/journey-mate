@@ -17,27 +17,29 @@ import {
   RestorePasswordUsecase,
 } from '../../domain/usecases/restorePassword.usecase';
 import {
-  RestorePasswordEmailRequest,
-  RestorePasswordEmailResponse,
-  RestorePasswordEmailUsecase,
-} from '../../domain/usecases/restorePasswordEmail.usecase';
+  RestorePasswordViaEmailRequest,
+  RestorePasswordViaEmailResponse,
+  RestorePasswordViaEmailUsecase,
+} from '../../domain/usecases/restorePasswordViaEmail.usecase';
 
 import { AdminCannotResetPasswordError } from './errors/admin-cannot-reset-password.error';
 import { InvalidRestorePasswordTokenError } from './errors/invalid-restore-password-token.error';
 import { SamePasswordError } from './errors/same-password.error';
 
-export class RestorePasswordService implements RestorePasswordEmailUsecase, RestorePasswordUsecase {
+export class RestorePasswordService implements RestorePasswordViaEmailUsecase, RestorePasswordUsecase {
   private jwt = {
     secret: config.get('jwtSecret'),
     expiresIn: '24h',
   };
+
+  private baseUrl = config.get('frontendUrl');
 
   constructor(
     private userRepository: UserRepositoryPort,
     private restorePasswordTransporter: RestorePasswordTransporterPort
   ) {}
 
-  async restorePasswordEmail(request: RestorePasswordEmailRequest): Promise<RestorePasswordEmailResponse> {
+  async restorePasswordEmail(request: RestorePasswordViaEmailRequest): Promise<RestorePasswordViaEmailResponse> {
     const user = await this.userRepository.findUserByEmail({ email: request.email });
 
     if (!user) {
@@ -60,9 +62,9 @@ export class RestorePasswordService implements RestorePasswordEmailUsecase, Rest
       expiresIn: this.jwt.expiresIn,
     });
 
-    const restorePasswordUrl = `${request.baseUrl}/user.restorePassword?${new URLSearchParams({ restoreToken })}`;
+    const restorePasswordUrl = `${this.baseUrl}/user.restorePassword?${new URLSearchParams({ restoreToken })}`;
 
-    const emailUser: SendEmailRestorePasswordUser = { active: user.active };
+    const emailUser: SendEmailRestorePasswordUser = {};
     if (user.name) {
       emailUser.name = user.name;
     }
