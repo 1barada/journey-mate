@@ -22,7 +22,7 @@ const origin = config.get('frontendUrl');
 
 if (config.get('nodeEnv') == 'development') {
   server.register(cors, {
-    origin: ['*'],
+    origin: [origin],
     credentials: true,
   });
 }

@@ -11,10 +11,22 @@ import { type AuthSlice, type DataTypes, Sex, type User, UserPermission } from '
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async (data: FormInputsTypes, { rejectWithValue }) => {
+    async (data: FormInputsTypes, { rejectWithValue, dispatch }) => {
       try {
         await trpcClient.user.login.mutate(data);
-        return;
+        const res = await trpcClient.user.whoami.query();
+
+        const user: User | null = res.user
+          ? {
+              ...res.user,
+              sex: Sex[res.user.sex as keyof typeof Sex],
+              dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
+            }
+          : null;
+
+        const permissions: UserPermission[] = [...res.permissions];
+
+        return { user, permissions };
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -24,11 +36,13 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state) => {
+      fulfilled: (state, { payload }) => {
         state.isLoading = false;
         state.error = null;
         toast.success('Welcome back!');
         state.isAuthenticated = true;
+        state.user = payload.user;
+        state.permissions = payload.permissions;
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;

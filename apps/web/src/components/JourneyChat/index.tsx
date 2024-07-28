@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import { Box, Button, CircularProgress, Input, Typography } from '@mui/material';
 import { z } from 'zod';
 
-import { trpcClient } from '../../services/trpc';
+import { closeWsConnection, openWsConnection, trpcClient } from '../../services/trpc';
 import { selectIsAuthenticated, selectUser } from '../../store/auth/slice';
 
 import MessageComponent from './MessageComponent';
 import styles from './styles.module.scss';
 import { Message } from './types';
+import { toast } from 'react-toastify';
 
 interface JourneyChatProps {
   chatId: number;
@@ -24,6 +25,7 @@ function JourneyChat(props: JourneyChatProps) {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
+    openWsConnection();
     const getMessagesSubscription = trpcClient.chat.getMessages.subscribe(
       { chatId: props.chatId },
       {
@@ -41,38 +43,48 @@ function JourneyChat(props: JourneyChatProps) {
           setInitialized(true);
           setMessages((prev) => [...receivedMessages, ...prev]);
         },
-        onError: (error) => console.error('Journey chat: ', error),
+        onError: (error) => toast.error(`Journey chat: ${error.message}`),
         onStopped: () => {
           setMessages([]);
           setInitialized(false);
         },
+        context: { useWsConnection: true },
       }
     );
 
     return () => {
       getMessagesSubscription.unsubscribe();
       setMessages([]);
+      setInitialized(false);
+      closeWsConnection();
     };
-  }, []);
+  }, [isAuthenticated]);
 
   async function sendMessage() {
     const MessageInputSchema = z.string().min(1).trim().max(maxMessageLength);
     setNewMessageInput('');
 
-    await trpcClient.chat.sendMessage.mutate({
-      chatId: props.chatId,
-      content: MessageInputSchema.parse(newMessageInput),
-    });
+    await trpcClient.chat.sendMessage.mutate(
+      {
+        chatId: props.chatId,
+        content: MessageInputSchema.parse(newMessageInput),
+      },
+      { context: { useWsConnection: true } }
+    );
   }
 
   function handleMessageInput(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setNewMessageInput(e.target.value.substring(0, maxMessageLength));
   }
 
-  function handlePressingEnter(e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) {
+  function handleReleasingEnter(e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) {
     if (e.key !== 'Enter') return;
 
     sendMessage();
+  }
+
+  function handlePressingEnter(e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) {
+    if (e.key === 'Enter') e.preventDefault();
   }
 
   return (
@@ -80,9 +92,16 @@ function JourneyChat(props: JourneyChatProps) {
       <Box className={styles.list}>
         <Box className={styles.listContainer}>
           {initialized ? (
-            messages.map((message) => (
-              <MessageComponent message={message} key={message.id} selfMessage={user?.id === message.sender.id} />
-            ))
+            messages.length === 0 ? (
+              <Box className={styles.emptyChat}>
+                <Typography className={styles.title}>Chat is empty!</Typography>
+                <Typography className={styles.subTitle}>Be the first to send a message</Typography>
+              </Box>
+            ) : (
+              messages.map((message) => (
+                <MessageComponent message={message} key={message.id} selfMessage={user?.id === message.sender.id} />
+              ))
+            )
           ) : (
             <CircularProgress />
           )}
@@ -97,7 +116,8 @@ function JourneyChat(props: JourneyChatProps) {
               onChange={handleMessageInput}
               value={newMessageInput}
               placeholder={user?.name ? 'Type your message here' : 'You need to create yourself a name on profile page'}
-              onKeyUp={handlePressingEnter}
+              onKeyUp={handleReleasingEnter}
+              onKeyDown={handlePressingEnter}
               disableUnderline
               multiline={true}
               minRows={1}
