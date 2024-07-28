@@ -5,6 +5,11 @@ import jwt from 'jsonwebtoken';
 import { verifyGoogleToken } from '../../utils/verifyGoogleToken';
 
 export class GoogleAuthService {
+  private jwt = {
+    secret: config.get('jwtSecret'),
+    expiresIn: '20h',
+  };
+
   constructor(private prisma: PrismaClient) {}
 
   async googleAuth(token: string) {
@@ -29,19 +34,12 @@ export class GoogleAuthService {
       throw new Error('User registered with another method');
     }
 
-    const userResponse = {
-      email: user.email,
-      name: user.name || '',
-    };
+    const accessToken = this.createAccessToken(user.id, user.email, user.role);
 
-    const accessToken = this.createAccessToken(user.id, user.email);
-    return { user: userResponse, token: accessToken };
+    return { user: { email: user.email, name: user.name || '' }, token: accessToken };
   }
 
-  private createAccessToken(userId: number, email: string): string {
-    const token = jwt.sign({ userId: userId.toString(), email }, config.get('cookieSecret') as string, {
-      expiresIn: '6h',
-    });
-    return token;
+  private createAccessToken(userId: number, email: string, role: string): string {
+    return jwt.sign({ userId, userEmail: email, userRole: role }, this.jwt.secret, { expiresIn: this.jwt.expiresIn });
   }
 }

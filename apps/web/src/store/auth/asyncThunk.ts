@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
@@ -255,15 +256,11 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
     async ({ formData }: D, { rejectWithValue }) => {
       try {
-        const response = await fetch('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        const { public_id } = await response.json();
+        const { data } = await axios.post('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', formData);
 
-        await trpcClient.user.changeAvatar.mutate({ avatarUrl: public_id });
+        await trpcClient.user.changeAvatar.mutate({ avatarUrl: data.public_id });
 
-        return public_id;
+        return data.public_id;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }

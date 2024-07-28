@@ -11,8 +11,9 @@ const JourneysPage = lazy(() => import('../pages/JourneysPage/JourneysPage'));
 const NotificationPage = lazy(() => import('../pages/NotificationPage/NotificationPage'));
 const AccountConfirmedPage = lazy(() => import('../pages/AccountConfirmedPage/AccountConfirmedPage'));
 const CreateJourneyPage = lazy(() => import('../pages/CreateJourneyPage/CreateJourneyPage'));
-
+const JourneyDetailsPage = lazy(() => import('../pages/JourneyDetailsPage/JourneyDetailsPage'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage/ProfilePage'));
+const UserPage = lazy(() => import('../pages/UserPage/UserPage'));
 
 export const createRoutes = (): RouteObject[] => [
   {
@@ -33,6 +34,10 @@ export const createRoutes = (): RouteObject[] => [
             element: <ProfilePage />,
           },
         ],
+      },
+      {
+        path: `${routes.PROFILE}/:id`,
+        element: <UserPage />,
       },
       {
         path: routes.NOTIFICATIONS,
@@ -60,6 +65,16 @@ export const createRoutes = (): RouteObject[] => [
           {
             path: routes.AUTH_CONFIRM,
             element: <AccountConfirmedPage />,
+          },
+        ],
+      },
+      {
+        path: '/journeys/:journeyId',
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: '',
+            element: <JourneyDetailsPage />,
           },
         ],
       },

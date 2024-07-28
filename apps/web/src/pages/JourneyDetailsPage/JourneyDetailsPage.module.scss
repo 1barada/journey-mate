@@ -1,0 +1,55 @@
+@import '../../style/variables.scss';
+
+.journeyWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 20px;
+  padding-bottom: 40px;
+}
+
+.journeyHeader {
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 40px;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.jorneyInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+  }
+}
+
+.jorneyMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.milestonesList {
+  padding-left: 4px;
+}
+
+.joinJourneyButton {
+  display: flex;
+  width: 160px;
+  height: 38px;
+  padding: 3px 12px;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 800;
+}

@@ -25,17 +25,17 @@ import { createRegisterService } from '../auth/service/register/register.factory
 import { createRestorePasswordService } from '../auth/service/restorePassword/restore-password.factory';
 import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
 
+import { UserNotFoundError } from './domain/errors/user-not-found.error';
 import {
   ChangeDescriptionInputSchema,
   ChangeDescriptionResponseSchema,
-  ChangeProfileRequestInput,
-  ChangeProfileResponseSchema,
-  UpdateUserAvatarRequestInput,
-  UpdateUserAvatarResponseSchema,
-} from './domain/entities/userUpdate.entity';
-import { UserNotFoundError } from './domain/errors/user-not-found.error';
+} from './domain/usecases/changeDescription.usecase';
+import { ChangeProfileRequestInput, ChangeProfileResponseSchema } from './domain/usecases/changeUserProfile.usecase';
+import { GetUserRequestSchema, GetUserResponceSchema } from './domain/usecases/getUser.usecase';
+import { UpdateUserAvatarRequestInput, UpdateUserAvatarResponseSchema } from './domain/usecases/updateAvatar.usecase';
 import { createChangeDescriptionUsecase } from './service/changeDescription/changeDescription.factory';
 import { createChangeUserProfileUsecase } from './service/changeUserProfile/changeUserProfile.factory';
+import { createGetUserUsecase } from './service/getUser/getUser.factory';
 import { createUpdateAvatarUseCase } from './service/updateAvatar/updateAvatar.factory';
 
 export const userRouter = router({
@@ -152,7 +152,18 @@ export const userRouter = router({
       const service = createGoogleAuthService(ctx.db);
       const { user, token } = await service.googleAuth(input.token);
 
-      ctx.res.setCookie('access-token', token, { signed: true });
+      ctx.res.setCookie('access-token', token);
+
+      return user;
+    }),
+  getUser: publicProcedure
+    .input(GetUserResponceSchema)
+    .output(GetUserRequestSchema)
+    .query(async ({ input, ctx }) => {
+      const service = createGetUserUsecase(ctx.db);
+      console.log(input);
+      const user = service.getUser({ id: input.id });
+
       return user;
     }),
   restorePasswordViaEmailRequest: publicProcedure

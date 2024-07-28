@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,9 +11,10 @@ import { selectIsAuthenticated, selectIsAuthLoading } from '../../store/auth/sli
 import { useAppSelector } from '../../types/reduxTypes';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
-import { Modal } from '../common/Modal';
 
 import styles from './Navigation.module.scss';
+
+const Modal = lazy(() => import('../common/Modal').then((module) => ({ default: module.Modal })));
 
 export const Navigation = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -106,21 +107,23 @@ export const Navigation = () => {
           {isAuthenticated ? (
             <AppBar component="nav" className={styles.appBar}>
               <List className={styles.navList}>
-                {Object.values(routes).map((link) => {
-                  return (
-                    <ListItem key={link}>
-                      <NavLink
-                        to={link}
-                        aria-label={`link to ${link}`}
-                        className={({ isActive }) => (isActive ? styles.active : styles.link)}
-                        onClick={handleCloseMenuCose}
-                        state={{ from: location }}
-                      >
-                        {link.slice(1).replace(/-/g, ' ')}
-                      </NavLink>
-                    </ListItem>
-                  );
-                })}
+                {Object.values(routes)
+                  .filter((link) => link !== '/auth' && link !== '/auth/confirm')
+                  .map((link) => {
+                    return (
+                      <ListItem key={link}>
+                        <NavLink
+                          to={link}
+                          aria-label={`link to ${link}`}
+                          className={({ isActive }) => (isActive ? styles.active : styles.link)}
+                          onClick={handleCloseMenuCose}
+                          state={{ from: location }}
+                        >
+                          {link.slice(1).replace(/-/g, ' ')}
+                        </NavLink>
+                      </ListItem>
+                    );
+                  })}
               </List>
             </AppBar>
           ) : (
@@ -136,9 +139,11 @@ export const Navigation = () => {
                 </ListItem>
               </List>
               {isOpen && modalType && (
-                <Modal toggleModal={toggle}>
-                  <AuthForm form={modalType} toggleModal={toggle} />
-                </Modal>
+                <Suspense>
+                  <Modal toggleModal={toggle}>
+                    <AuthForm form={modalType} toggleModal={toggle} />
+                  </Modal>
+                </Suspense>
               )}
             </>
           )}

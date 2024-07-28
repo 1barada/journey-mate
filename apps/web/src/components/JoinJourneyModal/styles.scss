@@ -14,7 +14,7 @@
   &__checkbox {
     .Mui-checked,
     .MuiCheckbox-indeterminate {
-      color: vars.$success-main;
+      color: $success-main;
     }
   }
   &__confirm-btn {

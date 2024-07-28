@@ -16,6 +16,7 @@ export interface Milestone {
     lat: number;
     lng: number;
   };
+  status?: string;
 }
 export type CreateMilestone = Omit<Milestone, 'id' | 'dates'> & { dates: [number, number] };
 

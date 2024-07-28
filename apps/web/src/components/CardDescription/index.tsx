@@ -5,35 +5,35 @@ import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import styles from './CardDescription.module.scss';
 
 interface CardDescriptionProps {
-  description: string;
-  isEdited: boolean;
-  setIsEdited: (args: boolean) => void;
   title: string;
+  description: string;
+  isEdited?: boolean;
+  setIsEdited?: (args: boolean) => void;
   handleEditDescription?: (description: string) => void;
 }
 
 export const CardDescription: React.FC<CardDescriptionProps> = ({
+  title,
   description,
   isEdited,
   setIsEdited,
-  title,
   handleEditDescription,
 }) => {
   const [isEllipsis, setIsEllipsis] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [editedDescription, setEditedDescription] = useState<string>(description);
 
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     if (contentRef.current === null) return;
 
-    function isEllipsisActive(e: HTMLElement) {
+    function isEllipsisActive(e: HTMLElement): boolean {
       return e.offsetHeight < e.scrollHeight;
     }
 
     setIsEllipsis(isEllipsisActive(contentRef.current));
-  }, [description, contentRef]);
+  }, [description]);
 
   function handleShowMore() {
     setShowMore((prev) => !prev);
@@ -42,6 +42,12 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   const handleEditChangeClick = () => {
     if (handleEditDescription) {
       handleEditDescription(editedDescription);
+      if (setIsEdited) setIsEdited(false);
+    }
+  };
+
+  const editModeClose = () => {
+    if (setIsEdited) {
       setIsEdited(false);
     }
   };
@@ -54,7 +60,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
       <Box className={styles.contentWrapper}>
         {isEdited ? (
           <>
-            <IconButton onClick={() => setIsEdited(false)} className={styles.closeBtn}>
+            <IconButton onClick={editModeClose} className={styles.closeBtn}>
               <CloseIcon />
             </IconButton>
             <TextField
@@ -64,7 +70,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
               onChange={(e) => setEditedDescription(e.target.value)}
             />
             <Typography component="p" className={styles.limit}>
-              <Typography component="span" className={`${editedDescription?.length >= 1000 && styles.overLimit} `}>
+              <Typography component="span" className={`${editedDescription.length >= 1000 && styles.overLimit} `}>
                 {editedDescription?.length}
               </Typography>
               /1000

@@ -12,6 +12,7 @@ export const CreateMilestoneSchema = z.object({
 
 export const MilestoneSchema = CreateMilestoneSchema.extend({
   id: z.number(),
+  status: z.string().optional(),
 });
 
 export type Milestone = z.infer<typeof MilestoneSchema>;

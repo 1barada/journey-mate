@@ -6,6 +6,5 @@ import { useAppSelector } from '../types/reduxTypes';
 
 export const PrivateRoute: React.FC = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };

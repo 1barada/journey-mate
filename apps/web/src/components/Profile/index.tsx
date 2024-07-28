@@ -38,7 +38,7 @@ export const Profile = () => {
   };
 
   const imagePath = 'https://res.cloudinary.com/dyttdvqkh/image/upload/v1721908459/';
-  console.log(sex);
+
   return (
     <Box component="section" className={styles.section}>
       <Container>
@@ -51,11 +51,11 @@ export const Profile = () => {
               </Typography>
 
               <Typography component="p" className={styles.text}>
-                Sex: <span>{sex ? sex : '-'}</span>
+                Sex: <span>{sex ? sex : 'Not specified'}</span>
               </Typography>
 
               <Typography component="p" className={styles.text}>
-                Age: <span>{dateOfBirth ? age : '-'}</span>
+                Age: <span>{dateOfBirth ? age : 'Not specified'}</span>
               </Typography>
 
               <Typography component="p" className={styles.text}>
