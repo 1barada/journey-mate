@@ -1,4 +1,12 @@
-import type { GetJourneys, Journey, JourneyDetails, Journeys } from '../../domain/entities/journey.entity';
+import type {
+  GetJourneys,
+  JoinJourney,
+  Journey,
+  JourneyDetails,
+  JourneyParticipant,
+  JourneyParticipants,
+  Journeys,
+} from '../../domain/entities/journey.entity';
 import { JourneyCategory } from '../../domain/entities/journey-category.entity';
 import type { JourneyRepositoryPort } from '../../domain/repository/journey.repository';
 import type { CreateJourneyParams, JourneyUsecase } from '../../domain/usecase/journey.usecase';
@@ -26,5 +34,13 @@ export class JourneyService implements JourneyUsecase {
     const allCategories = await this.db.getCategoriesByJourneyId(journeyId);
 
     return allCategories.filter((category) => categories.some((cat) => cat.id === category.id));
+  }
+
+  async joinJourney(params: JoinJourney): Promise<JourneyParticipant> {
+    return await this.db.joinJourney(params);
+  }
+
+  async getJourneyParticipants(journeyId: number): Promise<JourneyParticipants> {
+    return await this.db.getJourneyParticipants(journeyId);
   }
 }

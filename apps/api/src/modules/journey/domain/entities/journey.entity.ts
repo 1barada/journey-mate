@@ -18,6 +18,13 @@ export const GetJourneysSchema = z.object({
   page: z.number().optional(),
 });
 
+export const MilestoneIdsSchema = z.array(z.number().int().positive());
+
+export const JoinJourneySchema = z.object({
+  milestoneIds: z.array(z.number().int().positive()),
+  userId: z.number(),
+});
+
 export const JourneySchema = CreateJourneySchema.omit({ category: true }).extend({
   category: z.array(JourneyCategorySchema),
   id: z.number(),
@@ -35,6 +42,13 @@ export const CreateJourneyWithUserIdSchema = CreateJourneySchema.extend({
 export const GetJourneyByIdSchema = z.object({
   id: z.number().int().positive(),
 });
+
+export const JourneyParticipantSchema = z.object({
+  participantId: z.number().int().positive(),
+  milestones: z.array(MilestoneSchema),
+});
+
+export const JourneyParticipantsSchema = z.array(JourneyParticipantSchema).nullable();
 
 export const GetJourneyByIdResponseSchema = z.object({
   id: z.number().int().positive(),
@@ -62,3 +76,6 @@ export type GetJourneyByIdParams = z.infer<typeof GetJourneyByIdSchema>;
 export type JourneyDetails = z.infer<typeof GetJourneyByIdResponseSchema>;
 export type GetCategoriesByJourneyId = z.infer<typeof GetCategoriesByJourneyIdSchema>;
 export type JourneyCategories = z.infer<typeof GetCategoriesByJourneyIdResponseSchema>;
+export type JoinJourney = z.infer<typeof JoinJourneySchema>;
+export type JourneyParticipants = z.infer<typeof JourneyParticipantsSchema>;
+export type JourneyParticipant = z.infer<typeof JourneyParticipantSchema>;

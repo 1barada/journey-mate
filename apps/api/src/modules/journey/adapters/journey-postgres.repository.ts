@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { JourneyStatus, PrismaClient } from '@prisma/client';
+import pkg from 'lodash';
 
 import { GetJourneyByIdParams, JourneyDetails } from '../domain/entities/journey.entity';
 import type { JourneyCategory } from '../domain/entities/journey-category.entity';
@@ -7,8 +8,12 @@ import type {
   CreateJourneyResult,
   getAllJourneysResult,
   GetJourneysParams,
+  JoinJourneyParams,
+  JourneyParticipantResult,
+  JourneyParticipantsResult,
   JourneyRepositoryPort,
 } from '../domain/repository/journey.repository';
+const { groupBy } = pkg;
 
 import {
   databaseMilestonesToMilestones,
@@ -189,5 +194,94 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       title: cat.title,
       value: cat.value,
     }));
+  }
+
+  async joinJourney(params: JoinJourneyParams): Promise<JourneyParticipantResult> {
+    const { userId, milestoneIds } = params;
+
+    const milestones = await this.db.milestone.findMany({
+      where: {
+        id: {
+          in: milestoneIds,
+        },
+      },
+    });
+
+    if (!milestones) {
+      throw new Error(`Milestone with id ${milestoneIds[0]} not found`);
+    }
+
+    const journeyUsersMilestones = milestoneIds.map((milestoneId) => ({
+      journeyId: milestones[0].journeyId,
+      userId,
+      milestoneId,
+      status: JourneyStatus.requestedToJoinMilestone,
+    }));
+    await this.db.journeyUsersMilestone.createMany({
+      data: journeyUsersMilestones,
+    });
+
+    const resultMilestones = milestones.map((milestone) => ({
+      id: milestone.id,
+      title: milestone.title,
+      coords: { lat: milestone.lat, lng: milestone.lng },
+      dates: [milestone.startDate, milestone.endDate].filter((date) => date !== null) as Date[],
+      status: JourneyStatus.requestedToJoinMilestone as string,
+    }));
+
+    return { participantId: userId, milestones: resultMilestones };
+  }
+
+  async getJourneyParticipants(journeyId: number): Promise<JourneyParticipantsResult> {
+    const journey = await this.db.journey.findUnique({
+      where: { id: journeyId },
+      include: {
+        journeyUsers: {
+          include: {
+            milestone: true,
+            user: true,
+          },
+        },
+      },
+    });
+
+    if (!journey) {
+      return null;
+    }
+
+    const journeyUsers = journey.journeyUsers.filter(
+      (journeyUser) => journeyUser.status != JourneyStatus.mainJourneyMilestone && journey.userId != journeyUser.user.id
+    );
+
+    const participantMilestones = journeyUsers.map((journeyUser) => {
+      const startDate = journeyUser.milestone.startDate ? new Date(journeyUser.milestone.startDate) : undefined;
+      const endDate = journeyUser.milestone.endDate ? new Date(journeyUser.milestone.endDate) : undefined;
+
+      const transformedMilestone = {
+        status: journeyUser.status as string,
+        id: journeyUser.milestone.id,
+        title: journeyUser.milestone.title,
+        coords: {
+          lat: journeyUser.milestone.lat,
+          lng: journeyUser.milestone.lng,
+        },
+        dates: [startDate, endDate].filter((date) => date !== undefined) as Date[],
+      };
+
+      return {
+        participantId: journeyUser.user.id,
+        milestone: transformedMilestone,
+      };
+    });
+
+    const groupedResult = groupBy(participantMilestones, 'participantId');
+    const result = Object.entries(groupedResult).map(([key, value]) => {
+      return {
+        milestones: value.map((val) => val.milestone),
+        participantId: Number(key),
+      };
+    });
+
+    return result;
   }
 }

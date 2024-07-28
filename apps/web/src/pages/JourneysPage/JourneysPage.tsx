@@ -35,7 +35,6 @@ const JourneysPage = () => {
             onSearchQueryChangeHandler={handleSearchQueryChange}
             onCategoryChangeHandler={handleCategoryChange}
             onDateChangeHandler={handleDateChange}
-            sinceDate={new Date()}
           />
 
           <JourneyCardList searchQuery={searchQuery} category={category} date={date} />
