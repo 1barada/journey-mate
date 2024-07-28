@@ -140,6 +140,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       where: { id: Number(params.id) },
       data: {
         passwordHash: params.passwordHash,
+        restoreToken: null,
       },
     });
 

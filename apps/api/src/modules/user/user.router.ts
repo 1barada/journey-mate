@@ -170,11 +170,11 @@ export const userRouter = router({
     .input(RestorePasswordRouteRequestSchema)
     .output(RestorePasswordRouteResponseSchema)
     .mutation(async ({ input, ctx }) => {
-      const { newPassword } = input;
-      const query = RestorePasswordViaEmailQuerySchema.parse(ctx.req.query);
+      const { newPassword, restoreToken } = input;
+
       const service = createRestorePasswordService(ctx.db, ctx.transporter);
 
-      const response = await service.restorePassword({ newPassword, restoreToken: query.restoreToken });
+      const response = await service.restorePassword({ newPassword, restoreToken });
 
       return response;
     }),

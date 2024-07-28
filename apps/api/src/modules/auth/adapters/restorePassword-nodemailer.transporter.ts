@@ -1,7 +1,6 @@
 import { config } from '@project/api/config';
 import { NodemailerTransporterType } from '@project/api/transporter';
 
-import { AccountNotActivatedError } from '../domain/errors/account-not-activated.error';
 import {
   RestorePasswordTransporterPort,
   SendEmailRestorePasswordParams,

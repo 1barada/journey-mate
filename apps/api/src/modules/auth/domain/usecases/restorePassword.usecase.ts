@@ -7,7 +7,7 @@ export const RestorePasswordRequestSchema = z.object({
 
 export type RestorePasswordRequest = z.infer<typeof RestorePasswordRequestSchema>;
 
-export const RestorePasswordRouteRequestSchema = RestorePasswordRequestSchema.pick({ newPassword: true });
+export const RestorePasswordRouteRequestSchema = RestorePasswordRequestSchema;
 
 export const RestorePasswordRouteResponseSchema = z.object({
   user: z.object({ name: z.string().nullable(), email: z.string().email() }),

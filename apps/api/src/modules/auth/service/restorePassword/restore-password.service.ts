@@ -32,7 +32,7 @@ export class RestorePasswordService implements RestorePasswordViaEmailUsecase, R
     expiresIn: '24h',
   };
 
-  private baseUrl = config.get('frontendUrl');
+  private frontBaseUrl = config.get('frontendUrl');
 
   constructor(
     private userRepository: UserRepositoryPort,
@@ -62,7 +62,9 @@ export class RestorePasswordService implements RestorePasswordViaEmailUsecase, R
       expiresIn: this.jwt.expiresIn,
     });
 
-    const restorePasswordUrl = `${this.baseUrl}/user.restorePassword?${new URLSearchParams({ restoreToken })}`;
+    const restorePasswordUrl = `${this.frontBaseUrl}/?${new URLSearchParams({
+      restoreToken,
+    })}`;
 
     const emailUser: SendEmailRestorePasswordUser = {};
     if (user.name) {
@@ -92,9 +94,7 @@ export class RestorePasswordService implements RestorePasswordViaEmailUsecase, R
       throw new InvalidRestorePasswordTokenError('Invalid  token');
     }
 
-    const newPasswordHash = await this.createPasswordHash(newPassword);
-
-    const user = await this.userRepository.findUserById({ id: decodedToken.id });
+    const user = await this.userRepository.findUserById({ id: Number(decodedToken.id) });
 
     if (!user) {
       throw new UserNotFoundError(`User with id "${decodedToken.id}" does not exist`);
@@ -108,10 +108,12 @@ export class RestorePasswordService implements RestorePasswordViaEmailUsecase, R
       throw new InvalidRestorePasswordTokenError('Invalid token');
     }
 
-    const isPasswordSame = await bcrypt.compare(newPasswordHash, user.passwordHash);
+    const isPasswordSame = await bcrypt.compare(newPassword, user.passwordHash);
     if (isPasswordSame) {
       throw new SamePasswordError();
     }
+
+    const newPasswordHash = await this.createPasswordHash(newPassword);
 
     const result = await this.userRepository.updateUserPassword({ id: user.id, passwordHash: newPasswordHash });
 
