@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 
+import { ParticipantMilestones } from '../../pages/JourneyDetailsPage/JourneyDetails';
 import { journeyActions, journeySelectors } from '../../store/journey/slice';
 import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 
@@ -28,7 +29,11 @@ const mockMilestones = [
   },
 ];
 
-export const useJoinJourneyModal = ({ milestones = mockMilestones, toggleModal }: JoinJourneyModalProps) => {
+export const useJoinJourneyModal = ({
+  milestones = mockMilestones,
+  toggleModal,
+  onJoinHandler,
+}: JoinJourneyModalProps) => {
   const [selectedMilestones, setSelectedMilestone] = useState<string[]>([]);
 
   const request = useAppSelector(journeySelectors.selectRequestState);
@@ -36,8 +41,8 @@ export const useJoinJourneyModal = ({ milestones = mockMilestones, toggleModal }
 
   const allMilestones = useMemo(() => milestones.map((m) => m.title), [milestones]);
   const areAllMilestonesSelected = selectedMilestones.length === milestones.length;
-  const areSomeMilestonesSelected = selectedMilestones.length > 0 && !areAllMilestonesSelected;
-  const isSubmitButtonDisabled = request.isLoading || !areAllMilestonesSelected;
+  const areSomeMilestonesSelected = selectedMilestones.length > 0;
+  const isSubmitButtonDisabled = request.isLoading || !areSomeMilestonesSelected;
   const isSelectAllDisabled = request.isLoading;
 
   const onSelectAll = () => {
@@ -46,8 +51,20 @@ export const useJoinJourneyModal = ({ milestones = mockMilestones, toggleModal }
     setSelectedMilestone(newMilestones);
   };
 
-  const onJoinJourney = () => {
-    dispatch(journeyActions.joinJourney());
+  const onJoinJourney = async () => {
+    const result = milestones.filter((milestone) => selectedMilestones.includes(milestone.title));
+
+    const milestoneIds = result.map((milestone) => milestone.id);
+
+    const participantMilestones = await dispatch(journeyActions.joinJourney(milestoneIds));
+    if (participantMilestones.type === 'journey/joinJourney/fulfilled') {
+      const payload = participantMilestones.payload as ParticipantMilestones;
+      if (payload && onJoinHandler) {
+        onJoinHandler(payload);
+      }
+    }
+
+    onToggleModal();
   };
 
   const onToggleModal = () => {

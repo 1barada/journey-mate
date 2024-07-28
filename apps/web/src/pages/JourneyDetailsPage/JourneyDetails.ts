@@ -20,3 +20,8 @@ export interface Organizer {
   name: string | null;
   avatarUrl: string | null;
 }
+
+export interface ParticipantMilestones {
+  participantId: number;
+  milestones: Milestone[];
+}
