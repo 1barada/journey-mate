@@ -8,7 +8,7 @@ import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-import { logoutUser, selectIsAuthenticated, selectIsAuthLoading, whoami } from '../../store/auth/slice';
+import { logoutUser, selectIsAuthenticated, selectIsAuthLoading } from '../../store/auth/slice';
 import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
@@ -69,11 +69,7 @@ export const Navigation = () => {
   };
 
   const onLogoutClick = () => {
-    dispatch(logoutUser())
-      .unwrap()
-      .then(() => {
-        dispatch(whoami());
-      });
+    dispatch(logoutUser());
   };
 
   const openMobile = isMobileMenuOpen && styles.open;

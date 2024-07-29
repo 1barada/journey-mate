@@ -7,6 +7,7 @@ import type { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
+import { whoami } from './slice';
 import { type AuthSlice, type DataTypes, type FormDataType, Sex, type User, UserPermission } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
@@ -19,7 +20,7 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         const user: User | null = res.user
           ? {
               ...res.user,
-              sex: Sex[res.user.sex as keyof typeof Sex],
+              sex: res.user.sex ? (res.user.sex as Sex) : null,
               dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
             }
           : null;
@@ -173,7 +174,7 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         const user: User | null = res.user
           ? {
               ...res.user,
-              sex: Sex[res.user.sex as keyof typeof Sex],
+              sex: res.user.sex ? (res.user.sex as Sex) : null,
               dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
             }
           : null;
@@ -294,9 +295,11 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
 
 export const logoutAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async (_, { rejectWithValue }) => {
+    async (_, { rejectWithValue, dispatch }) => {
       try {
         await trpcClient.user.logout.mutate();
+
+        await dispatch(whoami());
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }

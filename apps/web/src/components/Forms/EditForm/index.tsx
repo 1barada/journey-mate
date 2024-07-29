@@ -69,16 +69,17 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
         <Controller
           control={control}
           name="dateOfBirth"
-          rules={{ required: true }}
           render={({ field }) => {
             return (
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label=""
                   {...field}
                   value={dayjs(field.value)}
-                  onChange={field.onChange}
+                  onChange={(data) => {
+                    field.onChange(data);
+                  }}
                   format={'DD.MM.YYYY'}
+                  inputRef={field.ref}
                 />
               </LocalizationProvider>
             );
@@ -108,7 +109,7 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
             <RadioGroup
               {...field}
               className={styles.radioList}
-              value={sex}
+              value={field.value}
               aria-label="sex radio group"
               name="sex"
               onChange={field.onChange}

@@ -159,6 +159,11 @@ export const userRouter = router({
     }),
 
   logout: authenticateProcedure.mutation(async ({ input, ctx }) => {
-    ctx.res.setCookie('access-token', '');
+    ctx.res.setCookie('access-token', '', {
+      expires: new Date(0),
+      maxAge: -1,
+      path: '/',
+      httpOnly: true,
+    });
   }),
 });
