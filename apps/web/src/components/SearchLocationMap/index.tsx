@@ -25,7 +25,9 @@ export const SearchLocationMap: React.FC<SearchLocationMapProps> = ({ coordinate
         geocoder.geocode({ location: { lat, lng } }, (results, status) => {
           if (status === 'OK' && results && results[0]) {
             const address = results[0].formatted_address;
-            onPlaceSelected({ lat, lng }, address);
+            const [firstPart, ...restParts] = address.split(' ');
+
+            onPlaceSelected({ lat, lng }, restParts.join(' '));
           } else {
             console.error('Geocoder failed due to: ' + status);
           }
