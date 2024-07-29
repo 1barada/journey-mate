@@ -45,6 +45,6 @@ export const EditProfileSchema = z.object({
 
 export type DataTypes = z.infer<typeof EditProfileSchema>;
 
-export interface FormData {
+export interface FormDataType {
   formData: FormData;
 }

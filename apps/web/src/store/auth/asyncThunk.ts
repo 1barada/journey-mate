@@ -7,7 +7,7 @@ import type { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { type AuthSlice, type DataTypes, type FormData, Sex, type User, UserPermission } from './types';
+import { type AuthSlice, type DataTypes, type FormDataType, Sex, type User, UserPermission } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -256,7 +256,7 @@ export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
 
 export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async ({ formData }: FormData, { rejectWithValue }) => {
+    async ({ formData }: FormDataType, { rejectWithValue }) => {
       try {
         const { data } = await axios.post('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', formData);
 
