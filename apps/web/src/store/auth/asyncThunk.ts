@@ -8,19 +8,17 @@ import type { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-
 import { whoami } from './slice';
 import {
   type AuthSlice,
   type DataTypes,
+  type FormDataType,
   type RestorePasswordRequestThunkProps,
   RestorePasswordThunkProps,
-  type FormDataType,
   Sex,
   type User,
   UserPermission,
 } from './types';
-
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -296,7 +294,6 @@ export const logoutAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
     async (_, { rejectWithValue, dispatch }) => {
       try {
         await trpcClient.user.logout.mutate();
-
         await dispatch(whoami());
       } catch (error) {
         return rejectWithValue((error as Error).message);
