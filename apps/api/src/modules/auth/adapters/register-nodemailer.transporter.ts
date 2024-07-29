@@ -7,6 +7,8 @@ import {
   SendEmailConfirmationResult,
 } from '../domain/transporter/register.transporter';
 
+import { CantSendEmailError } from './errors/cant-send-email.error';
+
 export class RegisterNodemailerTransporter implements RegisterTransporterPort {
   constructor(private transporter: NodemailerTransporterType) {}
 
@@ -28,7 +30,8 @@ export class RegisterNodemailerTransporter implements RegisterTransporterPort {
       html: emailBody,
     });
 
-    if (response.accepted[0] !== props.to) throw new Error(`unable to send confirmation email to ${props.to}`);
+    if (response.accepted[0] !== props.to)
+      throw new CantSendEmailError(`unable to send confirmation email to ${props.to}`);
 
     return;
   }

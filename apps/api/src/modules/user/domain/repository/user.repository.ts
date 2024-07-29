@@ -25,6 +25,20 @@ export interface CreateUserWithEmailParams {
 
 export type CreateUserWithEmailResult = User;
 
+export type SetRestoreTokenParams = {
+  id: string | number;
+  restoreToken: string;
+};
+
+export type SetRestoreTokenResult = void;
+
+export type UpdateUserPasswordParams = {
+  id: string | number;
+  passwordHash: string;
+};
+
+export type UpdateUserPasswordResult = Pick<User, 'email' | 'name'>;
+
 export interface UserRepositoryPort {
   findUserByEmail(params: FindUserByEmailParams): Promise<FindUserByEmailResult>;
   findUserById(params: FindUserByIdParams): Promise<FindUserByIdResult>;
@@ -33,4 +47,6 @@ export interface UserRepositoryPort {
   createUserWithEmail(params: CreateUserWithEmailParams): Promise<CreateUserWithEmailResult>;
   updateUserData(params: User): Promise<void>;
   updateUserAvatar(params: User): Promise<void>;
+  setRestoreToken(params: SetRestoreTokenParams): Promise<SetRestoreTokenResult>;
+  updateUserPassword(params: UpdateUserPasswordParams): Promise<UpdateUserPasswordResult>;
 }

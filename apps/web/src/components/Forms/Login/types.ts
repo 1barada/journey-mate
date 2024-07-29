@@ -5,7 +5,7 @@ import type { AuthFormTypes } from '../../AuthForm/types';
 import { loginSchema } from './schemas';
 
 export interface LoginProps {
-  switchToRegisterForm: React.Dispatch<React.SetStateAction<AuthFormTypes>>;
+  switchForms: React.Dispatch<React.SetStateAction<AuthFormTypes>>;
   toggleModal: () => void;
 }
 

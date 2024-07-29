@@ -23,6 +23,7 @@ export type User = z.infer<typeof UserSchema>;
 export const UserWithPasswordSchema = UserSchema.extend({
   active: z.boolean(),
   passwordHash: z.string().nullable(),
+  restoreToken: z.string().nullable(),
 });
 
 export type UserWithPassword = z.infer<typeof UserWithPasswordSchema>;
