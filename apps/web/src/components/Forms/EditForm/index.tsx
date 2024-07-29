@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -16,21 +18,29 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-import { changeProfileData } from '../../../store/auth/slice';
-import { useAppDispatch } from '../../../types/reduxTypes';
+import { changeProfileData, selectIsAuthLoading } from '../../../store/auth/slice';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 
 import styles from './EditForm.module.scss';
+import { editProfileSchema } from './schemas';
 import type { EditFormProps } from './types';
 
 export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) => {
-  const { control, handleSubmit } = useForm<EditFormProps>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditFormProps>({
     defaultValues: {
       name,
       dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date(),
       email,
       sex,
     },
+    resolver: zodResolver(editProfileSchema),
   });
+
+  const isLoading = useAppSelector(selectIsAuthLoading);
 
   const dispatch = useAppDispatch();
 
@@ -49,17 +59,10 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
           name="name"
           control={control}
           render={({ field }) => (
-            <TextField
-              {...field}
-              id="outlined-name"
-              // label="Full name"
-              fullWidth
-              margin="normal"
-              onChange={field.onChange}
-              // variant="outlined"
-            />
+            <TextField {...field} id="outlined-name" fullWidth margin="normal" onChange={field.onChange} />
           )}
         />
+        {errors.name?.message && <Typography className={styles.error}>{errors.name.message}</Typography>}
       </InputLabel>
       <InputLabel className={styles.inputLabel}>
         Date of birth
@@ -81,6 +84,7 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
             );
           }}
         />
+        {errors.dateOfBirth?.message && <Typography className={styles.error}>{errors.dateOfBirth.message}</Typography>}
       </InputLabel>
       <InputLabel className={styles.inputLabel}>
         Email
@@ -88,17 +92,10 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
           name="email"
           control={control}
           render={({ field }) => (
-            <TextField
-              {...field}
-              id="outlined-email"
-              onChange={field.onChange}
-              // label="Email"
-              fullWidth
-              margin="normal"
-              // variant="outlined"
-            />
+            <TextField {...field} id="outlined-email" onChange={field.onChange} fullWidth margin="normal" />
           )}
         />
+        {errors.email?.message && <Typography className={styles.error}>{errors.email.message}</Typography>}
       </InputLabel>
       <FormControl className={styles.radioWrapper}>
         <FormLabel className={styles.radioLabel} component="legend">
@@ -112,7 +109,7 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
               {...field}
               className={styles.radioList}
               value={sex}
-              aria-label="sex"
+              aria-label="sex radio group"
               name="sex"
               onChange={field.onChange}
             >
@@ -122,8 +119,15 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
           )}
         />
       </FormControl>
-      <Button type="submit" variant="contained" color="primary" className={styles.submitBtn}>
-        Submit
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={styles.submitBtn}
+        disabled={isLoading}
+        aria-label="submit form button"
+      >
+        {isLoading ? <CircularProgress color="inherit" /> : 'Submit'}
       </Button>
     </Box>
   );

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Avatar, Box, Button, FormControl, Input, TextField } from '@mui/material';
+import { Avatar, Box, Button, CircularProgress, FormControl, Input, TextField } from '@mui/material';
 
-import { updateAvatar } from '../../../store/auth/slice';
-import { useAppDispatch } from '../../../types/reduxTypes';
+import { selectIsAuthLoading, updateAvatar } from '../../../store/auth/slice';
+import { useAppDispatch, useAppSelector } from '../../../types/reduxTypes';
 
 import styles from './EditAvatar.module.scss';
 import { EditAvatarProps } from './types';
@@ -15,6 +15,8 @@ export const EditAvatar = () => {
       file: null,
     },
   });
+
+  const isLoading = useAppSelector(selectIsAuthLoading);
 
   const file = watch('file');
 
@@ -67,8 +69,14 @@ export const EditAvatar = () => {
         )}
       </FormControl>
 
-      <Button type="submit" variant="contained" color="primary" className={styles.submitBtn}>
-        Submit
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className={styles.submitBtn}
+        disabled={isLoading || !file}
+      >
+        {isLoading ? <CircularProgress color="inherit" /> : 'Submit'}
       </Button>
     </Box>
   );
