@@ -7,6 +7,7 @@ import { acceptJoinRequest, declineJoinRequest } from '../../../store/notificati
 import { NotificationEvent, NotificationEventType } from '../../../store/notification/types';
 
 import styles from './styles.module.scss';
+import { useMemo } from 'react';
 
 interface NotificationsEventProps {
   event: NotificationEvent;
@@ -17,27 +18,32 @@ interface NotificationsEventProps {
 export function NotificationsEvent(props: NotificationsEventProps) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const messages: { [key in NotificationEventType]: JSX.Element } = {
-    chatMessage: (
-      <>
-        New chat messages in{' '}
-        <Link className={styles.link} to={`/journey?${new URLSearchParams({ id: props.journeyId.toString() })}`}>
-          journey
-        </Link>
-      </>
-    ),
-    joinRequest: (
-      <>
-        User{' '}
-        <Link className={styles.link} to={`/profile?${new URLSearchParams({ id: props.event.userId!.toString() })}`}>
-          {props.event.userName}
-        </Link>{' '}
-        wants to join journey
-      </>
-    ),
-  };
-
-  const Message = messages[props.event.type];
+  const Message = useMemo(() => {
+    switch (props.event.type) {
+      case NotificationEventType.ChatMessage:
+        return (
+          <>
+            New chat messages in{' '}
+            <Link className={styles.link} to={`/journeys/${props.journeyId}`}>
+              journey
+            </Link>
+          </>
+        );
+      case NotificationEventType.JoinRequest:
+        if (!props.event.userId) throw new Error('NotificationsEvent: User id is null');
+        return (
+          <>
+            User{' '}
+            <Link className={styles.link} to={`/profile/${props.event.userId}`}>
+              {props.event.userName}
+            </Link>{' '}
+            wants to join journey
+          </>
+        );
+      default:
+        throw new Error(`Unsuported NotificationEventType. Type: ${props.event.type}`);
+    }
+  }, [props.event]);
 
   function handleJoinRequestAccept() {
     dispatch(acceptJoinRequest({ notificationId: props.notificationId, eventId: props.event.id }));

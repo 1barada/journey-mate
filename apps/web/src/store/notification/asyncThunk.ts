@@ -4,6 +4,7 @@ import { ReducerCreators } from '@reduxjs/toolkit';
 import { trpcClient } from '../../services/trpc';
 
 import { Notification, NotificationEvent, NotificationEventType, NotificationSlice } from './types';
+import { getAllNotifications } from './slice';
 
 export const getAllNotificationsAsyncThunk = (creator: ReducerCreators<NotificationSlice>) =>
   creator.asyncThunk(
@@ -90,6 +91,8 @@ export const acceptJoinRequestAsyncThunk = (creator: ReducerCreators<Notificatio
           accept: true,
         });
 
+        thunkApi.dispatch(getAllNotifications());
+
         return params.eventId;
       } catch (error) {
         if (!(error instanceof Error)) throw error;
@@ -124,6 +127,8 @@ export const declineJoinRequestAsyncThunk = (creator: ReducerCreators<Notificati
           notificationId: params.notificationId,
           accept: false,
         });
+
+        thunkApi.dispatch(getAllNotifications());
 
         return params.eventId;
       } catch (error) {

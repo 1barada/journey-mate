@@ -1,11 +1,13 @@
 import { JourneyStatus, NotificationType, PrismaClient } from '@prisma/client';
 import pkg from 'lodash';
 
-import { GetJourneyByIdParams, JourneyDetails, JourneyParticipantsFromChatId } from '../domain/entities/journey.entity';
+import { GetJourneyByIdParams, JourneyDetails, JourneyIdFromChatId } from '../domain/entities/journey.entity';
 import type { JourneyCategory } from '../domain/entities/journey-category.entity';
 import type {
   CreateJourneyParams,
   CreateJourneyResult,
+  GetAllJourneyPartisipantIdsParams,
+  GetAllJourneyPartisipantIdsResult,
   getAllJourneysResult,
   GetJourneysParams,
   JoinJourneyParams,
@@ -346,28 +348,39 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     return result;
   }
 
-  async getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId> {
+  async getJourneyIdFromChatId(chatId: number): Promise<JourneyIdFromChatId> {
     const journey = await this.db.chat.findUniqueOrThrow({
       where: {
         id: chatId,
-      },
-      include: {
-        journey: {
-          select: {
-            id: true,
-            journeyUsers: {
-              select: {
-                userId: true,
-              },
-            },
-          },
-        },
       },
     });
 
     return {
       journeyId: journey.journeyId,
-      participantIds: journey.journey.journeyUsers.map((user) => user.userId),
     };
+  }
+
+  async getAllJourneyPartisipantIds(
+    params: GetAllJourneyPartisipantIdsParams
+  ): Promise<GetAllJourneyPartisipantIdsResult> {
+    const journey = await this.db.journey.findUniqueOrThrow({
+      where: {
+        id: params.journeyId,
+      },
+      select: {
+        journeyUsers: {
+          where: {
+            status: {
+              in: ['approvedJoinMilestone', 'mainJourneyMilestone'],
+            },
+          },
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+
+    return [...new Set(journey.journeyUsers.map((user) => user.userId))];
   }
 }

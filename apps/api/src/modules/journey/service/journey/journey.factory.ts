@@ -5,7 +5,7 @@ import { JourneyPostgresRepository } from '../../adapters/journey-postgres.repos
 import { JourneyService } from './journey.service';
 
 export function createJourneyService(prisma: PrismaClient) {
-  const userRepository = new JourneyPostgresRepository(prisma);
+  const journeyRepository = new JourneyPostgresRepository(prisma);
 
-  return new JourneyService(userRepository);
+  return new JourneyService(journeyRepository);
 }

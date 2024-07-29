@@ -1,10 +1,11 @@
-import { JourneyStatus, PrismaClient } from '@prisma/client';
+import { JourneyStatus, Prisma, PrismaClient } from '@prisma/client';
 
 import {
   CreateNotificationEventResult,
   CreateNotificationEventWithTypeParams,
   CreateNotificationResult,
   CreateNotificationWithIdsParams,
+  CreateSendMessageNotificationEventForUsers,
   DeleteNotificationEventByIdParams,
   DeleteNotificationEventResult,
   GetAllNotificationByUserIdParams,
@@ -163,5 +164,28 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
       journeyId: notification.journeyId,
       createdAt: notification.createdAt,
     };
+  }
+
+  async createSendMessageNotificationEventForUsers(params: CreateSendMessageNotificationEventForUsers): Promise<void> {
+    const userNotificationIds = await this.prisma.notification.findMany({
+      where: {
+        AND: {
+          journeyId: params.journeyId,
+          userId: {
+            in: params.users,
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await this.prisma.notificationEvent.createMany({
+      data: userNotificationIds.map((user) => ({
+        type: 'chatMessage',
+        notificationId: user.id,
+      })),
+    });
   }
 }

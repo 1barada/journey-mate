@@ -1,4 +1,4 @@
-import type { CreateJourneyWithUserId, Journey, JourneyParticipantsFromChatId } from '../entities/journey.entity';
+import type { CreateJourneyWithUserId, Journey, JourneyIdFromChatId } from '../entities/journey.entity';
 import type { JourneyCategory } from '../entities/journey-category.entity';
 
 export interface CreateJourneyParams {
@@ -8,5 +8,6 @@ export interface CreateJourneyParams {
 export interface JourneyUsecase {
   createJourney(params: CreateJourneyParams): Promise<Journey>;
   getCategories(): Promise<JourneyCategory[]>;
-  getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId>;
+  getJourneyIdFromChatId(chatId: number): Promise<JourneyIdFromChatId>;
+  getAllJourneyPartisipantIds(journeyId: number): Promise<number[]>;
 }

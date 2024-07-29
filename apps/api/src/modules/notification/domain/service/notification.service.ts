@@ -14,6 +14,7 @@ import type {
   GetNotificationParams,
   GetNotificationResult,
   NotificationUsecase,
+  SendAllPariticipantsNotifcationAboutNewMessageParams,
 } from '../../domain/usecases/notification.usecase';
 import { NotificationRepositoryPort } from '../repository/notification.repository';
 
@@ -111,5 +112,14 @@ export class NotificationService implements NotificationUsecase {
       userId: params.userId,
     });
     return notification;
+  }
+
+  async sendAllPariticipantsNotifcationAboutNewMessage(
+    params: SendAllPariticipantsNotifcationAboutNewMessageParams
+  ): Promise<void> {
+    return this.db.createSendMessageNotificationEventForUsers({
+      journeyId: params.journeyId,
+      users: params.userIdsToSend,
+    });
   }
 }
