@@ -7,9 +7,9 @@ import type {
   JoinJourney,
   Journey,
   JourneyDetails,
+  JourneyIdFromChatId,
   JourneyParticipant,
   JourneyParticipants,
-  JourneyParticipantsFromChatId,
   Journeys,
 } from './../entities/journey.entity';
 
@@ -21,6 +21,12 @@ export type JoinJourneyParams = JoinJourney;
 export type JourneyParticipantsResult = JourneyParticipants;
 export type JourneyParticipantResult = JourneyParticipant;
 
+export interface GetAllJourneyPartisipantIdsParams {
+  journeyId: number;
+}
+
+export type GetAllJourneyPartisipantIdsResult = number[];
+
 export interface JourneyRepositoryPort {
   createJourney(params: CreateJourneyParams): Promise<CreateJourneyResult>;
   getCategories(): Promise<JourneyCategory[]>;
@@ -29,5 +35,6 @@ export interface JourneyRepositoryPort {
   joinJourney(params: JoinJourneyParams): Promise<JourneyParticipantResult>;
   getJourneyParticipants(journeyId: number): Promise<JourneyParticipantsResult>;
   getCategoriesByJourneyId(journeyId: number): Promise<JourneyCategory[]>;
-  getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId>;
+  getJourneyIdFromChatId(chatId: number): Promise<JourneyIdFromChatId>;
+  getAllJourneyPartisipantIds(params: GetAllJourneyPartisipantIdsParams): Promise<GetAllJourneyPartisipantIdsResult>;
 }

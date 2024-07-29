@@ -75,6 +75,11 @@ export interface getNotificationFromJourneyIdParams {
 
 export type getNotificationFromJourneyIdResult = Omit<Notification, 'events'>;
 
+export interface CreateSendMessageNotificationEventForUsers {
+  users: number[];
+  journeyId: number;
+}
+
 export interface NotificationRepositoryPort {
   getNotification(params: GetNotificationParams): Promise<GetNotificationResult>;
   getNotificationFromJourneyId(params: getNotificationFromJourneyIdParams): Promise<getNotificationFromJourneyIdResult>;
@@ -83,4 +88,5 @@ export interface NotificationRepositoryPort {
   deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult>;
   createNotification(params: CreateNotificationWithIdsParams): Promise<CreateNotificationResult>;
   createNotificationEvent(params: CreateNotificationEventWithTypeParams): Promise<CreateNotificationEventResult>;
+  createSendMessageNotificationEventForUsers(params: CreateSendMessageNotificationEventForUsers): Promise<void>;
 }

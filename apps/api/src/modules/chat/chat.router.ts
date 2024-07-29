@@ -54,40 +54,29 @@ export const chatRouter = router({
         throw new NotAuthenticatedError();
       }
 
+      const senderId = Number(ctx.userTokenData.userId);
       const chatService = createChatService(ctx.db);
 
-      // Create NotificationEvents for every participant in journey
-      async function createNotificationEvents() {
-        const journeyService = createJourneyService(ctx.db);
-        const notificationService = createNotificationService(ctx.db);
-
-        const { journeyId, participantIds } = await journeyService.getJourneyParticipantsFromChatId(input.chatId);
-        Promise.all(
-          participantIds.map((participantId) => {
-            return async () => {
-              const notification = await notificationService.getNotificationFromJourneyId({
-                journeyId,
-                userId: participantId,
-              });
-
-              await notificationService.createNotificationEvent({
-                notificationId: notification.id,
-                type: 'chatMessage',
-                userId: participantId,
-              });
-            };
-          })
-        );
-      }
-
-      createNotificationEvents();
-
+      // Create Message
       const message = await chatService.sendMessage({
         chatId: input.chatId,
         content: input.content,
-        senderId: Number(ctx.userTokenData.userId),
+        senderId: senderId,
       });
 
       ee.emit(`message:${input.chatId}`, message);
+
+      // Create NotificationEvents for every participant in journey
+      const journeyService = createJourneyService(ctx.db);
+      const notificationService = createNotificationService(ctx.db);
+
+      const { journeyId } = await journeyService.getJourneyIdFromChatId(input.chatId);
+      const participantIds = await journeyService.getAllJourneyPartisipantIds(journeyId);
+      await notificationService.sendAllPariticipantsNotifcationAboutNewMessage({
+        journeyId,
+        userIdsToSend: participantIds.filter((id) => id !== senderId),
+      });
+
+      return;
     }),
 });
