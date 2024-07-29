@@ -9,10 +9,19 @@ import {
   RegisterWithEmailRequestSchema,
   RegisterWithEmailResponseSchema,
 } from '../auth/domain/usecases/register.usecase';
+import {
+  RestorePasswordRouteRequestSchema,
+  RestorePasswordRouteResponseSchema,
+} from '../auth/domain/usecases/restorePassword.usecase';
+import {
+  RestorePasswordViaEmailRequestSchema,
+  RestorePasswordViaEmailResponseSchema,
+} from '../auth/domain/usecases/restorePasswordViaEmail.usecase';
 import { WhoAmIResponseSchema } from '../auth/domain/usecases/whoami.usecase';
 import { createGoogleAuthService } from '../auth/service/googleAuth/googleAuth.factory';
 import { createLoginService } from '../auth/service/login/login.factory';
 import { createRegisterService } from '../auth/service/register/register.factory';
+import { createRestorePasswordService } from '../auth/service/restorePassword/restore-password.factory';
 import { createWhoamiService } from '../auth/service/whoami/whoami.factory';
 
 import { UserNotFoundError } from './domain/errors/user-not-found.error';
@@ -156,5 +165,28 @@ export const userRouter = router({
       const user = service.getUser({ id: input.id });
 
       return user;
+    }),
+  restorePasswordViaEmailRequest: publicProcedure
+    .input(RestorePasswordViaEmailRequestSchema)
+    .output(RestorePasswordViaEmailResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { email } = input;
+      const service = createRestorePasswordService(ctx.db, ctx.transporter);
+
+      await service.restorePasswordEmail({ email });
+
+      return;
+    }),
+  restorePasswordViaEmail: publicProcedure
+    .input(RestorePasswordRouteRequestSchema)
+    .output(RestorePasswordRouteResponseSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { newPassword, restoreToken } = input;
+
+      const service = createRestorePasswordService(ctx.db, ctx.transporter);
+
+      const response = await service.restorePassword({ newPassword, restoreToken });
+
+      return response;
     }),
 });

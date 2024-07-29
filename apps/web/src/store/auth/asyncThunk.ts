@@ -1,32 +1,29 @@
 import { toast } from 'react-toastify';
 import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
+import { AsyncThunkSliceReducerDefinition } from '@reduxjs/toolkit/dist/createSlice';
 import axios from 'axios';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { type AuthSlice, type DataTypes, Sex, type User, UserPermission } from './types';
+import {
+  type AuthSlice,
+  type DataTypes,
+  type RestorePasswordRequestThunkProps,
+  RestorePasswordThunkProps,
+  Sex,
+  type User,
+  UserPermission,
+} from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async (data: FormInputsTypes, { rejectWithValue, dispatch }) => {
+    async (data: FormInputsTypes, { rejectWithValue }) => {
       try {
         await trpcClient.user.login.mutate(data);
-        const res = await trpcClient.user.whoami.query();
-
-        const user: User | null = res.user
-          ? {
-              ...res.user,
-              sex: Sex[res.user.sex as keyof typeof Sex],
-              dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
-            }
-          : null;
-
-        const permissions: UserPermission[] = [...res.permissions];
-
-        return { user, permissions };
+        return;
       } catch (error) {
         return rejectWithValue((error as Error).message);
       }
@@ -36,13 +33,10 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.isLoading = true;
         state.error = null;
       },
-      fulfilled: (state, { payload }) => {
+      fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
         toast.success('Welcome back!');
-        state.isAuthenticated = true;
-        state.user = payload.user;
-        state.permissions = payload.permissions;
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
@@ -296,3 +290,79 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       },
     }
   );
+
+export const restorePasswordRequestAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ email }: RestorePasswordRequestThunkProps, { rejectWithValue }) => {
+      try {
+        await trpcClient.user.restorePasswordViaEmailRequest.mutate({ email });
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.error = null;
+        toast.success('Password reset email has been sent successfully.');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+export const restorePasswordAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async ({ newPassword, restoreToken }: RestorePasswordThunkProps, { rejectWithValue }) => {
+      try {
+        const response = await trpcClient.user.restorePasswordViaEmail.mutate({ newPassword, restoreToken });
+        return response;
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state, action) => {
+        const { email, name = null } = action.payload.user;
+        state.isLoading = false;
+        state.error = null;
+        toast.success(`Password reset for ${name ? name + ' user' : email} successfully.`);
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+function dispatch(
+  arg0: AsyncThunkSliceReducerDefinition<
+    AuthSlice,
+    void,
+    { user: User | null; permissions: UserPermission[] },
+    {
+      state?: undefined;
+      dispatch?: undefined;
+      extra?: unknown;
+      rejectValue?: unknown;
+      serializedErrorType?: unknown;
+      pendingMeta?: unknown;
+      fulfilledMeta?: unknown;
+      rejectedMeta?: unknown;
+    }
+  >
+) {
+  throw new Error('Function not implemented.');
+}

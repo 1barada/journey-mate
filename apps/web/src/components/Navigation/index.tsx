@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui/material';
@@ -24,6 +24,7 @@ export const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const setUpModalType = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const modalType = e.currentTarget.textContent?.toLocaleLowerCase();
@@ -64,6 +65,15 @@ export const Navigation = () => {
       setIsMobileMenuOpen(false);
     }
   };
+
+  useEffect(() => {
+    const resetToken = searchParams.get('restoreToken');
+
+    if (resetToken !== null) {
+      setModalType(AuthFormTypes.RestorePassword);
+      toggle();
+    }
+  }, [location]);
 
   const openMobile = isMobileMenuOpen && styles.open;
 

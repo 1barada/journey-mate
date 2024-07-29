@@ -9,6 +9,10 @@ import {
   FindUserByEmailResult,
   FindUserByIdParams,
   FindUserByIdResult,
+  SetRestoreTokenParams,
+  SetRestoreTokenResult,
+  UpdateUserPasswordParams,
+  UpdateUserPasswordResult,
   UserRepositoryPort,
 } from '../domain/repository/user.repository';
 
@@ -32,6 +36,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       sex: user.sex,
       age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       dateOfBirth: user.dateOfBirth,
+      restoreToken: user.restoreToken,
     };
   }
 
@@ -86,6 +91,7 @@ export class UserPostgresRepository implements UserRepositoryPort {
       sex: user.sex,
       age: user.dateOfBirth && this.calculateAge(user.dateOfBirth),
       dateOfBirth: user.dateOfBirth,
+      restoreToken: user.restoreToken,
     };
   }
 
@@ -117,6 +123,30 @@ export class UserPostgresRepository implements UserRepositoryPort {
         avatarUrl: user.avatarUrl,
       },
     });
+  }
+
+  async setRestoreToken(params: SetRestoreTokenParams): Promise<SetRestoreTokenResult> {
+    await this.prisma.user.update({
+      where: { id: Number(params.id) },
+      data: {
+        restoreToken: params.restoreToken,
+      },
+    });
+  }
+
+  async updateUserPassword(params: UpdateUserPasswordParams): Promise<UpdateUserPasswordResult> {
+    const user = await this.prisma.user.update({
+      where: { id: Number(params.id) },
+      data: {
+        passwordHash: params.passwordHash,
+        restoreToken: null,
+      },
+    });
+
+    return {
+      email: user.email,
+      name: user.name,
+    };
   }
 
   // https://www.w3resource.com/javascript-exercises/javascript-date-exercise-18.php

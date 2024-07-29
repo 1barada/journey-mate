@@ -24,27 +24,31 @@ export class LoginService implements LoginUsecase {
       throw new UserNotFoundError(`User with email "${request.email}" does not exist`);
     }
 
-    if (user.authProvider !== 'password') {
+    const { authProvider, active, passwordHash, id, email, role } = user;
+
+    if (authProvider !== 'password') {
       throw new WrongAuthenticationFlowError(`Used wrong authentication flow. Allowed flow: ${user.authProvider}`);
     }
 
-    if (!user.active) {
+    if (!active) {
       throw new AccountNotActivatedError(`Account not activated. Please click on link that we sended on your email`);
     }
 
-    if (user.passwordHash === null) {
+    if (passwordHash === null) {
       throw new Error(`Password hash on 'password' auth provider is null`);
     }
 
-    const isValid = await bcrypt.compare(request.password, user.passwordHash);
+    const isValid = await bcrypt.compare(request.password, passwordHash);
     if (!isValid) {
       throw new InvalidPasswordError();
     }
 
-    const token = jwt.sign({ userId: user.id, userEmail: user.email, userRole: user.role }, this.jwt.secret, {
+    const token = jwt.sign({ userId: id, userEmail: email, userRole: role }, this.jwt.secret, {
       expiresIn: this.jwt.expiresIn,
     });
 
-    return { user, token };
+    return {
+      token,
+    };
   }
 }
