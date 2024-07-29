@@ -118,6 +118,7 @@ export const EditForm: FC<EditFormProps> = ({ dateOfBirth, email, name, sex }) =
             </RadioGroup>
           )}
         />
+        {errors.sex?.message && <Typography className={styles.error}>{errors.sex.message}</Typography>}
       </FormControl>
       <Button
         type="submit"
