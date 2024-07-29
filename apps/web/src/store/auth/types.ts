@@ -45,7 +45,6 @@ export const EditProfileSchema = z.object({
 
 export type DataTypes = z.infer<typeof EditProfileSchema>;
 
-
 export interface FormDataType {
   formData: FormData;
 }
@@ -62,4 +61,3 @@ export const RestorePasswordSchema = z.object({
 });
 
 export type RestorePasswordThunkProps = z.infer<typeof RestorePasswordSchema>;
-

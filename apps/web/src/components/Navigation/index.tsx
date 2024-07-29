@@ -69,11 +69,10 @@ export const Navigation = () => {
     }
   };
 
-
   const onLogoutClick = () => {
     dispatch(logoutUser());
   };
-  
+
   useEffect(() => {
     const resetToken = searchParams.get('restoreToken');
 
@@ -82,7 +81,6 @@ export const Navigation = () => {
       toggle();
     }
   }, [location]);
-
 
   const openMobile = isMobileMenuOpen && styles.open;
 
