@@ -13,7 +13,7 @@ import { server } from './server';
 const host = config.get('host');
 const port = config.get('port');
 
-const origin = config.get('frontendUrl');
+// const origin = config.get('frontendUrl');
 
 // server.register(cors, {
 //   origin: [origin],
@@ -30,7 +30,7 @@ if (config.get('nodeEnv') == 'development') {
 server.register(fastifyCookie, {
   hook: 'onRequest',
   parseOptions: {
-    httpOnly: true,
+    httpOnly: false,
     secure: false,
     path: '/',
     sameSite: false,
