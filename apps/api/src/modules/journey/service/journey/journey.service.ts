@@ -5,6 +5,7 @@ import type {
   JourneyDetails,
   JourneyParticipant,
   JourneyParticipants,
+  JourneyParticipantsFromChatId,
   Journeys,
 } from '../../domain/entities/journey.entity';
 import { JourneyCategory } from '../../domain/entities/journey-category.entity';
@@ -42,5 +43,9 @@ export class JourneyService implements JourneyUsecase {
 
   async getJourneyParticipants(journeyId: number): Promise<JourneyParticipants> {
     return await this.db.getJourneyParticipants(journeyId);
+  }
+
+  async getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId> {
+    return await this.db.getJourneyParticipantsFromChatId(chatId);
   }
 }

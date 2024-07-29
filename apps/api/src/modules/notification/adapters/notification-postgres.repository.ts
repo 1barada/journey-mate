@@ -11,6 +11,8 @@ import {
   GetAllNotificationsResult,
   GetNotificationEventsByNotificationIdParams,
   GetNotificationEventsResult,
+  getNotificationFromJourneyIdParams,
+  getNotificationFromJourneyIdResult,
   GetNotificationParams,
   GetNotificationResult,
   NotificationRepositoryPort,
@@ -83,7 +85,7 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     });
 
     if (notificationEvent && notificationEvent.userId) {
-      const journeyUsersMilestone = await this.prisma.journeyUsersMilestone.findFirst({
+      const journeyUsersMilestones = await this.prisma.journeyUsersMilestone.findMany({
         where: {
           userId: notificationEvent.userId,
           journeyId: notificationEvent.notification.journeyId,
@@ -91,17 +93,23 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
         },
       });
 
-      if (journeyUsersMilestone) {
-        await this.prisma.journeyUsersMilestone.update({
-          where: {
-            journeyId_userId_milestoneId: {
-              journeyId: notificationEvent.notification.journeyId,
-              userId: notificationEvent.userId,
-              milestoneId: journeyUsersMilestone.milestoneId,
-            },
-          },
-          data: { status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone },
-        });
+      if (journeyUsersMilestones) {
+        await Promise.all(
+          journeyUsersMilestones.map((journeyUsersMilestone) =>
+            this.prisma.journeyUsersMilestone.update({
+              where: {
+                journeyId_userId_milestoneId: {
+                  journeyId: notificationEvent.notification.journeyId,
+                  userId: journeyUsersMilestone.userId,
+                  milestoneId: journeyUsersMilestone.milestoneId,
+                },
+              },
+              data: {
+                status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone,
+              },
+            })
+          )
+        );
       }
     }
 
@@ -135,5 +143,25 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     });
 
     return newNotificationEvent;
+  }
+
+  async getNotificationFromJourneyId(
+    params: getNotificationFromJourneyIdParams
+  ): Promise<getNotificationFromJourneyIdResult> {
+    const notification = await this.prisma.notification.findUniqueOrThrow({
+      where: {
+        userId_journeyId: {
+          journeyId: params.journeyId,
+          userId: params.userId,
+        },
+      },
+    });
+
+    return {
+      id: notification.id,
+      userId: notification.userId,
+      journeyId: notification.journeyId,
+      createdAt: notification.createdAt,
+    };
   }
 }

@@ -1,8 +1,11 @@
+@import '../../../style/variables.scss';
+
 .inputUnDisplayed {
   display: none;
 }
 
 .inputLabel {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -11,6 +14,14 @@
 
   div {
     margin: 0;
+  }
+
+  .error {
+    position: absolute;
+    bottom: 0px;
+    left: 13px;
+    color: $error-main;
+    font-size: 10px;
   }
 }
 

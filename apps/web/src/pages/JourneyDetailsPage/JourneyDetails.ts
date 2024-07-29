@@ -8,6 +8,7 @@ export interface JourneyDetails {
   title: string;
   categories: Category[];
   milestones: Milestone[];
+  chatId?: number;
 }
 
 export interface Coordinates {
