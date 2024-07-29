@@ -72,7 +72,6 @@ export class UserPostgresRepository implements UserRepositoryPort {
       description: user.description,
       sex: user.sex,
       dateOfBirth: user.dateOfBirth,
-      restoreToken: user.restoreToken,
     };
   }
 
