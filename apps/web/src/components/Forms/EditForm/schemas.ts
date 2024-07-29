@@ -1,3 +1,4 @@
+import dayjs, { Dayjs } from 'dayjs';
 import { z } from 'zod';
 
 export const editProfileSchema = z.object({
@@ -11,6 +12,6 @@ export const editProfileSchema = z.object({
     .min(2, { message: 'Name must be at least 2 symbols long' })
     .max(35, { message: 'Name must be less than 35 symbols' })
     .trim(),
-  dateOfBirth: z.date({ message: 'Date of birth is required' }),
+  dateOfBirth: z.custom<Dayjs>((val) => val instanceof dayjs, 'Invalid date'),
   sex: z.enum(['female', 'male']).nullable(),
 });

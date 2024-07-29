@@ -32,6 +32,15 @@
   justify-content: center;
   margin-bottom: 16px;
   gap: 24px;
+
+  .error {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    bottom: -5px;
+    color: $error-main;
+    font-size: 10px;
+  }
 }
 
 .radioLabel {

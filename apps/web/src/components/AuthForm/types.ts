@@ -8,4 +8,6 @@ export enum AuthFormTypes {
   SignUp = 'sign up',
   Login = 'login',
   Register = 'register',
+  RestorePasswordRequest = 'restore password request',
+  RestorePassword = 'restore password',
 }

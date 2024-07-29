@@ -1,14 +1,15 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, Container, IconButton, List, ListItem } from '@mui/material';
 
 import { useModal } from '../../hooks/useModal';
 import { routes } from '../../routes';
-import { selectIsAuthenticated, selectIsAuthLoading } from '../../store/auth/slice';
-import { useAppSelector } from '../../types/reduxTypes';
+import { logoutUser, selectIsAuthenticated, selectIsAuthLoading } from '../../store/auth/slice';
+import { useAppDispatch, useAppSelector } from '../../types/reduxTypes';
 import { AuthForm } from '../AuthForm';
 import { AuthFormTypes } from '../AuthForm/types';
 
@@ -23,7 +24,10 @@ export const Navigation = () => {
   const [modalType, setModalType] = useState<AuthFormTypes>();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const setUpModalType = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const modalType = e.currentTarget.textContent?.toLocaleLowerCase();
@@ -65,6 +69,19 @@ export const Navigation = () => {
     }
   };
 
+  const onLogoutClick = () => {
+    dispatch(logoutUser());
+  };
+
+  useEffect(() => {
+    const resetToken = searchParams.get('restoreToken');
+
+    if (resetToken !== null) {
+      setModalType(AuthFormTypes.RestorePassword);
+      toggle();
+    }
+  }, [location]);
+
   const openMobile = isMobileMenuOpen && styles.open;
 
   return (
@@ -95,27 +112,32 @@ export const Navigation = () => {
             <CloseIcon />
           </IconButton>
           {isAuthenticated ? (
-            <AppBar component="nav" className={styles.appBar}>
-              <List className={styles.navList}>
-                {Object.values(routes)
-                  .filter((link) => link !== '/auth' && link !== '/auth/confirm')
-                  .map((link) => {
-                    return (
-                      <ListItem key={link}>
-                        <NavLink
-                          to={link}
-                          aria-label={`link to ${link}`}
-                          className={({ isActive }) => (isActive ? styles.active : styles.link)}
-                          onClick={handleCloseMenuCose}
-                          state={{ from: location }}
-                        >
-                          {link.slice(1).replace(/-/g, ' ')}
-                        </NavLink>
-                      </ListItem>
-                    );
-                  })}
-              </List>
-            </AppBar>
+            <Box className={styles.appWrapper} component="div">
+              <AppBar component="nav" className={styles.appBar}>
+                <List className={styles.navList}>
+                  {Object.values(routes)
+                    .filter((link) => link !== '/auth' && link !== '/auth/confirm')
+                    .map((link) => {
+                      return (
+                        <ListItem key={link}>
+                          <NavLink
+                            to={link}
+                            aria-label={`link to ${link}`}
+                            className={({ isActive }) => (isActive ? styles.active : styles.link)}
+                            onClick={handleCloseMenuCose}
+                            state={{ from: location }}
+                          >
+                            {link.slice(1).replace(/-/g, ' ')}
+                          </NavLink>
+                        </ListItem>
+                      );
+                    })}
+                </List>
+              </AppBar>
+              <IconButton className={styles.logoutBtn} onClick={onLogoutClick}>
+                <LogoutIcon /> Logout
+              </IconButton>
+            </Box>
           ) : (
             <>
               <List className={styles.authListBtn}>
