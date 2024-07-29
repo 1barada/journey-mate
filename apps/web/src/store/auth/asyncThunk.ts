@@ -3,11 +3,11 @@ import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { FormInputsTypes } from '../../components/Forms/Login/types';
+import type { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
-import { type AuthSlice, type DataTypes, Sex, type User, UserPermission } from './types';
+import { type AuthSlice, type DataTypes, type FormData, Sex, type User, UserPermission } from './types';
 
 export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
@@ -240,13 +240,9 @@ export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
     }
   );
 
-interface D {
-  formData: FormData;
-}
-
 export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async ({ formData }: D, { rejectWithValue }) => {
+    async ({ formData }: FormData, { rejectWithValue }) => {
       try {
         const { data } = await axios.post('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', formData);
 
@@ -265,7 +261,6 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       },
       fulfilled: (state, action) => {
         state.isLoading = false;
-        state.error = null;
 
         if (!state.user) {
           state.user = {} as User;
@@ -274,6 +269,33 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.user.avatarUrl = action.payload;
 
         toast.success('Avatar uploaded!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+export const logoutAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async (_, { rejectWithValue }) => {
+      try {
+        await trpcClient.user.logout.mutate();
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.user = null;
+        toast.success('See you later!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;
