@@ -95,8 +95,16 @@ model JourneyUsersMilestone {
   journey     Journey   @relation(fields: [journeyId], references: [id], onDelete: Cascade)
   milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      JourneyStatus   @default(mainJourneyMilestone)
 
   @@id([journeyId, userId, milestoneId])
+}
+
+enum JourneyStatus {
+  mainJourneyMilestone
+  requestedToJoinMilestone
+  approvedJoinMilestone
+  declinedJoinMilestone
 }
 
 model Chat {
@@ -138,8 +146,6 @@ model NotificationEvent {
   user           User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
   type           NotificationType
   createdAt      DateTime         @default(now())
-
-  @@unique([notificationId, userId])
 }
 
 enum NotificationType {

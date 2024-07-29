@@ -2,21 +2,13 @@ import type { ReducerCreators } from '@reduxjs/toolkit';
 
 import { trpcClient } from '../../services/trpc';
 
-import type { CreateJourney, JourneySlice } from './types';
-
-// !TODO replace with trpc later
-const sleep = (ms: number) =>
-  new Promise((res) => {
-    setTimeout(() => {
-      res({ aa: true });
-    }, ms);
-  });
+import type { CreateJourney, JourneySlice, Milestone } from './types';
 
 export const joinJourneyAsyncThunk = (creator: ReducerCreators<JourneySlice>) =>
   creator.asyncThunk(
-    async (_, { rejectWithValue }) => {
+    async (milestoneIds: number[], { rejectWithValue }) => {
       try {
-        const res = await sleep(2000);
+        const res = await trpcClient.journey.joinJourney.mutate(milestoneIds);
 
         return res;
       } catch (error) {

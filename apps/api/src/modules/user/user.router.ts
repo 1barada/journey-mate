@@ -34,14 +34,15 @@ export const userRouter = router({
   }),
   login: publicProcedure
     .input(LoginRequestSchema)
-    // .output(LoginRouterResponseSchema)
+    .output(LoginRouterResponseSchema)
     .mutation(async ({ input, ctx }) => {
       const service = createLoginService(ctx.db);
 
-      const { user, token } = await service.login(input);
+      const { token } = await service.login(input);
 
       ctx.res.setCookie('access-token', token);
-      return user;
+
+      return;
     }),
   changeDescription: authenticateProcedure
     .input(ChangeDescriptionInputSchema)
@@ -142,10 +143,10 @@ export const userRouter = router({
       const service = createGoogleAuthService(ctx.db);
       const { user, token } = await service.googleAuth(input.token);
 
-      ctx.res.setCookie('access-token', token, { signed: true });
+      ctx.res.setCookie('access-token', token);
+
       return user;
     }),
-
   getUser: publicProcedure
     .input(GetUserResponceSchema)
     .output(GetUserRequestSchema)

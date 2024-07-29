@@ -125,7 +125,7 @@ export const notificationRouter = router({
         throw new EventNotExists('The event does not belong to the current user.');
       }
 
-      const result = await service.deleteNotificationEvent({ id: id });
+      const result = await service.deleteNotificationEvent({ id: id, accept: input.accept });
 
       return result;
     }),

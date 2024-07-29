@@ -38,7 +38,11 @@ export const GetAllNotificationEventsResultSchema = z.array(
   })
 );
 
-export const DeleteNotificationEventRequestSchema = z.object({ id: z.number(), notificationId: z.number() });
+export const DeleteNotificationEventRequestSchema = z.object({
+  id: z.number(),
+  notificationId: z.number(),
+  accept: z.boolean().optional(),
+});
 
 export const DeleteNotificationEventResultSchema = NotificationEventSchema.nullable();
 

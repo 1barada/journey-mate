@@ -4,6 +4,8 @@ import EventEmitter from 'events';
 
 import { authorizedProcedure, router } from '../../trpc/trpc';
 import { NotAuthenticatedError } from '../auth/domain/errors/not-authenticated.error';
+import { createJourneyService } from '../journey/service/journey/journey.factory';
+import { createNotificationService } from '../notification/domain/service/notification.factory';
 
 import { Message } from './domain/entities/chat.entity';
 import {
@@ -52,9 +54,35 @@ export const chatRouter = router({
         throw new NotAuthenticatedError();
       }
 
-      const service = createChatService(ctx.db);
+      const chatService = createChatService(ctx.db);
 
-      const message = await service.sendMessage({
+      // Create NotificationEvents for every participant in journey
+      async function createNotificationEvents() {
+        const journeyService = createJourneyService(ctx.db);
+        const notificationService = createNotificationService(ctx.db);
+
+        const { journeyId, participantIds } = await journeyService.getJourneyParticipantsFromChatId(input.chatId);
+        Promise.all(
+          participantIds.map((participantId) => {
+            return async () => {
+              const notification = await notificationService.getNotificationFromJourneyId({
+                journeyId,
+                userId: participantId,
+              });
+
+              await notificationService.createNotificationEvent({
+                notificationId: notification.id,
+                type: 'chatMessage',
+                userId: participantId,
+              });
+            };
+          })
+        );
+      }
+
+      createNotificationEvents();
+
+      const message = await chatService.sendMessage({
         chatId: input.chatId,
         content: input.content,
         senderId: Number(ctx.userTokenData.userId),

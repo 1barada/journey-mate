@@ -44,7 +44,7 @@ export const getAllNotificationEventsAsyncThunk = (creator: ReducerCreators<Noti
         });
         const notificationEvents: NotificationEvent[] = response.map((value) => ({
           ...value,
-          type: NotificationEventType[value.type as keyof typeof NotificationEventType],
+          type: value.type as NotificationEventType,
         }));
 
         return {
@@ -82,10 +82,15 @@ export const getAllNotificationEventsAsyncThunk = (creator: ReducerCreators<Noti
 
 export const acceptJoinRequestAsyncThunk = (creator: ReducerCreators<NotificationSlice>) =>
   creator.asyncThunk(
-    (_, thunkApi) => {
+    async (params: { eventId: number; notificationId: number }, thunkApi) => {
       try {
-        // TODO:
-        return;
+        await trpcClient.notification.deleteNotificationsEvents.mutate({
+          id: params.eventId,
+          notificationId: params.notificationId,
+          accept: true,
+        });
+
+        return params.eventId;
       } catch (error) {
         if (!(error instanceof Error)) throw error;
 
@@ -97,12 +102,15 @@ export const acceptJoinRequestAsyncThunk = (creator: ReducerCreators<Notificatio
         state.loading = true;
         state.error = null;
       },
-      fulfilled: (state) => {
+      fulfilled: (state, { payload }) => {
         state.loading = false;
+        state.selectedNotificationEvents = state.selectedNotificationEvents.filter((events) => events.id !== payload);
+        toast.success('Successfully accepted');
       },
       rejected: (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        toast.error(`Unable to accept. ${action.payload}`);
       },
     }
   );
@@ -114,6 +122,7 @@ export const declineJoinRequestAsyncThunk = (creator: ReducerCreators<Notificati
         await trpcClient.notification.deleteNotificationsEvents.mutate({
           id: params.eventId,
           notificationId: params.notificationId,
+          accept: false,
         });
 
         return params.eventId;

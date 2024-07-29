@@ -19,6 +19,6 @@ export interface LoginUsecase {
   login(request: LoginRequest): Promise<LoginResponse>;
 }
 
-export const LoginRouterResponseSchema = UserSchema;
+export const LoginRouterResponseSchema = z.void();
 
 export type LoginRouterResponse = z.infer<typeof LoginRouterResponseSchema>;
