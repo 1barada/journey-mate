@@ -8,6 +8,11 @@
   border-radius: $chat-border-radius;
   padding: 12px 24px;
 
+  @media screen and (max-width: $md) {
+    flex-direction: column;
+    gap: 4px;
+  }
+
   .info {
     display: flex;
     flex-direction: column;

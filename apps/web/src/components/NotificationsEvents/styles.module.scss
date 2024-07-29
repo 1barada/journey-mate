@@ -11,20 +11,15 @@
   flex-direction: column;
   gap: 12px;
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
   .loading {
     align-self: center;
   }
 
   .error {
     color: red;
+  }
+
+  @media screen and (max-width: $md) {
+    flex-basis: 240px;
   }
 }

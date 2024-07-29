@@ -25,5 +25,9 @@
     display: flex;
     gap: 30px;
     overflow-y: auto;
+
+    @media screen and (max-width: $md) {
+      flex-direction: column;
+    }
   }
 }
