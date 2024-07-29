@@ -27,6 +27,7 @@ CREATE TABLE "User" (
     "active" BOOLEAN NOT NULL DEFAULT false,
     "authProvider" "AuthProvider" NOT NULL,
     "passwordHash" VARCHAR(72),
+    "restoreToken" VARCHAR(255),
     "avatarUrl" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -130,6 +131,9 @@ CREATE TABLE "NotificationEvent" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_restoreToken_key" ON "User"("restoreToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "JourneyCategory_value_key" ON "JourneyCategory"("value");
