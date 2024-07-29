@@ -120,7 +120,7 @@
   text-transform: capitalize;
   padding-top: 6px;
   padding-bottom: 6px;
-  transition: 350ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: $transition;
 
   &:is(:hover, :focus) {
     color: $text-secondary;
@@ -131,4 +131,25 @@
   composes: link;
   color: $text-secondary;
   transform: scale(1.2);
+}
+
+.appWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+
+  .logoutBtn {
+    font-size: 16px;
+    transition: $transition;
+
+    &:is(:focus, :hover) {
+      background-color: transparent;
+      transform: scale(1.1);
+    }
+  }
+
+  @media screen and (min-width: $md) {
+    flex-direction: row;
+  }
 }

@@ -4,13 +4,15 @@ import type { ReducerCreators } from '@reduxjs/toolkit';
 import { AsyncThunkSliceReducerDefinition } from '@reduxjs/toolkit/dist/createSlice';
 import axios from 'axios';
 
-import { FormInputsTypes } from '../../components/Forms/Login/types';
+import type { FormInputsTypes } from '../../components/Forms/Login/types';
 import { trpcClient } from '../../services/trpc';
 import { isTRPCError, isWhoamiError } from '../../utils/type-guards';
 
+import { whoami } from './slice';
 import {
   type AuthSlice,
   type DataTypes,
+  type FormDataType,
   type RestorePasswordRequestThunkProps,
   RestorePasswordThunkProps,
   Sex,
@@ -23,6 +25,7 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
     async (data: FormInputsTypes, { rejectWithValue }) => {
       try {
         await trpcClient.user.login.mutate(data);
+
         return;
       } catch (error) {
         return rejectWithValue((error as Error).message);
@@ -167,7 +170,7 @@ export const whoamiAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         const user: User | null = res.user
           ? {
               ...res.user,
-              sex: Sex[res.user.sex as keyof typeof Sex],
+              sex: res.user.sex ? (res.user.sex as Sex) : null,
               dateOfBirth: res.user.dateOfBirth ? new Date(res.user.dateOfBirth) : null,
             }
           : null;
@@ -248,13 +251,9 @@ export const googleAuthAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
     }
   );
 
-interface D {
-  formData: FormData;
-}
-
 export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
   creator.asyncThunk(
-    async ({ formData }: D, { rejectWithValue }) => {
+    async ({ formData }: FormDataType, { rejectWithValue }) => {
       try {
         const { data } = await axios.post('https://api.cloudinary.com/v1_1/dyttdvqkh/image/upload', formData);
 
@@ -273,7 +272,6 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       },
       fulfilled: (state, action) => {
         state.isLoading = false;
-        state.error = null;
 
         if (!state.user) {
           state.user = {} as User;
@@ -282,6 +280,34 @@ export const updateAvatarAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
         state.user.avatarUrl = action.payload;
 
         toast.success('Avatar uploaded!');
+      },
+      rejected: (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload as string;
+        toast.error(payload as string);
+      },
+    }
+  );
+
+export const logoutAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
+  creator.asyncThunk(
+    async (_, { rejectWithValue, dispatch }) => {
+      try {
+        await trpcClient.user.logout.mutate();
+        await dispatch(whoami());
+      } catch (error) {
+        return rejectWithValue((error as Error).message);
+      }
+    },
+    {
+      pending: (state) => {
+        state.isLoading = true;
+        state.error = null;
+      },
+      fulfilled: (state) => {
+        state.isLoading = false;
+        state.user = null;
+        toast.success('See you later!');
       },
       rejected: (state, { payload }) => {
         state.isLoading = false;

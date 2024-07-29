@@ -45,6 +45,10 @@ export const EditProfileSchema = z.object({
 
 export type DataTypes = z.infer<typeof EditProfileSchema>;
 
+export interface FormDataType {
+  formData: FormData;
+}
+
 export const RestorePasswordRequestSchema = z.object({
   email: z.string().email({ message: 'Email is required' }).trim(),
 });

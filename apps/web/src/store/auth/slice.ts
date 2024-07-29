@@ -5,6 +5,7 @@ import {
   changeProfileDataAsyncThunk,
   googleAuthAsyncThunk,
   loginAsyncThunk,
+  logoutAsyncThunk,
   registerAsyncThunk,
   restorePasswordAsyncThunk,
   restorePasswordRequestAsyncThunk,
@@ -31,6 +32,7 @@ const authSlice = createSlice({
     whoami: whoamiAsyncThunk(creator),
     googleAuth: googleAuthAsyncThunk(creator),
     updateAvatar: updateAvatarAsyncThunk(creator),
+    logoutUser: logoutAsyncThunk(creator),
     restorePasswordRequest: restorePasswordRequestAsyncThunk(creator),
     restorePassword: restorePasswordAsyncThunk(creator),
   }),
@@ -58,6 +60,7 @@ export const {
   whoami,
   googleAuth,
   updateAvatar,
+  logoutUser,
   restorePassword,
   restorePasswordRequest,
 } = authSlice.actions;

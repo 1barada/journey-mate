@@ -20,9 +20,9 @@ const port = config.get('port');
 //   credentials: true,
 // });
 
-if (config.get('nodeEnv') == 'development') {
+if (config.get('nodeEnv') === 'development') {
   server.register(cors, {
-    origin: [origin],
+    origin: ['*'],
     credentials: true,
   });
 }
