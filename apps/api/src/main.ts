@@ -31,9 +31,9 @@ server.register(fastifyCookie, {
   hook: 'onRequest',
   parseOptions: {
     httpOnly: true,
-    secure: config.get('nodeEnv') !== 'development',
+    secure: false,
     path: '/',
-    sameSite: true,
+    sameSite: false,
     maxAge: 60_4800,
   },
 } as FastifyCookieOptions);
