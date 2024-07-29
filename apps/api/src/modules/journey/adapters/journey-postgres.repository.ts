@@ -1,7 +1,7 @@
-import { JourneyStatus, PrismaClient } from '@prisma/client';
+import { JourneyStatus, NotificationType, PrismaClient } from '@prisma/client';
 import pkg from 'lodash';
 
-import { GetJourneyByIdParams, JourneyDetails } from '../domain/entities/journey.entity';
+import { GetJourneyByIdParams, JourneyDetails, JourneyParticipantsFromChatId } from '../domain/entities/journey.entity';
 import type { JourneyCategory } from '../domain/entities/journey-category.entity';
 import type {
   CreateJourneyParams,
@@ -40,11 +40,24 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
             id: candidateJourney.userId,
           },
         },
-        chat: {
-          create: {},
-        },
       },
     });
+
+    if (journey) {
+      await this.db.chat.create({
+        data: {
+          journeyId: journey.id,
+        },
+      });
+    }
+
+    // create notification
+    await this.db.notification.create({
+      data: {
+        userId: journey.userId,
+        journeyId: journey.id,
+      },
+    })
 
     const categories = await this.db.journeyCategory.findMany({
       where: {
@@ -71,6 +84,16 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       }),
     ]);
 
+    const journeyUsersMilestones = milestones.map((milestone) => ({
+      journeyId,
+      userId: candidateJourney.userId,
+      milestoneId: milestone.id,
+      status: JourneyStatus.mainJourneyMilestone,
+    }));
+    await this.db.journeyUsersMilestone.createMany({
+      data: journeyUsersMilestones,
+    });
+
     const result = {
       ...journey,
       milestones: databaseMilestonesToMilestones({ milestones }),
@@ -94,8 +117,16 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       ];
     }
 
-    if (user_id) {
-      whereClause.userId = user_id;
+    const journeyUsersMilestones = await this.db.journeyUsersMilestone.findMany({
+      where: {
+        userId: user_id,
+      },
+    });
+
+    if (journeyUsersMilestones) {
+      whereClause.id = {
+        in: journeyUsersMilestones.map((journeyUser) => journeyUser.journeyId),
+      };
     }
 
     const journeys = await this.db.journey.findMany({
@@ -115,7 +146,14 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       ...journey,
       milestones: databaseMilestonesToMilestones({ milestones: journey.milestones }),
       category: [journey.category[0].category],
-      participantsNumber: new Set(journey.journeyUsers.map((user) => user.userId)).size,
+      participantsNumber: new Set(
+        journey.journeyUsers
+          .filter(
+            (user) =>
+              user.status == JourneyStatus.mainJourneyMilestone || user.status == JourneyStatus.approvedJoinMilestone
+          )
+          .map((user) => user.userId)
+      ).size,
     }));
 
     if (category && category !== 'all') {
@@ -138,6 +176,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     const journey = await this.db.journey.findUnique({
       where: { id },
       include: {
+        chat: true,
         milestones: true,
         category: true,
         journeyUsers: true,
@@ -164,6 +203,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     });
 
     return {
+      chatId: journey.chat ? journey.chat.id : undefined,
       id: journey.id,
       userId: journey.userId,
       title: journey.title,
@@ -205,11 +245,40 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
           in: milestoneIds,
         },
       },
+      include: {
+        journey: true,
+      },
     });
 
     if (!milestones) {
       throw new Error(`Milestone with id ${milestoneIds[0]} not found`);
     }
+
+    // find or create notification
+    const existingNotification = await this.db.notification.findFirst({
+      where: {
+        userId: milestones[0].journey.userId,
+        journeyId: milestones[0].journeyId,
+      },
+    });
+
+    const notification =
+      existingNotification ||
+      (await this.db.notification.create({
+        data: {
+          userId: milestones[0].journey.userId,
+          journeyId: milestones[0].journeyId,
+        },
+      }));
+
+    // create notification event
+    await this.db.notificationEvent.create({
+      data: {
+        notificationId: notification.id,
+        userId,
+        type: NotificationType.joinRequest,
+      },
+    });
 
     const journeyUsersMilestones = milestoneIds.map((milestoneId) => ({
       journeyId: milestones[0].journeyId,
@@ -283,5 +352,30 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
     });
 
     return result;
+  }
+
+  async getJourneyParticipantsFromChatId(chatId: number): Promise<JourneyParticipantsFromChatId> {
+    const journey = await this.db.chat.findUniqueOrThrow({
+      where: {
+        id: chatId,
+      },
+      include: {
+        journey: {
+          select: {
+            id: true,
+            journeyUsers: {
+              select: {
+                userId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return {
+      journeyId: journey.journeyId,
+      participantIds: journey.journey.journeyUsers.map((user) => user.userId),
+    };
   }
 }

@@ -31,13 +31,14 @@ export const JourneyCardList: React.FC<JourneyCardListProps> = ({ searchQuery, c
         page: currentPage,
         user_id: user?.id,
       });
-      console.log(fetchedJourneys);
       const transformedJourneys: JourneyCardProps[] = fetchedJourneys.journeys.map((journey) => ({
         id: journey.id,
         description: journey.description,
         header: journey.title,
         startDate: journey.milestones[0].dates[0], // Assuming the first milestone's start date as the journey date
-        endDate: journey.milestones[journey.milestones.length - 1].dates[1] || '', // Assuming the last milestone's end date as the journey
+        endDate:
+          journey.milestones[journey.milestones.length - 1].dates[1] ||
+          journey.milestones[journey.milestones.length - 1].dates[0], // Assuming the last milestone's end date as the journey
         personCount: journey.participantsNumber,
         journeyType: journey.category[0].title,
         onClickHandler: () => {

@@ -5,5 +5,4 @@ export interface EditFormProps {
   dateOfBirth: Date | null;
   email: string;
   sex: Sex | null;
-  file?: File | null;
 }

@@ -6,9 +6,6 @@
   - Added the required column `journeyId` to the `Chat` table without a default value. This is not possible if the table is not empty.
 
 */
--- CreateEnum
-CREATE TYPE "JourneyStatus" AS ENUM ('mainJourneyMilestone', 'requestedToJoinMilestone', 'approvedJoinMilestone', 'declinedJoinMilestone');
-
 -- DropForeignKey
 ALTER TABLE "Journey" DROP CONSTRAINT "Journey_chatId_fkey";
 
@@ -21,14 +18,14 @@ ALTER TABLE "Message" DROP CONSTRAINT "Message_senderId_fkey";
 -- DropIndex
 DROP INDEX "Journey_chatId_key";
 
+-- DropIndex
+DROP INDEX "NotificationEvent_notificationId_userId_key";
+
 -- AlterTable
 ALTER TABLE "Chat" ADD COLUMN     "journeyId" INTEGER NOT NULL;
 
 -- AlterTable
 ALTER TABLE "Journey" DROP COLUMN "chatId";
-
--- AlterTable
-ALTER TABLE "JourneyUsersMilestone" ADD COLUMN     "status" "JourneyStatus" NOT NULL DEFAULT 'mainJourneyMilestone';
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Chat_journeyId_key" ON "Chat"("journeyId");

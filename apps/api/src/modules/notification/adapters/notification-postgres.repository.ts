@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { JourneyStatus, PrismaClient } from '@prisma/client';
 
 import {
   CreateNotificationEventResult,
@@ -11,6 +11,8 @@ import {
   GetAllNotificationsResult,
   GetNotificationEventsByNotificationIdParams,
   GetNotificationEventsResult,
+  getNotificationFromJourneyIdParams,
+  getNotificationFromJourneyIdResult,
   GetNotificationParams,
   GetNotificationResult,
   NotificationRepositoryPort,
@@ -77,6 +79,40 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
   }
 
   async deleteNotificationEvent(params: DeleteNotificationEventByIdParams): Promise<DeleteNotificationEventResult> {
+    const notificationEvent = await this.prisma.notificationEvent.findFirst({
+      where: { id: params.id },
+      include: { notification: true },
+    });
+
+    if (notificationEvent && notificationEvent.userId) {
+      const journeyUsersMilestones = await this.prisma.journeyUsersMilestone.findMany({
+        where: {
+          userId: notificationEvent.userId,
+          journeyId: notificationEvent.notification.journeyId,
+          status: JourneyStatus.requestedToJoinMilestone,
+        },
+      });
+
+      if (journeyUsersMilestones) {
+        await Promise.all(
+          journeyUsersMilestones.map((journeyUsersMilestone) =>
+            this.prisma.journeyUsersMilestone.update({
+              where: {
+                journeyId_userId_milestoneId: {
+                  journeyId: notificationEvent.notification.journeyId,
+                  userId: journeyUsersMilestone.userId,
+                  milestoneId: journeyUsersMilestone.milestoneId,
+                },
+              },
+              data: {
+                status: params.accept ? JourneyStatus.approvedJoinMilestone : JourneyStatus.declinedJoinMilestone,
+              },
+            })
+          )
+        );
+      }
+    }
+
     return await this.prisma.notificationEvent.delete({ where: { id: params.id } });
   }
 
@@ -107,5 +143,25 @@ export class NotificationPostgresRepository implements NotificationRepositoryPor
     });
 
     return newNotificationEvent;
+  }
+
+  async getNotificationFromJourneyId(
+    params: getNotificationFromJourneyIdParams
+  ): Promise<getNotificationFromJourneyIdResult> {
+    const notification = await this.prisma.notification.findUniqueOrThrow({
+      where: {
+        userId_journeyId: {
+          journeyId: params.journeyId,
+          userId: params.userId,
+        },
+      },
+    });
+
+    return {
+      id: notification.id,
+      userId: notification.userId,
+      journeyId: notification.journeyId,
+      createdAt: notification.createdAt,
+    };
   }
 }

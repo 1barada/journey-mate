@@ -192,12 +192,12 @@ const JourneyPage = () => {
               </MapWrapper>
             </Box>
             <CardDescription description={journey.description || ''} title="Опис" />
-            <JourneyChat chatId={journey.id} />
+            {journey.chatId && <JourneyChat chatId={journey.chatId} />}
           </Container>
         </Box>
       )}
-      {isOpen && (
-        <JoinJourneyModal onJoinHandler={joinHandler} toggleModal={toggle} milestones={journey?.milestones || []} />
+      {isOpen && journey && (
+        <JoinJourneyModal onJoinHandler={joinHandler} toggleModal={toggle} milestones={journey.milestones} />
       )}
     </>
   );

@@ -60,9 +60,9 @@ export const SearchLocationModal: React.FC<SearchLocationModalProps> = (props) =
                   <SearchLocationMap
                     width="100%"
                     height="300px"
-                    onPlaceSelected={(coords) => {
+                    onPlaceSelected={(coords, address) => {
                       field.onChange(coords);
-                      form.setValue('title', 'London'); // temp
+                      form.setValue('title', address);
                     }}
                     {...(field.value.lat &&
                       field.value.lng && {

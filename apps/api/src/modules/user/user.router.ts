@@ -50,6 +50,7 @@ export const userRouter = router({
       const { token } = await service.login(input);
 
       ctx.res.setCookie('access-token', token);
+
       return;
     }),
   changeDescription: authenticateProcedure
