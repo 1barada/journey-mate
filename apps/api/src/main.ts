@@ -15,10 +15,10 @@ const port = config.get('port');
 
 const origin = config.get('frontendUrl');
 
-server.register(cors, {
-  origin: [origin],
-  credentials: true,
-});
+// server.register(cors, {
+//   origin: [origin],
+//   credentials: true,
+// });
 
 if (config.get('nodeEnv') == 'development') {
   server.register(cors, {
