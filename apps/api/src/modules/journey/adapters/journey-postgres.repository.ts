@@ -53,6 +53,14 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       });
     }
 
+    // create notification
+    await this.db.notification.create({
+      data: {
+        userId: journey.userId,
+        journeyId: journey.id,
+      },
+    })
+
     const categories = await this.db.journeyCategory.findMany({
       where: {
         value: { in: candidateCategory.map((category) => category.value) },
@@ -248,7 +256,7 @@ export class JourneyPostgresRepository implements JourneyRepositoryPort {
       throw new Error(`Milestone with id ${milestoneIds[0]} not found`);
     }
 
-    // find or  create notification
+    // find or create notification
     const existingNotification = await this.db.notification.findFirst({
       where: {
         userId: milestones[0].journey.userId,
