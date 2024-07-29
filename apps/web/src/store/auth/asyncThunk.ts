@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { CredentialResponse } from '@react-oauth/google';
 import type { ReducerCreators } from '@reduxjs/toolkit';
+import { AsyncThunkSliceReducerDefinition } from '@reduxjs/toolkit/dist/createSlice';
 import axios from 'axios';
 
 import { FormInputsTypes } from '../../components/Forms/Login/types';
@@ -35,7 +36,6 @@ export const loginAsyncThunk = (creator: ReducerCreators<AuthSlice>) =>
       fulfilled: (state) => {
         state.isLoading = false;
         state.error = null;
-        state.isAuthenticated = true;
         toast.success('Welcome back!');
       },
       rejected: (state, { payload }) => {
@@ -347,3 +347,22 @@ export const restorePasswordAsyncThunk = (creator: ReducerCreators<AuthSlice>) =
       },
     }
   );
+function dispatch(
+  arg0: AsyncThunkSliceReducerDefinition<
+    AuthSlice,
+    void,
+    { user: User | null; permissions: UserPermission[] },
+    {
+      state?: undefined;
+      dispatch?: undefined;
+      extra?: unknown;
+      rejectValue?: unknown;
+      serializedErrorType?: unknown;
+      pendingMeta?: unknown;
+      fulfilledMeta?: unknown;
+      rejectedMeta?: unknown;
+    }
+  >
+) {
+  throw new Error('Function not implemented.');
+}

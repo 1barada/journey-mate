@@ -9,7 +9,6 @@ export const LoginRequestSchema = z.object({
 export type LoginRequest = z.infer<typeof LoginRequestSchema>;
 
 export const LoginResponseSchema = z.object({
-  user: UserSchema,
   token: z.string(),
 });
 
@@ -19,6 +18,6 @@ export interface LoginUsecase {
   login(request: LoginRequest): Promise<LoginResponse>;
 }
 
-export const LoginRouterResponseSchema = UserSchema;
+export const LoginRouterResponseSchema = z.void();
 
 export type LoginRouterResponse = z.infer<typeof LoginRouterResponseSchema>;
