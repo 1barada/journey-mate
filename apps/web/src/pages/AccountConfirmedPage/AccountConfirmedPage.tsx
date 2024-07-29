@@ -12,7 +12,7 @@ const AccountConfirmedPage = () => {
       <Box className={styles.contentContainer}>
         <Typography className={styles.title}>Your email successfully confirmed!</Typography>
         <Typography className={styles.info}>
-          You can now login in using your email and password that you provided during registration.
+          You can now login using your email and password that you provided during registration.
         </Typography>
       </Box>
     </Container>

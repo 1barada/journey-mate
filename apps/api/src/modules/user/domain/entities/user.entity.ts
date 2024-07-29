@@ -10,7 +10,7 @@ export const UserSchema = z.object({
   email: z.string().email(),
   name: z.string().nullable(),
   role: UserRoleSchema,
-  avatarUrl: z.string().url().nullable(),
+  avatarUrl: z.string().nullable(),
   sex: SexSchema.nullable(),
   age: z.number().min(0).max(200).nullable(),
   description: z.string().nullable(),

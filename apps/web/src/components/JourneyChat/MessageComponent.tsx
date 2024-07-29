@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Box, Link, Typography } from '@mui/material';
+import { Avatar, Box, Link, Typography } from '@mui/material';
 
 import { routes } from '../../routes';
 
@@ -12,6 +12,8 @@ interface MessageComponentProps {
   message: Message;
 }
 
+const imagePath = 'https://res.cloudinary.com/dyttdvqkh/image/upload/v1721908459/';
+
 const MessageComponent = ({ message, selfMessage = false }: MessageComponentProps) => {
   const avatarAlt = message.sender.name || 'avatar';
 
@@ -22,12 +24,9 @@ const MessageComponent = ({ message, selfMessage = false }: MessageComponentProp
       }`}
     >
       {!selfMessage && (
-        <Link
-          className={styles.avatar}
-          href={`${routes.PROFILE}?${new URLSearchParams({ id: message.sender.id.toString() })}`}
-        >
+        <Link className={styles.avatar} href={`${routes.PROFILE}/${message.sender.id}`}>
           {message.sender.avatarUrl ? (
-            <img className={styles.image} src={message.sender.avatarUrl} alt={avatarAlt} />
+            <Avatar src={imagePath + message.sender.avatarUrl} className={styles.image} alt={avatarAlt} />
           ) : (
             <AccountCircleIcon className={styles.emptyIcon} titleAccess={avatarAlt} fontSize="medium" />
           )}

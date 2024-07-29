@@ -191,7 +191,7 @@ const JourneyPage = () => {
                 <Map width="100%" height="460px" coordinates={coordinates} />
               </MapWrapper>
             </Box>
-            <CardDescription description={journey.description || ''} title="Опис" />
+            <CardDescription description={journey.description || ''} title="Description" />
             {journey.chatId && <JourneyChat chatId={journey.chatId} />}
           </Container>
         </Box>
