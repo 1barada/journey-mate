@@ -1,4 +1,4 @@
-import { JourneyStatus, Prisma, PrismaClient } from '@prisma/client';
+import { JourneyStatus, PrismaClient } from '@prisma/client';
 
 import {
   CreateNotificationEventResult,

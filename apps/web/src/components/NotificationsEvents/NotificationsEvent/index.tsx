@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
@@ -7,7 +8,6 @@ import { acceptJoinRequest, declineJoinRequest } from '../../../store/notificati
 import { NotificationEvent, NotificationEventType } from '../../../store/notification/types';
 
 import styles from './styles.module.scss';
-import { useMemo } from 'react';
 
 interface NotificationsEventProps {
   event: NotificationEvent;

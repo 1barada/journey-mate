@@ -7,10 +7,10 @@ import type {
   JoinJourney,
   Journey,
   JourneyDetails,
+  JourneyIdFromChatId,
   JourneyParticipant,
   JourneyParticipants,
   Journeys,
-  JourneyIdFromChatId,
 } from './../entities/journey.entity';
 
 export type CreateJourneyParams = { journey: CreateJourneyWithUserId };

@@ -3,8 +3,8 @@ import { ReducerCreators } from '@reduxjs/toolkit';
 
 import { trpcClient } from '../../services/trpc';
 
-import { Notification, NotificationEvent, NotificationEventType, NotificationSlice } from './types';
 import { getAllNotifications } from './slice';
+import { Notification, NotificationEvent, NotificationEventType, NotificationSlice } from './types';
 
 export const getAllNotificationsAsyncThunk = (creator: ReducerCreators<NotificationSlice>) =>
   creator.asyncThunk(
